@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity(name="KOSDAQ_STOCK_LIST")
-public class KOSDAQStockList {
+@Entity(name="STOCK_LIST")
+public class StockList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long stockId;
     private String basDt; //기준일자
     private String srtnCd; //단축코드
     private String isinCd; //ISIN코드

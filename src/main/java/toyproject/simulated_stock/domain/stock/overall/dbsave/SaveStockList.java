@@ -2,30 +2,38 @@ package toyproject.simulated_stock.domain.stock.overall.dbsave;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-import toyproject.simulated_stock.domain.stock.overall.entity.KOSDAQStockList;
-import toyproject.simulated_stock.domain.stock.overall.repository.KOSDAQStockListRepository;
+import toyproject.simulated_stock.domain.stock.overall.config.DateConfig;
+import toyproject.simulated_stock.domain.stock.overall.entity.StockList;
+import toyproject.simulated_stock.domain.stock.overall.repository.StockListRepository;
 import toyproject.simulated_stock.global.config.OpenApiSecretInfo;
 
+@Slf4j
+@Service
 @RequiredArgsConstructor
-public class SaveKOSDAQStockList {
+public class SaveStockList {
     private final OpenApiSecretInfo openApiSecretInfo;
 
-    private final KOSDAQStockListRepository kosdaqStockListRepository;
+    private final DateConfig dateConfig;
+
+    private final StockListRepository stockListRepository;
 
     private final String STOCK_DEFAULT_URL = "https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService";
 
     private final RestTemplate restTemplate;
 
     @PostConstruct
-    @Scheduled(cron = "15 5 11 * * *", zone = "Asia/Seoul")
-    public void getAndSaveKOSDAQStockList(){
+    @Scheduled(cron = "0 1 11 * * *", zone = "Asia/Seoul")
+    public void saveStockList(){
         String url = STOCK_DEFAULT_URL + "/getStockPriceInfo";
 
         UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
@@ -33,7 +41,7 @@ public class SaveKOSDAQStockList {
                 .queryParam("numOfRows",2000)
                 .queryParam("pageNo", 1)
                 .queryParam("resultType", "json")
-                .queryParam("mrktCls", "KOSDAQ")
+                .queryParam("beginBasDt", dateConfig.getFromFiveDaysAgoToNow())
                 .build();
 
         ResponseEntity<String> responseData = restTemplate.getForEntity(uriBuilder.toUriString(), String.class);
@@ -44,14 +52,13 @@ public class SaveKOSDAQStockList {
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject)jsonParser.parse(responseDataBody);
             JSONObject response = (JSONObject) jsonObject.get("response");
-
             JSONObject body = (JSONObject) response.get("body");
-            JSONObject items = (JSONObject) response.get("items");
-            JSONObject item = (JSONObject) response.get("item");
+            JSONObject items = (JSONObject) body.get("items");
+            JSONArray item = (JSONArray) items.get("item");
 
             for(int i=0; i<item.size(); i++){
                 JSONObject tmp = (JSONObject) item.get(i);
-                KOSDAQStockList infoObj = new KOSDAQStockList(
+                StockList infoObj = new StockList(
                         i+(long) 1,
                         (String) tmp.get("basDt"),
                         (String) tmp.get("srtnCd"),
@@ -69,17 +76,17 @@ public class SaveKOSDAQStockList {
                         (String) tmp.get("lstgStCnt"),
                         (String) tmp.get("mrktTotAmt")
                 );
-                kosdaqStockListRepository.save(infoObj);
+                stockListRepository.save(infoObj);
             }
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    // 매일 오전 11시 5분에 DB에 있는 주식시세정보 데이터 삭제
-    @Scheduled(cron = "0 5 11 * * *", zone = "Asia/Seoul")
-    public void deleteKOSDAQStockList() {
-        kosdaqStockListRepository.deleteAll();
+    // 매일 오전 11시에 DB 주식정보 삭제
+    @Scheduled(cron = "0 0 11 * * *", zone = "Asia/Seoul")
+    public void deleteStockList() {
+        stockListRepository.deleteAll();
     }
 
 }
