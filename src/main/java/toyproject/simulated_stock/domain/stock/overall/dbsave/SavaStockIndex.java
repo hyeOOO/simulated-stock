@@ -14,7 +14,6 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import toyproject.simulated_stock.domain.stock.overall.config.DateConfig;
 import toyproject.simulated_stock.domain.stock.overall.entity.StockIndex;
-import toyproject.simulated_stock.domain.stock.overall.entity.StockList;
 import toyproject.simulated_stock.domain.stock.overall.repository.StockIndexRepository;
 import toyproject.simulated_stock.global.config.OpenApiSecretInfo;
 
