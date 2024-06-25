@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>일일 주식 정보 조회</h1>
+<table border="1">
+    <tr>
+        <th>No.</th>
+
+    </tr>
+    <!-- 두번째 변수인 userStat에는 반복에 대한 정보를 담아줌. (변수명+Stat)자동 네이밍되므로 userStat 생략해도 작동됨 -->
+    <tr th:each="stock, stockList : ${stockList}">
+        <td th:text="${stockList.count}">count</td>
+        <td th:text="${stock.basDt}">basDt</td>
+        <td th:text="${stock.srtnCd}">srtnCd</td>
+        <td th:text="${stock.isinCd}">isinCd</td>
+        <td th:text="${stock.itmsNm}">itmsNm</td>
+        <td th:text="${stock.mrktCtg}">mrktCtg</td>
+        <td th:text="${stock.clpr}">clpr</td>
+        <td th:text="${stock.vs}">vs</td>
+        <td th:text="${stock.fltRt}">fltRt</td>
+        <td th:text="${stock.mkp}">mkp</td>
+        <td th:text="${stock.hipr}">hipr</td>
+        <td th:text="${stock.lopr}">lopr</td>
+        <td th:text="${stock.trqu}">trqu</td>
+        <td th:text="${stock.trPrc}">trPrc</td>
+        <td th:text="${stock.lstgStCnt}">lstgStCnt</td>
+        <td th:text="${stock.mrktTotAmt}">mrktTotAmt</td>
+    </tr>
+</table>
+</body>
+</html>

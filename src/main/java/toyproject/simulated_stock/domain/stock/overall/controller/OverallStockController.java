@@ -3,6 +3,8 @@ package toyproject.simulated_stock.domain.stock.overall.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,20 +19,27 @@ import toyproject.simulated_stock.domain.stock.overall.service.OverallStockServi
 import java.util.List;
 
 @RequiredArgsConstructor
-@RestController
-@RequestMapping("/stock")
+@Controller
+@RequestMapping("/api/stock")
 public class OverallStockController {
 
     private final StockListMapper stockListMapper;
     private final OverallStockService overallStockService;
     private final StockIndexMapper stockIndexMapper;
 
-    @GetMapping("/list")
-    public ResponseEntity<List<StockListResponseDto>> getListOfStock(){
-        List<StockList> stockList = overallStockService.getStockList();
-        List<StockListResponseDto> response = stockListMapper.stockListToStockListResponseDto(stockList);
+//    @GetMapping("/list")
+//    public ResponseEntity<List<StockListResponseDto>> getListOfStock(){
+//        List<StockList> stockList = overallStockService.getStockList();
+//        List<StockListResponseDto> response = stockListMapper.stockListToStockListResponseDto(stockList);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @GetMapping("/list")
+    public String getListOfStock(Model model){
+        List<StockList> stockList = overallStockService.getStockList();
+        List<StockListResponseDto> stockListResponseDtos = stockListMapper.stockListToStockListResponseDto(stockList);
+        model.addAttribute("stockList", stockListResponseDtos);
+        return "stock/overall";
     }
 
     @GetMapping("/index")
