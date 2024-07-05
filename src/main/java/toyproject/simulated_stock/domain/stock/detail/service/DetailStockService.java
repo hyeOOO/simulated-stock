@@ -10,7 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationDto;
+import toyproject.simulated_stock.domain.stock.detail.dto.StockInvestorsDto;
+import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsByPeriodDto;
+import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsDto;
+import toyproject.simulated_stock.domain.stock.detail.option.QuotationsByPeriodOption;
 import toyproject.simulated_stock.domain.stock.detail.token.AccessTokenService;
 import toyproject.simulated_stock.global.config.OpenApiSecretInfo;
 import toyproject.simulated_stock.global.exception.BusinessLogicException;
@@ -34,7 +37,7 @@ public class DetailStockService {
     }
 
     @Transactional(readOnly = true)
-    public StockQuotationDto getQuotations(String stockCode){
+    public StockQuotationsDto getQuotations(String stockCode){
         HttpHeaders requestHeaders = httpHeaders();
         requestHeaders.set("tr_id", "FHKST01010100"); //주식현재가 시세 거래ID
         HttpEntity<String> requestMessage = new HttpEntity<>(requestHeaders);
@@ -46,14 +49,14 @@ public class DetailStockService {
                 .queryParam("FID_INPUT_ISCD",stockCode)
                 .build();
 
-        ResponseEntity<StockQuotationDto> response;
+        ResponseEntity<StockQuotationsDto> response;
 
         try{
             response = restTemplate.exchange(
                     uriBuilder.toString(),
                     HttpMethod.GET,
                     requestMessage,
-                    StockQuotationDto.class
+                    StockQuotationsDto.class
             );
 
             return response.getBody();
@@ -61,6 +64,74 @@ public class DetailStockService {
         }catch (Exception e){
             handleErrors(e);
         }
+        return null;
+    }
+
+    @Transactional(readOnly = true)
+    public StockInvestorsDto getInvestors(String stockCode){
+        HttpHeaders requestHeaders = httpHeaders();
+        requestHeaders.set("tr_id", "FHKST01010900");//주식현재가 투자자
+        HttpEntity<String> requestMessage = new HttpEntity<>(requestHeaders);
+
+        String url = STOCK_DEFAULT_URL + "/inquire-investor";
+
+        UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
+                .queryParam("FID_COND_MRKT_DIV_CODE", "J")
+                .queryParam("FID_INPUT_ISCD", stockCode)
+                .build();
+
+        ResponseEntity<StockInvestorsDto> response;
+
+        try{
+            response = restTemplate.exchange(
+                    uriBuilder.toString(),
+                    HttpMethod.GET,
+                    requestMessage,
+                    StockInvestorsDto.class
+            );
+
+            return response.getBody();
+
+        }catch(Exception e){
+            handleErrors(e);
+        }
+
+        return null;
+    }
+
+    @Transactional(readOnly = true)
+    public StockQuotationsByPeriodDto getQuotationsByPeriod(String stockCode, QuotationsByPeriodOption option){
+        HttpHeaders requestHeaders = httpHeaders();
+        requestHeaders.set("tr_id", "FHKST03010100");//주식현재가 투자자
+        HttpEntity<String> requestMessage = new HttpEntity<>(requestHeaders);
+
+        String url = STOCK_DEFAULT_URL + "/inquire-daily-itemchartprice";
+
+        UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
+                .queryParam("FID_COND_MRKT_DIV_CODE", "J")
+                .queryParam("FID_INPUT_ISCD", stockCode)
+                .queryParam("FID_INPUT_DATE_1", option.getStartDate())
+                .queryParam("FID_INPUT_DATE_2", option.getEndDate())
+                .queryParam("FID_PERIOD_DIV_CODE", option.getPeriodCode())
+                .queryParam("FID_ORG_ADJ_PRC", option.getOrgAdjPrc())
+                .build();
+
+        ResponseEntity<StockQuotationsByPeriodDto> response;
+
+        try{
+            response = restTemplate.exchange(
+                    uriBuilder.toString(),
+                    HttpMethod.GET,
+                    requestMessage,
+                    StockQuotationsByPeriodDto.class
+            );
+
+            return response.getBody();
+
+        }catch(Exception e){
+            handleErrors(e);
+        }
+
         return null;
     }
 

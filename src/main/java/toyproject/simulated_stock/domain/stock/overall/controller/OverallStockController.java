@@ -19,7 +19,7 @@ import toyproject.simulated_stock.domain.stock.overall.service.OverallStockServi
 import java.util.List;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/api/stock")
 public class OverallStockController {
 
@@ -27,20 +27,20 @@ public class OverallStockController {
     private final OverallStockService overallStockService;
     private final StockIndexMapper stockIndexMapper;
 
-//    @GetMapping("/list")
-//    public ResponseEntity<List<StockListResponseDto>> getListOfStock(){
-//        List<StockList> stockList = overallStockService.getStockList();
-//        List<StockListResponseDto> response = stockListMapper.stockListToStockListResponseDto(stockList);
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
-
     @GetMapping("/list")
-    public String getListOfStock(Model model){
+    public ResponseEntity<List<StockListResponseDto>> getListOfStock(){
         List<StockList> stockList = overallStockService.getStockList();
-        List<StockListResponseDto> stockListResponseDtos = stockListMapper.stockListToStockListResponseDto(stockList);
-        model.addAttribute("stockList", stockListResponseDtos);
-        return "stock/overall";
+        List<StockListResponseDto> response = stockListMapper.stockListToStockListResponseDto(stockList);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+//    @GetMapping("/list")
+//    public String getListOfStock(Model model){
+//        List<StockList> stockList = overallStockService.getStockList();
+//        List<StockListResponseDto> stockListResponseDtos = stockListMapper.stockListToStockListResponseDto(stockList);
+//        model.addAttribute("stockList", stockListResponseDtos);
+//        return "stock/overall";
+//    }
 
     @GetMapping("/index")
     public ResponseEntity<List<StockIndexResponseDto>> getListOfStockIndex(){

@@ -41,7 +41,7 @@ public class SavaStockIndex {
                 .queryParam("numOfRows", 5)
                 .queryParam("pageNo", 1)
                 .queryParam("resultType", "json")
-                .queryParam("beginBasDt", dateConfig.getFromFiveDaysAgoToNow())
+                .queryParam("beginBasDt", dateConfig.getFiveDaysFromToday())
                 .queryParam("idxNm", "코스피")
                 .build();
 
@@ -104,7 +104,7 @@ public class SavaStockIndex {
                 .queryParam("numOfRows", 1000)
                 .queryParam("pageNo", 1)
                 .queryParam("resultType", "json")
-                .queryParam("beginBasDt", dateConfig.getFromFiveDaysAgoToNow())
+                .queryParam("beginBasDt", dateConfig.getFiveDaysFromToday())
                 .build();
 
         ResponseEntity<String> responseData = restTemplate.getForEntity(uriBuilder.toUriString(), String.class);

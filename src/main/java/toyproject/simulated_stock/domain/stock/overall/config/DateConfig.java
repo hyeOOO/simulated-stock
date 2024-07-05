@@ -9,11 +9,11 @@ import java.util.Calendar;
 @Getter
 @Component
 public class DateConfig {
-    public String getFromFiveDaysAgoToNow(){
-        Calendar cal = Calendar.getInstance();
+    public String getFiveDaysFromToday(){
+        Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-        cal.add(Calendar.DATE, -5);
-        String fromFiveDaysAgoToNow = format.format(cal.getTime());
-        return fromFiveDaysAgoToNow;
+        calendar.add(Calendar.DATE, -5);
+        String fiveDaysFromToday = format.format(calendar.getTime());
+        return fiveDaysFromToday;
     }
 }

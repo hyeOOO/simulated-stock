@@ -31,17 +31,18 @@ public class SaveStockList {
 
     private final RestTemplate restTemplate;
 
+    //매일 12시에 db에 데이터 저장
     @PostConstruct
-    @Scheduled(cron = "0 1 11 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 12 * * *", zone = "Asia/Seoul")
     public void saveStockList(){
         String url = STOCK_DEFAULT_URL + "/getStockPriceInfo";
 
         UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("serviceKey", openApiSecretInfo.getServiceKey())
-                .queryParam("numOfRows",2000)
+                .queryParam("numOfRows",3000)
                 .queryParam("pageNo", 1)
                 .queryParam("resultType", "json")
-                .queryParam("beginBasDt", dateConfig.getFromFiveDaysAgoToNow())
+                .queryParam("beginBasDt", dateConfig.getFiveDaysFromToday())
                 .build();
 
         ResponseEntity<String> responseData = restTemplate.getForEntity(uriBuilder.toUriString(), String.class);
@@ -83,8 +84,8 @@ public class SaveStockList {
         }
     }
 
-    // 매일 오전 11시에 DB 주식정보 삭제
-    @Scheduled(cron = "0 0 11 * * *", zone = "Asia/Seoul")
+    // 매일 오전 11:59에 DB 주식정보 삭제
+    @Scheduled(cron = "0 59 11 * * *", zone = "Asia/Seoul")
     public void deleteStockList() {
         stockListRepository.deleteAll();
     }

@@ -3,8 +3,8 @@ package toyproject.simulated_stock.domain.stock.detail.dto;
 import lombok.Data;
 
 @Data
-public class StockQuotationDto {
-    private Output output;
+public class StockQuotationsDto {
+    private StockInvestorsDto.Output output;
 
     @Data
     public static class Output{
