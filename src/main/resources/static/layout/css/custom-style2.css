@@ -1,0 +1,103 @@
+@font-face {
+    font-family: 'Pretendard-SemiBold';
+    src: url('../srcs/fonts/Pretendard-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Pretendard-Medium';
+    src: url('../srcs/fonts/Pretendard-Medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('../srcs/fonts/Pretendard-Regular.ttf') format('truetype');
+}
+
+body {
+    margin: 0;
+    font-family: 'Pretendard-Regular';
+    background-color: #F5F7FA;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+}
+
+.left-section {
+    flex: 3;
+    padding-right: 20px;
+}
+
+.right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.section {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+    margin-top: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+td.up {
+    color: red;
+    /* 상승률 */
+}
+
+td.down {
+    color: blue;
+    /* 하락률 */
+}
+
+.assets-summary {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.assets-summary h3 {
+    margin: 10px 0 5px;
+}
+
+.assets-summary .total-asset,
+.assets-summary .available-asset {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 10px;
+}
+
+.interest-stocks th,
+.owned-stocks th {
+    background-color: #F0F4FF;
+    font-weight: bold;
+}
+
+.interest-stocks td,
+.owned-stocks td {
+    background-color: white;
+}

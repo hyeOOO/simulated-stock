@@ -1,0 +1,2319 @@
+{
+  "canvas": {
+    "version": "2.2.13",
+    "width": 2000,
+    "height": 2000,
+    "scrollTop": -1012.0908248901784,
+    "scrollLeft": -127.72208564084643,
+    "zoomLevel": 0.8,
+    "show": {
+      "tableComment": true,
+      "columnComment": true,
+      "columnDataType": true,
+      "columnDefault": true,
+      "columnAutoIncrement": false,
+      "columnPrimaryKey": true,
+      "columnUnique": false,
+      "columnNotNull": true,
+      "relationship": true
+    },
+    "database": "MySQL",
+    "databaseName": "SS",
+    "canvasType": "ERD",
+    "language": "GraphQL",
+    "tableCase": "pascalCase",
+    "columnCase": "camelCase",
+    "highlightTheme": "VS2015",
+    "bracketType": "none",
+    "setting": {
+      "relationshipDataTypeSync": true,
+      "relationshipOptimization": false,
+      "columnOrder": [
+        "columnName",
+        "columnDataType",
+        "columnNotNull",
+        "columnUnique",
+        "columnAutoIncrement",
+        "columnDefault",
+        "columnComment"
+      ]
+    },
+    "pluginSerializationMap": {}
+  },
+  "table": {
+    "tables": [
+      {
+        "id": "85eca499-d0d4-4213-a697-bcc0ec5edda0",
+        "name": "",
+        "comment": "USER(사용자)",
+        "columns": [
+          {
+            "id": "6dc01081-b559-4831-92d4-00cef3193cfd",
+            "name": "USER_ID",
+            "comment": "사용자 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 83.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "ac2b6d16-2433-47a0-855d-6f252b630cfb",
+            "name": "NICKNAME",
+            "comment": "",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 69.7548828125,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "83be5cbc-04c5-4e92-b5fb-ad9d2ee7e534",
+            "name": "EMAIL",
+            "comment": "",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "7a4ddf90-932c-4c60-875a-e1aafd3be101",
+            "name": "PHONE",
+            "comment": "",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "ba686ee9-2de6-49ae-bc29-3b0320db9548",
+            "name": "PROFILE_IMG",
+            "comment": "",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 84.3037109375,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "49379f71-6ca3-4945-9a02-a1854838e1bc",
+            "name": "PROFILE_MSG",
+            "comment": "",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 87.033203125,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 789.1949,
+          "top": 311.5557,
+          "zIndex": 7,
+          "widthName": 60,
+          "widthComment": 82.1455078125,
+          "color": "#F44336"
+        },
+        "visible": true
+      },
+      {
+        "id": "d3ad388f-2bd5-4115-9805-ca8badb03e3a",
+        "name": "",
+        "comment": "STOCK_LIST(주식 정보)",
+        "columns": [
+          {
+            "id": "44a4356e-2b9a-48ea-8427-f1aaa856b91e",
+            "name": "KOSDAQ_ID",
+            "comment": "주식 식별자",
+            "dataType": "BIGINT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 74.14111328125,
+              "widthComment": 70.376953125,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "f1b89a18-3cd0-4b2e-8f38-a82c9c224b39",
+            "name": "BAS_DT",
+            "comment": "기준일자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "38c9645e-e124-4309-9321-ad755c7b1967",
+            "name": "SRTN_CD",
+            "comment": "단축코드",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "521d719d-de1d-472b-aaf1-07e827df46a1",
+            "name": "ISIN_CD",
+            "comment": "ISIN코드",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "855e6f0a-3058-4361-909e-ba530b84f6c1",
+            "name": "ITMS_NM",
+            "comment": "종목명",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "7ddcc63e-107d-4893-a0f1-ba95d012cdd1",
+            "name": "MRKT_CTG",
+            "comment": "시장구분",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 67.28564453125,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "91e1cbe3-9548-45ca-9107-a13676d6ccdc",
+            "name": "CLPR",
+            "comment": "종가",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "1244f6e3-21c3-44a3-ade0-4df2944d6c13",
+            "name": "VS",
+            "comment": "대비",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "dcd4ad06-c5c4-45e8-a78a-2e7b434abf5c",
+            "name": "FLT_RT",
+            "comment": "등락률",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "bc23bc89-6653-483d-a312-78bd88bdd886",
+            "name": "MKP",
+            "comment": "시가",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "210d0d46-b5bd-43a7-b6fe-bb5839432adc",
+            "name": "HIPR",
+            "comment": "고가",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "90af7c31-c808-4514-b0fe-b3788b17f4a8",
+            "name": "TRQU",
+            "comment": "거래량",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "fa98b294-e9cd-4156-8d86-280fa2b49ca6",
+            "name": "TR_PRC",
+            "comment": "거래대금",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "64e17c48-3b52-4728-ac6b-91453609fb54",
+            "name": "LSTG_ST_CNT",
+            "comment": "상장주식수",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 82.88818359375,
+              "widthComment": 67,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "3affe3c4-599a-4cde-9e59-347e05add1ab",
+            "name": "MRKT_TOT_AMT",
+            "comment": "시가총액",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 99.474609375,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 1473.3726,
+          "top": 447.8373,
+          "zIndex": 2,
+          "widthName": 60,
+          "widthComment": 120,
+          "color": "#2196F3"
+        },
+        "visible": true
+      },
+      {
+        "id": "d5076099-5632-4dcc-8660-07b3a6e8aa91",
+        "name": "",
+        "comment": "STOCK_MARKET_INDEX(코스닥 지수 정보)",
+        "columns": [
+          {
+            "id": "6a698f12-1e9e-49b4-91ac-09ba88fe5ebb",
+            "name": "KOSDAQ_INDEX_ID",
+            "comment": "지수 식별자",
+            "dataType": "BIGINT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 118.10498046875,
+              "widthComment": 70.376953125,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "af0bdb5c-944f-48ca-ab4b-a958e5bfcf00",
+            "name": "IS_YR_ED_VS_FLT_RT",
+            "comment": "전년말대비 등락률",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 123.341796875,
+              "widthComment": 109.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "ea307a83-7914-433d-820c-adfd7a98746a",
+            "name": "BAS_PNTM",
+            "comment": "기준시점",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 67.8759765625,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "02936d8b-39db-4707-a47b-0e739fd7ac3f",
+            "name": "BAS_IDX",
+            "comment": "기준지수",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "c6a4c84e-b011-4718-bc97-fe4cb641430d",
+            "name": "BAS_DT",
+            "comment": "기준일자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "03b4a7a5-0666-45ab-896a-c5da36940f60",
+            "name": "IDX_CSF",
+            "comment": "지수분류명",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 67,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "11e6eb23-f64f-4781-bb83-0e365f2dfcb3",
+            "name": "IDX_NM",
+            "comment": "지수명",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "eeff8dd5-9649-4397-9ee1-b286eb7d20bf",
+            "name": "EPY_ITMS_CNT",
+            "comment": "채용종목 수",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 91.02587890625,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "73b0b0b1-155f-4e45-a11e-ba6b69742b06",
+            "name": "DPR",
+            "comment": "종가",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "ee520cd5-f288-4aec-a74b-177113e1d355",
+            "name": "VS",
+            "comment": "대비",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "d054a527-d842-4af9-a0b3-4f62b6f6a945",
+            "name": "FLT_RT",
+            "comment": "등락률",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "8f54d1b7-cf96-4029-8d58-7e0d762b18be",
+            "name": "MKP",
+            "comment": "시가",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "77654be3-79b8-4ec5-869a-890a1e343dd1",
+            "name": "HIPR",
+            "comment": "고가",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "a44b2c3b-6e16-4899-9553-f8570de13674",
+            "name": "LOPR",
+            "comment": "저가",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "b4c45743-12dd-4a3b-af4e-b90dd38853b2",
+            "name": "TRQU",
+            "comment": "거래량",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "bd2140ee-0111-4604-9478-4631f9cb4964",
+            "name": "TR_PRC",
+            "comment": "거래대금",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "076eb748-1982-4e27-9140-b477aea4cb28",
+            "name": "LSTG_MRKT_TOT_AMT",
+            "comment": "상장시가총액",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 135.33251953125,
+              "widthComment": 80,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "6b55d019-1e16-42f4-93fc-a7538c78e46b",
+            "name": "IS_YR_ED_VS_FLT_RG",
+            "comment": "전년말대비 등락폭",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 125.576171875,
+              "widthComment": 109.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "6a233ece-4a35-44fb-b353-eb3ebdc69219",
+            "name": "YR_W_RCRD_HGST",
+            "comment": "연중기록최고",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 112.91259765625,
+              "widthComment": 80,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "4876e69b-e842-4d57-ac68-eb2f2e930d98",
+            "name": "YR_W_RCRD_HGST_DT",
+            "comment": "연중기록최고 일자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 134.78662109375,
+              "widthComment": 109.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "0131fce0-266c-45cf-997e-007674e38efb",
+            "name": "YR_W_RCRD_LWST",
+            "comment": "연중기록최저",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 112.5888671875,
+              "widthComment": 80,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "1beb57e1-6f57-4d79-982f-992570c3b5af",
+            "name": "YR_W_RCRD_LWST_DT",
+            "comment": "연중기록최저 일자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 134.462890625,
+              "widthComment": 109.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 1429.0449,
+          "top": 894.8609,
+          "zIndex": 3,
+          "widthName": 60,
+          "widthComment": 120,
+          "color": "#2196F3"
+        },
+        "visible": true
+      },
+      {
+        "id": "225e1272-83f4-4547-8c2c-45a11e41f82c",
+        "name": "",
+        "comment": "INTEREST(관심종목)",
+        "columns": [
+          {
+            "id": "1b9b0438-d537-4cc3-bf72-133ee65a47de",
+            "name": "INTEREST_ID",
+            "comment": "관심종목 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 79.66357421875,
+              "widthComment": 96.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "0fde7946-9f8d-467c-a662-e2fc156bd24e",
+            "name": "STOCK_ID",
+            "comment": "주식 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 61.89013671875,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "de8046f5-07ec-421f-a102-0980f740cca1",
+            "name": "USER_ID",
+            "comment": "사용자 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 83.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 138.1388,
+          "top": 345.2873,
+          "zIndex": 8,
+          "widthName": 60,
+          "widthComment": 120,
+          "color": "#F44336"
+        },
+        "visible": true
+      },
+      {
+        "id": "50d2a2d9-8970-4507-8cd0-45eca0d1f1ad",
+        "name": "",
+        "comment": "ACCOUNT(계좌)",
+        "columns": [
+          {
+            "id": "75212f3f-2cfa-42e1-9ef8-ed12f80b28f8",
+            "name": " ACCOUNT_ID",
+            "comment": "계좌 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 85.73193359375,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "fb963e1d-4906-4b6d-b386-282969e6aa2a",
+            "name": "ACCOUNT_NUMBER",
+            "comment": "계좌 번호",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 123.39892578125,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "354c0ae0-0990-4817-9cc0-b7ccf75bd1c1",
+            "name": "SEED_MONEY",
+            "comment": "시드머니",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 84.8369140625,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "99eb808e-89df-483c-85fa-ee5848a932af",
+            "name": "BALANCE",
+            "comment": "잔고",
+            "dataType": "BIGINT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "409511e6-1151-4e6f-9641-2eac9d55134a",
+            "name": "TOTAL_PROFIT",
+            "comment": "현재 수익",
+            "dataType": "BIGINT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 90.79736328125,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "535b53a0-f5f0-4435-af85-18e17fa798a1",
+            "name": "TOTAL_RETURN_RATE",
+            "comment": "현재 수익률",
+            "dataType": "FLOAT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 132.08251953125,
+              "widthComment": 70.376953125,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "4a5a9823-7a15-4e60-8b81-8e160359de8f",
+            "name": "USER_ID",
+            "comment": "사용자 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 83.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 763.5561,
+          "top": 746.9438,
+          "zIndex": 1,
+          "widthName": 60,
+          "widthComment": 98.306640625,
+          "color": "#F44336"
+        },
+        "visible": true
+      },
+      {
+        "id": "0868eb7c-5f02-433b-8057-d45635ad8d60",
+        "name": "",
+        "comment": "STOCK_HOLDING(보유 주식)",
+        "columns": [
+          {
+            "id": "427564e0-5217-4433-b9ed-67d37d20303a",
+            "name": "STOCK_HOLDING_ID",
+            "comment": "보유주식 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 127.06787109375,
+              "widthComment": 96.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "729ae062-20cb-4262-8a12-cd3ac3f58cff",
+            "name": "ACCOUNT_ID",
+            "comment": "계좌 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 82.35498046875,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "48e3057a-22df-4f75-903e-1a5bd36ffc84",
+            "name": "STOCK_ID",
+            "comment": "종목 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 61.89013671875,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "f3b81fd0-d143-442f-9994-12e993772270",
+            "name": "STOCK_NAME",
+            "comment": "종목 이름",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 85.205078125,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "5bbe880b-dcb5-434d-946b-04f9e6aecdb5",
+            "name": "STOCK_MRKT_CTG",
+            "comment": "시장 구분",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 113.28076171875,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "658e2e58-8742-4550-9482-e88a43bf5071",
+            "name": "AMOUNT",
+            "comment": "보유량",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "1aea9fad-8946-4d2e-88f4-cfa2ae630a01",
+            "name": "PROFIT",
+            "comment": "수익",
+            "dataType": "BIGINT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "39536a63-b23f-414b-8e00-f30ac0c71e5e",
+            "name": "RETURN_RATE",
+            "comment": "수익률",
+            "dataType": "FLOAT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 87.76953125,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "e83f34a3-5826-46c5-8385-716fdb900bae",
+            "name": " ACCOUNT_ID",
+            "comment": "계좌 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 85.73193359375,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 84.5612,
+          "top": 726.9443,
+          "zIndex": 4,
+          "widthName": 60,
+          "widthComment": 120,
+          "color": "#4CAF50"
+        },
+        "visible": true
+      },
+      {
+        "id": "ff888f63-1886-4cec-bcac-427bfc01a0e9",
+        "name": "",
+        "comment": "BUY_ORDER(매수)",
+        "columns": [
+          {
+            "id": "23cd5ecf-34dd-429d-8981-0afd4851eac0",
+            "name": "BUY_ORDER_ID",
+            "comment": "매수 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 94.93603515625,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "a6e91f52-2994-4571-8b8a-e26b7bc20295",
+            "name": "ACCOUNT_ID",
+            "comment": "계좌 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 82.35498046875,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "067ca846-b5db-4e27-b8d5-67af1bd4e6e3",
+            "name": "STOCK_ID",
+            "comment": "종목 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 61.89013671875,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "c9374a2c-732d-4ba6-bc9e-1f291c07fbff",
+            "name": "STOCK_NAME",
+            "comment": "종목명",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 85.205078125,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "77f44886-e6eb-400f-94be-fb2303a08794",
+            "name": "BUY_DATE",
+            "comment": "매수일자",
+            "dataType": "DATETIME",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 64.34033203125,
+              "widthComment": 60,
+              "widthDataType": 64.3466796875,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "951d279e-8d42-428a-9ee6-6dda611f909a",
+            "name": "BUY_AMOUNT",
+            "comment": "매수량",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 89.51513671875,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "974cd367-745b-4571-b270-70b085d45fbb",
+            "name": "BUY_PRICE",
+            "comment": "매수가격",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 68.45361328125,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "fbbbdb9b-06db-4b28-a4a0-96d5f69b57cf",
+            "name": " ACCOUNT_ID",
+            "comment": "계좌 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 85.73193359375,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 672.9303,
+          "top": 1424.3546,
+          "zIndex": 5,
+          "widthName": 60,
+          "widthComment": 110.8876953125,
+          "color": "#4CAF50"
+        },
+        "visible": true
+      },
+      {
+        "id": "eb57c6ad-22e3-4b83-b1da-8a1ee3f87525",
+        "name": "",
+        "comment": "SELL_ORDER(매도)",
+        "columns": [
+          {
+            "id": "e1ccaf6e-6027-4fb1-b1bf-dff31a6c1685",
+            "name": "SELL_ORDER_ID",
+            "comment": "매수 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 97.61474609375,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "d914c658-8667-4ec4-8bfd-3b1c0f2b4470",
+            "name": "ACCOUNT_ID",
+            "comment": "계좌 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 82.35498046875,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "6c146a16-7303-423d-a530-f70023feb568",
+            "name": "STOCK_ID",
+            "comment": "종목 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 61.89013671875,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "17b7e3a9-4eca-4a9d-bcdd-df31f92db91e",
+            "name": "STOCK_NAME",
+            "comment": "종목명",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 85.205078125,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "dbb70efc-f52c-44f5-9666-fddbf8b9cb4d",
+            "name": "SELL_DATE",
+            "comment": "매도일자",
+            "dataType": "DATETIME",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 67.01904296875,
+              "widthComment": 60,
+              "widthDataType": 64.3466796875,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "e68b09b7-97ea-4e98-bd2a-8f60e9312389",
+            "name": "SELL_AMOUNT",
+            "comment": "매도량",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 92.19384765625,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "971accfa-7a21-44aa-99dd-16c946e62193",
+            "name": "SELL_PRICE",
+            "comment": "매도가격",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 71.13232421875,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "905fb4f2-7fe9-4495-babd-1e7e7892de67",
+            "name": " ACCOUNT_ID",
+            "comment": "계좌 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 85.73193359375,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          }
+        ],
+        "ui": {
+          "active": true,
+          "left": 907.1869,
+          "top": 1145.694,
+          "zIndex": 9,
+          "widthName": 60,
+          "widthComment": 113.56640625,
+          "color": "#4CAF50"
+        },
+        "visible": true
+      },
+      {
+        "id": "0e12ea69-2eb1-43cf-ba61-ad1160059765",
+        "name": "",
+        "comment": "SPECIFIED_ORDER(지정금액)",
+        "columns": [
+          {
+            "id": "d537c208-b961-4b15-b2b0-0311cd134175",
+            "name": "SPECIFIED_ORDER_ID",
+            "comment": "지정주문 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 132.34912109375,
+              "widthComment": 96.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "472006d5-d7b6-4d8f-a511-8163e57d0e75",
+            "name": "CATEGORY",
+            "comment": "카테고리(매수/매도)",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 67.5966796875,
+              "widthComment": 120,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "0cf65737-997a-4534-857b-9ea9ee03048b",
+            "name": "STOCK_ID",
+            "comment": "종목 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 61.89013671875,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "2d114289-cbc6-4731-902b-f4093116caf6",
+            "name": "STOCK_NAME",
+            "comment": "종목명",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 85.205078125,
+              "widthComment": 60,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "4f48ef19-5377-411d-a52a-4cf56b2807b2",
+            "name": "AMOUNT",
+            "comment": "수량",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "2daf4b75-828e-4c24-88af-353e044b05e7",
+            "name": "PRICE",
+            "comment": "가격",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "8314898b-69a8-47bc-8ef1-9078c554c15c",
+            "name": " ACCOUNT_ID",
+            "comment": "계좌 식별자",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 85.73193359375,
+              "widthComment": 70.376953125,
+              "widthDataType": 60.18896484375,
+              "widthDefault": 60
+            }
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 169.3708,
+          "top": 1125,
+          "zIndex": 6,
+          "widthName": 60,
+          "widthComment": 120,
+          "color": "#4CAF50"
+        },
+        "visible": true
+      }
+    ],
+    "indexes": []
+  },
+  "memo": {
+    "memos": []
+  },
+  "relationship": {
+    "relationships": [
+      {
+        "id": "35e91b48-cf4e-4fc6-b47c-aabd84c4dc4e",
+        "identification": false,
+        "relationshipType": "ZeroN",
+        "startRelationshipType": "Dash",
+        "start": {
+          "tableId": "85eca499-d0d4-4213-a697-bcc0ec5edda0",
+          "columnIds": [
+            "6dc01081-b559-4831-92d4-00cef3193cfd"
+          ],
+          "x": 789.1949,
+          "y": 407.5557,
+          "direction": "left"
+        },
+        "end": {
+          "tableId": "225e1272-83f4-4547-8c2c-45a11e41f82c",
+          "columnIds": [
+            "de8046f5-07ec-421f-a102-0980f740cca1"
+          ],
+          "x": 541.3682921875,
+          "y": 410.5373,
+          "direction": "right"
+        },
+        "constraintName": "fk__to_",
+        "visible": true
+      },
+      {
+        "id": "3664071b-8bf6-4919-b7c3-ef5f86eb7bc1",
+        "identification": false,
+        "relationshipType": "ZeroN",
+        "startRelationshipType": "Dash",
+        "start": {
+          "tableId": "50d2a2d9-8970-4507-8cd0-45eca0d1f1ad",
+          "columnIds": [
+            "75212f3f-2cfa-42e1-9ef8-ed12f80b28f8"
+          ],
+          "x": 763.5561,
+          "y": 800.0688,
+          "direction": "left"
+        },
+        "end": {
+          "tableId": "0868eb7c-5f02-433b-8057-d45635ad8d60",
+          "columnIds": [
+            "e83f34a3-5826-46c5-8385-716fdb900bae"
+          ],
+          "x": 535.1949890625,
+          "y": 853.6943,
+          "direction": "right"
+        },
+        "constraintName": "fk__to_",
+        "visible": true
+      },
+      {
+        "id": "eaf4df38-5f82-44f5-8a59-7e75556403ec",
+        "identification": false,
+        "relationshipType": "ZeroN",
+        "startRelationshipType": "Dash",
+        "start": {
+          "tableId": "50d2a2d9-8970-4507-8cd0-45eca0d1f1ad",
+          "columnIds": [
+            "75212f3f-2cfa-42e1-9ef8-ed12f80b28f8"
+          ],
+          "x": 763.5561,
+          "y": 906.3188,
+          "direction": "left"
+        },
+        "end": {
+          "tableId": "0e12ea69-2eb1-43cf-ba61-ad1160059765",
+          "columnIds": [
+            "8314898b-69a8-47bc-8ef1-9078c554c15c"
+          ],
+          "x": 648.9088859375,
+          "y": 1231.25,
+          "direction": "right"
+        },
+        "constraintName": "fk__to_",
+        "visible": true
+      },
+      {
+        "id": "6ca38e49-04d1-4bb5-a27e-add003161abf",
+        "identification": false,
+        "relationshipType": "OneOnly",
+        "startRelationshipType": "Dash",
+        "start": {
+          "tableId": "85eca499-d0d4-4213-a697-bcc0ec5edda0",
+          "columnIds": [
+            "6dc01081-b559-4831-92d4-00cef3193cfd"
+          ],
+          "x": 987.994460546875,
+          "y": 503.5557,
+          "direction": "bottom"
+        },
+        "end": {
+          "tableId": "50d2a2d9-8970-4507-8cd0-45eca0d1f1ad",
+          "columnIds": [
+            "4a5a9823-7a15-4e60-8b81-8e160359de8f"
+          ],
+          "x": 984.88031875,
+          "y": 746.9438,
+          "direction": "top"
+        },
+        "constraintName": "fk__to_",
+        "visible": true
+      },
+      {
+        "id": "6128c518-ef0d-41f5-815c-49de033f6957",
+        "identification": false,
+        "relationshipType": "ZeroN",
+        "startRelationshipType": "Dash",
+        "start": {
+          "tableId": "50d2a2d9-8970-4507-8cd0-45eca0d1f1ad",
+          "columnIds": [
+            "75212f3f-2cfa-42e1-9ef8-ed12f80b28f8"
+          ],
+          "x": 1095.542428125,
+          "y": 959.4438,
+          "direction": "bottom"
+        },
+        "end": {
+          "tableId": "eb57c6ad-22e3-4b83-b1da-8a1ee3f87525",
+          "columnIds": [
+            "905fb4f2-7fe9-4495-babd-1e7e7892de67"
+          ],
+          "x": 1106.8560894531252,
+          "y": 1145.694,
+          "direction": "top"
+        },
+        "constraintName": "fk__to_",
+        "visible": true
+      },
+      {
+        "id": "19d573de-54b6-4d71-93dd-bd9960295b22",
+        "identification": false,
+        "relationshipType": "ZeroN",
+        "startRelationshipType": "Dash",
+        "start": {
+          "tableId": "50d2a2d9-8970-4507-8cd0-45eca0d1f1ad",
+          "columnIds": [
+            "75212f3f-2cfa-42e1-9ef8-ed12f80b28f8"
+          ],
+          "x": 874.218209375,
+          "y": 959.4438,
+          "direction": "bottom"
+        },
+        "end": {
+          "tableId": "ff888f63-1886-4cec-bcac-427bfc01a0e9",
+          "columnIds": [
+            "fbbbdb9b-06db-4b28-a4a0-96d5f69b57cf"
+          ],
+          "x": 871.260133984375,
+          "y": 1424.3546,
+          "direction": "top"
+        },
+        "constraintName": "fk__to_",
+        "visible": true
+      }
+    ]
+  }
+}
