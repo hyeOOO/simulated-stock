@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class StockListResponseDto {
+    private Long stockId;
     private String basDt;
     private String srtnCd;
     private String isinCd;

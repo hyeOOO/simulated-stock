@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Detail</title>
+    <link rel="stylesheet" href="/css/styles.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js 라이브러리 -->
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>종목 현재 시세 조회</h1>
+    </header>
+
+    <!-- 주식 기본 정보 -->
+    <section class="stock-info">
+        <h2 th:text="${stock.itmsNm}">삼성전자</h2>
+        <p>종목 코드: <span th:text="${stock.srtnCd}">005930</span></p>
+        <p>현재가: <span th:text="${stock.clpr}">79,600</span> 원</p>
+        <p th:text="'전일: ' + ${stock.mkp}">전일: 79,700 원</p>
+        <p th:text="'시가: ' + ${stock.mkp}">시가: 79,700 원</p>
+        <p th:text="'고가: ' + ${stock.hipr}">고가: 80,500 원</p>
+        <p th:text="'저가: ' + ${stock.lopr}">저가: 79,000 원</p>
+        <p th:text="'거래량: ' + ${stock.trqu}">거래량: 22,760,406 주</p>
+        <p th:text="'거래대금: ' + ${stock.trPrc}">거래대금: 1,818,617 백만</p>
+    </section>
+
+    <!-- 차트 영역 -->
+    <section class="chart-container">
+        <canvas id="stockChart"></canvas>
+    </section>
+
+    <!-- 거래 정보 -->
+    <section class="transaction-info">
+        <h3>최근 거래 정보</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>거래 시간</th>
+                <th>거래 가격</th>
+                <th>거래량</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="transaction : ${transactionHistory}">
+                <td th:text="${transaction.time}">10:30:00</td>
+                <td th:text="${transaction.price}">79,600</td>
+                <td th:text="${transaction.volume}">100</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- 주문 입력 영역 -->
+    <section class="order-section">
+        <h3>매수 / 매도</h3>
+        <form th:action="@{/stock-detail/order}" method="post">
+            <input type="hidden" name="stockId" th:value="${stock.stockId}"/>
+            <label>주문 구분:</label>
+            <select name="orderType">
+                <option value="BUY">매수</option>
+                <option value="SELL">매도</option>
+            </select>
+            <label>주문 수량:</label>
+            <input type="number" name="quantity" min="1"/>
+            <label>주문 가격:</label>
+            <input type="number" name="price" step="0.01"/>
+            <button type="submit">주문하기</button>
+        </form>
+    </section>
+</div>
+
+<script>
+    // 차트 데이터를 렌더링하는 함수
+    document.addEventListener('DOMContentLoaded', function () {
+        const chartLabels = /*[[${chartData.#each{date}]]*/ ['1일', '1개월', '3개월', '1년', '3년']; // 실제 데이터를 여기에 반영
+        const chartValues = /*[[${chartData.#each{price}]]*/ [79000, 81000, 83000, 78000, 79000]; // 실제 데이터를 여기에 반영
+
+        const ctx = document.getElementById('stockChart').getContext('2d');
+        const stockChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: '주가 변동',
+                    data: chartValues,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
