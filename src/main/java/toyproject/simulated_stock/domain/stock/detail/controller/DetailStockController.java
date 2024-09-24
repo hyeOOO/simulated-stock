@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import toyproject.simulated_stock.domain.stock.detail.dto.StockBasicInfoDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockInvestorsDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsByPeriodDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsDto;
@@ -23,7 +24,6 @@ import toyproject.simulated_stock.domain.stock.overall.repository.StockListRepos
 @Slf4j
 public class DetailStockController {
     private final DetailStockService detailStockService;
-    private final StockListRepository stockListRepository;
 
     //주식 현재가 시세
     @GetMapping("/quotations/{stockCode}")
@@ -46,6 +46,12 @@ public class DetailStockController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    //종목 기본 정보
+    @GetMapping("/info/{stockCode}")
+    public String getStockDetail(@PathVariable String stockCode, Model model) {
+        StockQuotationsDto stockQuotations = detailStockService.getQuotations(stockCode);
 
-    // 종목 상세 페이지 이동
+        model.addAttribute("stockQuotations", stockQuotations.getOutput());
+        return "stock/stockDetail";
+    }
 }

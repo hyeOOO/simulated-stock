@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Stock List</title>
-    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/styles.css"/>
 </head>
 <body>
 <h1>Stock List</h1>
@@ -34,9 +34,10 @@
                 const tbody = document.getElementById('stockBody');
                 data.forEach(stock => {
                     const row = document.createElement('tr');
+                    const stockLink = `/stock/${stock.srtnCd}?marketCategory=${stock.mrktCtg}`; // 동적으로 링크 생성
                     row.innerHTML = `
                         <td>
-                            <a href="/stock-detail/${stock.stockId}">${stock.itmsNm}</a>
+                            <a href="${stockLink}">${stock.itmsNm}</a> <!-- 동적으로 링크 설정 -->
                         </td>
                         <td>${stock.clpr}</td>
                         <td>${stock.fltRt}</td>

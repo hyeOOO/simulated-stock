@@ -3,103 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <title>Stock Detail</title>
-    <link rel="stylesheet" href="/css/styles.css"/>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js 라이브러리 -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Chart.js 라이브러리 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<div class="container">
-    <header>
-        <h1>종목 현재 시세 조회</h1>
-    </header>
+<h1 th:text="${stockInfo.stockName} + ' (' + ${stockInfo.stockCode} + ')'">종목명 (종목코드)</h1>
+<p>시장 구분: <span th:text="${stockInfo.mrktCtg}"></span></p> <!-- 시장 구분 표시 -->
 
-    <!-- 주식 기본 정보 -->
-    <section class="stock-info">
-        <h2 th:text="${stock.itmsNm}">삼성전자</h2>
-        <p>종목 코드: <span th:text="${stock.srtnCd}">005930</span></p>
-        <p>현재가: <span th:text="${stock.clpr}">79,600</span> 원</p>
-        <p th:text="'전일: ' + ${stock.mkp}">전일: 79,700 원</p>
-        <p th:text="'시가: ' + ${stock.mkp}">시가: 79,700 원</p>
-        <p th:text="'고가: ' + ${stock.hipr}">고가: 80,500 원</p>
-        <p th:text="'저가: ' + ${stock.lopr}">저가: 79,000 원</p>
-        <p th:text="'거래량: ' + ${stock.trqu}">거래량: 22,760,406 주</p>
-        <p th:text="'거래대금: ' + ${stock.trPrc}">거래대금: 1,818,617 백만</p>
-    </section>
-
-    <!-- 차트 영역 -->
-    <section class="chart-container">
-        <canvas id="stockChart"></canvas>
-    </section>
-
-    <!-- 거래 정보 -->
-    <section class="transaction-info">
-        <h3>최근 거래 정보</h3>
-        <table>
-            <thead>
-            <tr>
-                <th>거래 시간</th>
-                <th>거래 가격</th>
-                <th>거래량</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="transaction : ${transactionHistory}">
-                <td th:text="${transaction.time}">10:30:00</td>
-                <td th:text="${transaction.price}">79,600</td>
-                <td th:text="${transaction.volume}">100</td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <!-- 주문 입력 영역 -->
-    <section class="order-section">
-        <h3>매수 / 매도</h3>
-        <form th:action="@{/stock-detail/order}" method="post">
-            <input type="hidden" name="stockId" th:value="${stock.stockId}"/>
-            <label>주문 구분:</label>
-            <select name="orderType">
-                <option value="BUY">매수</option>
-                <option value="SELL">매도</option>
-            </select>
-            <label>주문 수량:</label>
-            <input type="number" name="quantity" min="1"/>
-            <label>주문 가격:</label>
-            <input type="number" name="price" step="0.01"/>
-            <button type="submit">주문하기</button>
-        </form>
-    </section>
+<div id="stockQuotations">
+    <!-- 주식 시세 정보가 표시될 영역 -->
 </div>
+<div id="stockInvestors">
+    <!-- 투자자 정보가 표시될 영역 -->
+</div>
+<canvas id="stockChart" width="400" height="200"></canvas> <!-- 차트 표시 영역 -->
 
-<script>
-    // 차트 데이터를 렌더링하는 함수
-    document.addEventListener('DOMContentLoaded', function () {
-        const chartLabels = /*[[${chartData.#each{date}]]*/ ['1일', '1개월', '3개월', '1년', '3년']; // 실제 데이터를 여기에 반영
-        const chartValues = /*[[${chartData.#each{price}]]*/ [79000, 81000, 83000, 78000, 79000]; // 실제 데이터를 여기에 반영
+<script th:inline="javascript">
+    // Thymeleaf에서 받은 stockCode를 JavaScript 변수에 저장
+    const stockCode = /*[[${stockInfo.stockCode}]]*/ 'defaultCode';
 
-        const ctx = document.getElementById('stockChart').getContext('2d');
-        const stockChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: chartLabels,
+    // 종목 기본 정보는 이미 Thymeleaf를 통해 렌더링된 상태이므로 따로 호출할 필요는 없습니다.
+
+    // 주식 현재가 시세 API 호출
+    fetch(`/stock/quotations/${stockCode}`)
+        .then(response => response.json())
+        .then(data => {
+            const quotationsDiv = document.getElementById('stockQuotations');
+            quotationsDiv.innerHTML = `
+                <p>현재가: ${data.output.stck_prpr}</p>
+                <p>전일 대비: ${data.output.prdy_vrss}</p>
+                <p>등락률: ${data.output.prdy_ctrt}%</p>
+                <p>시가: ${data.output.stck_oprc}</p>
+                <p>고가: ${data.output.stck_hgpr}</p>
+                <p>저가: ${data.output.stck_lwpr}</p>
+                <p>거래량: ${data.output.acml_vol}</p>
+                <p>거래대금: ${data.output.acml_tr_pbmn}</p>
+            `;
+        })
+        .catch(error => console.error('Error fetching stock quotations:', error));
+
+    // 투자자 정보 API 호출
+    fetch(`/stock/investors/${stockCode}`)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); // 데이터 확인용
+        const investorsDiv = document.getElementById('stockInvestors');
+
+        // output 배열에서 첫 번째 항목 가져오기
+        const latestData = data.output[0];  // 첫 번째 데이터 가져오기
+
+        if (latestData) {
+            investorsDiv.innerHTML = `
+                <p>개인 투자자 순매수 수량: ${latestData.prsn_ntby_qty}</p>
+                <p>외국인 투자자 순매수 수량: ${latestData.frgn_ntby_qty}</p>
+                <p>기관 투자자 순매수 수량: ${latestData.orgn_ntby_qty}</p>
+            `;
+        } else {
+            investorsDiv.innerHTML = `<p>투자자 정보를 불러오지 못했습니다.</p>`;
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching stock investors:', error);
+        document.getElementById('stockInvestors').innerHTML = `<p>API 오류로 데이터를 불러오지 못했습니다.</p>`;
+    });
+
+    // 차트 데이터 API 호출
+    /*fetch(`/stock/quotations/${stockCode}/period?option=DAILY`)
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('stockChart').getContext('2d');
+            const chartData = {
+                labels: data.output.map(item => item.stck_bsop_date), // 날짜
                 datasets: [{
-                    label: '주가 변동',
-                    data: chartValues,
+                    label: '종가',
+                    data: data.output.map(item => item.stck_clpr), // 종가
                     borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 2
+                    fill: false
                 }]
-            },
-            options: {
-                scales: {
-                    x: {
-                        beginAtZero: true
-                    },
-                    y: {
-                        beginAtZero: true
+            };
+
+            new Chart(ctx, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    scales: {
+                        x: { display: true, title: { display: true, text: '날짜' } },
+                        y: { display: true, title: { display: true, text: '가격' } }
                     }
                 }
-            }
-        });
-    });
+            });
+        })
+        .catch(error => console.error('Error fetching chart data:', error));*/
 </script>
 </body>
 </html>

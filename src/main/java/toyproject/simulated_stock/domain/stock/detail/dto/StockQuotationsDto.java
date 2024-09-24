@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class StockQuotationsDto {
-    private StockInvestorsDto.Output output;
+    private StockQuotationsDto.Output output;
 
     @Data
     public static class Output{
