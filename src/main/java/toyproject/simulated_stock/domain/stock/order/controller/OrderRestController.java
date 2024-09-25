@@ -25,5 +25,13 @@ public class OrderRestController {
     }
 
     //매도
-
+    /*@PostMapping
+    public ResponseEntity<String> sellStock(@RequestBody StockOrderRequestDto request) {
+        try {
+            stockOrderService.sellStock(request.getUserId(), request.getStockCode(), request.getQuantity(), request.getPrice());
+            return ResponseEntity.ok("매도가 완료되었습니다.");
+        } catch (InsufficientStockException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }*/
 }

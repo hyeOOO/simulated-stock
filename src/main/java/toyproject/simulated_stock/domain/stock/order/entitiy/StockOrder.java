@@ -18,6 +18,7 @@ public class StockOrder {
     private String stockName; // 주식 이름
     private int quantity;     // 주문 수량
     private BigDecimal price; // 주문 가격
+    private String mrtgType; //KOSPI, KOSDAQ, KONEX
     private LocalDateTime orderDate; // 주문 날짜
 
     @Enumerated(EnumType.STRING)

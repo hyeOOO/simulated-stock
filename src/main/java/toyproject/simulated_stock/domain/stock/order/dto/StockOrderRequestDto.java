@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 public class StockOrderRequestDto {
     private String userId;
     private String stockCode;
+    private String stockName;
     private int quantity;
     private BigDecimal price;
+    private String mrtgType; //KOSPI, KOSDAQ, KONEX
 }
