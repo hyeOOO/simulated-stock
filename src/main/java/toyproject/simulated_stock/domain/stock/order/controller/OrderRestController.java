@@ -24,14 +24,11 @@ public class OrderRestController {
         return ResponseEntity.ok("매수가 완료되었습니다.");
     }
 
-    //매도
-    /*@PostMapping
+    // 매도 기능
+    @PostMapping("/sell")
     public ResponseEntity<String> sellStock(@RequestBody StockOrderRequestDto request) {
-        try {
-            stockOrderService.sellStock(request.getUserId(), request.getStockCode(), request.getQuantity(), request.getPrice());
-            return ResponseEntity.ok("매도가 완료되었습니다.");
-        } catch (InsufficientStockException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }*/
+        // 매도 로직 실행
+        stockOrderService.sellStock(request.getUserId(), request.getStockCode(), request.getQuantity(), request.getPrice());
+        return ResponseEntity.ok("매도가 완료되었습니다.");
+    }
 }

@@ -11,6 +11,8 @@ import toyproject.simulated_stock.domain.stock.order.entitiy.UserStock;
 import toyproject.simulated_stock.domain.stock.order.repository.StockOrderRepository;
 import toyproject.simulated_stock.domain.stock.order.repository.UserAccountRepository;
 import toyproject.simulated_stock.domain.stock.order.repository.UserStockRepository;
+import toyproject.simulated_stock.global.exception.BusinessLogicException;
+import toyproject.simulated_stock.global.exception.ExceptionCode;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,12 +30,16 @@ public class StockOrderService {
     @Transactional
     public void buyStock(String userId, String stockCode, int quantity, BigDecimal price) {
         //매수하려는 유저의 계좌
-        UserAccount userAccount = userAccountRepository.findByUserId(userId);
+        UserAccount userAccount = userAccountRepository.findByUserId(userId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         //가격 계산
         BigDecimal totalAmount = price.multiply(BigDecimal.valueOf(quantity));
 
         //잔액 확인 및 차감
+        if (userAccount.getBalance().compareTo(totalAmount) < 0) {
+            throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_MONEY);
+        }
         userAccount.withdraw(totalAmount);
 
         //기존 보유 주식 확인 및 없으면 생성
@@ -55,7 +61,34 @@ public class StockOrderService {
     //매도
     public void sellStock(String userId, String stockCode, int quantity, BigDecimal price) {
         //사용자의 주식 계좌 정보 조회
+        UserAccount userAccount = userAccountRepository.findByUserId(userId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
+        //보유 주식 정보 조회
+        UserStock userStock = userStockRepository.findByUserIdAndStockCode(userId, stockCode)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.HAVE_NO_STOCK));
+
+        //매도하려는 수량이 보유한 수량보다 많은지 확인
+        if (userStock.getQuantity() < quantity) {
+            throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_STOCK);
+        }
+
+        // 매도 처리 (주식 수량 차감, 계좌 잔액 증가)
+        BigDecimal totalAmount = price.multiply(BigDecimal.valueOf(quantity));
+        userAccount.deposit(totalAmount); // 계좌에 잔액 추가
+        userStock.sellStock(quantity, price); // 주식 수량 차감 및 가격 갱신
+
+        // 주식 수량이 0이 되면 해당 보유 주식 삭제
+        if (userStock.getQuantity() == 0) {
+            userStockRepository.delete(userStock);
+        }
+
+        // 주문 기록 생성
+        StockOrder stockOrder = StockOrder.createOrder(userId, stockCode, quantity, price, OrderType.SELL, userAccount);
+
+        // 주문 및 유저 정보 저장
+        stockOrderRepository.save(stockOrder);
+        userAccountRepository.save(userAccount);
     }
 
     // 평균 매입 가격 계산 메소드

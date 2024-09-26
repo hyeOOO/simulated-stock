@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import toyproject.simulated_stock.global.exception.BusinessLogicException;
+import toyproject.simulated_stock.global.exception.ExceptionCode;
 
 import java.math.BigDecimal;
 
@@ -23,7 +25,7 @@ public class UserAccount {
     //잔액 차감
     public void withdraw(BigDecimal amount) {
         if (this.balance.compareTo(amount) < 0) {
-            throw new RuntimeException("잔액이 부족합니다.");
+            throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_MONEY);
         }
         this.balance = this.balance.subtract(amount);
     }

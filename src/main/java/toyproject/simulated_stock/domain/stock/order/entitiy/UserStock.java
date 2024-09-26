@@ -2,6 +2,8 @@ package toyproject.simulated_stock.domain.stock.order.entitiy;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import toyproject.simulated_stock.global.exception.BusinessLogicException;
+import toyproject.simulated_stock.global.exception.ExceptionCode;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -70,5 +72,16 @@ public class UserStock {
         if (maxPrice == null || price.compareTo(maxPrice) > 0) {
             maxPrice = price;
         }
+    }
+
+    // 매도 처리
+    public void sellStock(int quantity, BigDecimal price) {
+        if (this.quantity < quantity) {
+            throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_STOCK);
+        }
+        this.quantity -= quantity;
+
+        // 최소/최대 가격 갱신 (필요시)
+        //updateMinMaxPrice(price);
     }
 }
