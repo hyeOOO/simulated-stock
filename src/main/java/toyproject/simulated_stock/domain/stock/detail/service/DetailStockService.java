@@ -10,14 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+import toyproject.simulated_stock.api.exception.CustomException;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockInvestorsDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsByPeriodDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsDto;
 import toyproject.simulated_stock.domain.stock.detail.option.QuotationsByPeriodOption;
 import toyproject.simulated_stock.domain.stock.detail.token.AccessTokenService;
-import toyproject.simulated_stock.global.config.OpenApiSecretInfo;
-import toyproject.simulated_stock.global.exception.BusinessLogicException;
-import toyproject.simulated_stock.global.exception.ExceptionCode;
+import toyproject.simulated_stock.api.config.OpenApiSecretInfo;
+
+import static toyproject.simulated_stock.api.exception.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Service
@@ -143,13 +144,13 @@ public class DetailStockService {
 
         switch (errCode){
             case "EGW00001":    // 일시적인 오류
-                throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+                throw new CustomException(MEMBER_EXISTS);
             case "EGW00002":    // 서버 에러
-                throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+                throw new CustomException(MEMBER_NOT_FOUND);
             case "EGW00121":    // 유효하지 않은 토큰
-                throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
+                throw new CustomException(INVALID_TOKEN);
             case "EGW00201":    // 초당 거래건수 초과
-                throw new BusinessLogicException(ExceptionCode.UNABLE_TO_REQUEST_AGAIN);
+                throw new CustomException(UNABLE_TO_REQUEST_AGAIN);
         }
     }
 }

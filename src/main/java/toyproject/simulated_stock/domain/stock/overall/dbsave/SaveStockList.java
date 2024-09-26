@@ -15,7 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import toyproject.simulated_stock.domain.stock.overall.config.DateConfig;
 import toyproject.simulated_stock.domain.stock.overall.entity.StockList;
 import toyproject.simulated_stock.domain.stock.overall.repository.StockListRepository;
-import toyproject.simulated_stock.global.config.OpenApiSecretInfo;
+import toyproject.simulated_stock.api.config.OpenApiSecretInfo;
 
 @Slf4j
 @Service

@@ -1,4 +1,4 @@
-package toyproject.simulated_stock.global.config;
+package toyproject.simulated_stock.api.config;
 
 import lombok.Getter;
 import lombok.Setter;
