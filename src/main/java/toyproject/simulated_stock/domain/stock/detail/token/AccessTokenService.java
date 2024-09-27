@@ -8,10 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import toyproject.simulated_stock.global.config.OpenApiSecretInfo;
+import toyproject.simulated_stock.api.config.OpenApiSecretInfo;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor

@@ -1,274 +1,337 @@
 @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('../srcs/fonts/Pretendard-Regular.ttf') format('truetype');
+  font-family: "Pretendard-Regular";
+  src: url("../srcs/fonts/Pretendard-Regular.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: 'Pretendard-Bold';
-    src: url('../srcs/fonts/Pretendard-Bold.ttf') format('truetype');
+  font-family: "Pretendard-Bold";
+  src: url("../srcs/fonts/Pretendard-Bold.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: 'Pretendard-SemiBold';
-        src: url('../srcs/fonts/Pretendard-SemiBold.ttf') format('truetype');
+  font-family: "Pretendard-SemiBold";
+  src: url("../srcs/fonts/Pretendard-SemiBold.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: 'Pretendard-Medium';
-    src: url('../srcs/fonts/Pretendard-Medium.ttf') format('truetype');
+  font-family: "Pretendard-Medium";
+  src: url("../srcs/fonts/Pretendard-Medium.ttf") format("truetype");
 }
 
 .sidenav {
-    height: 100%;
-    width: 310px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #3947B2;
-    font-family: 'Pretendard-Regular';
+  height: 100%;
+  width: 310px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #3947b2;
+  font-family: "Pretendard-Regular";
 }
 
 .sidenav a {
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
-    transition: 0.3s;
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  display: block;
+  transition: 0.3s;
 }
 
 .sidenav a:hover {
-    background-color: #4C59BA;
+  background-color: #4c59ba;
 }
 
-.logo{
-    margin-top: 42px;
-    margin-left: 42px;
-    margin-bottom: 42px;
+.logo {
+  margin-top: 42px;
+  margin-left: 42px;
+  margin-bottom: 42px;
 }
 
-.menu{
-    padding: 19px 42px;
+.menu {
+  padding: 19px 42px;
 }
 
-.login{
-    bottom: 0px;
-    position: absolute;
-    width: 100%;
+.login {
+  bottom: 0px;
+  position: absolute;
+  width: 100%;
 }
 
-.user-icon{
-    bottom: 0px;
-    position: absolute;
+.user-icon {
+  bottom: 0px;
+  position: absolute;
 }
 
-.flex-container{
-    bottom: 0px;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    transition: 0.3s;
+.flex-container {
+  bottom: 0px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transition: 0.3s;
 }
 
 .flex-container:hover {
-    background-color: #4C59BA;
-    cursor: pointer;
+  background-color: #4c59ba;
+  cursor: pointer;
 }
 
 .flex-container img {
-    padding-top: 30px;
-    padding-bottom: 30px;
-    padding-left: 42px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 42px;
 }
 
 .flex-container a {
-    padding-left: 20px;
+  padding-left: 20px;
 }
 
 .main-content {
-    margin-left: 410px;
-    /* 사이드바 너비만큼 마진을 설정 */
-    margin-right: 225px;
-    /* padding: 20px; */
+  margin-left: 410px;
+  /* 사이드바 너비만큼 마진을 설정 */
+  margin-right: 225px;
+  /* padding: 20px; */
 }
 
 .content {
-    height: 2000px;
-    /* 스크롤 테스트를 위해 임시로 큰 높이를 설정 */
+  height: 2000px;
+  /* 스크롤 테스트를 위해 임시로 큰 높이를 설정 */
 }
 
-.search-group{
-    display: flex;
-    align-items: center;
-    width: 100%;
-    transition: 0.3s;
-    margin-top: 42px;
-    padding: 22px;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 1px 2px 3px 1px rgba(0,0,0,0.05);
+.search-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transition: 0.3s;
+  margin-top: 42px;
+  padding: 22px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.05);
 }
 
-.search-control{
-    border-width: 0;
-    width: 100%;
+.search-control {
+  border-width: 0;
+  width: 100%;
 }
 
 .search-control:focus {
-    outline: none;
+  outline: none;
 }
 
-.search-control{
-    margin-left: 20px;
+.search-control {
+  margin-left: 20px;
 }
 
-.body{
-    background-color: #F2F6FB;
+.body {
+  background-color: #f2f6fb;
+  font-family: "Pretendard-Regular";
 }
 
-input::placeholder{
-    font-family: 'Pretendard-Regular';
-    color: #315784;
-    opacity: 0.5;
+input::placeholder {
+  font-family: "Pretendard-Regular";
+  color: #315784;
+  opacity: 0.5;
 }
 
-.title{
-    font-family: 'Pretendard-Bold';
-    color: #315784;
-    margin: 20px 0px;
+.title {
+  font-family: "Pretendard-Bold";
+  color: #315784;
+  margin: 20px 0px;
 }
 
 .stats {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .stat-box {
-    background-color: white;
-    padding: 20px 20px 10px 20px;
-    width: 31%;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 20px 20px 10px 20px;
+  width: 31%;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.stat-name{
-    font-family: 'Pretendard-Bold';
+.stat-name {
+  font-family: "Pretendard-Bold";
 }
 
-.stat-value{
-    font-family: 'Pretendard-Bold';
-    font-size: 40px;
-    color: #EA4335;
+.stat-value {
+  font-family: "Pretendard-Bold";
+  font-size: 40px;
+  color: #ea4335;
 }
 
-.stat-change{
-    font-family: 'Pretendard-Medium';
-    font-size: 16px;
-    color: #EA4335;
+.stat-change {
+  font-family: "Pretendard-Medium";
+  font-size: 16px;
+  color: #ea4335;
 }
 
-.down-stat{
-    color: #4285F4;
+.down-stat {
+  color: #4285f4;
 }
 
 .section-group {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
 }
 
 .left-section {
-    flex: 3;
-    padding-right: 20px;
+  flex: 3;
+  padding-right: 20px;
 }
 
 .right-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .section {
-    background-color: white;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 th,
 td {
-    text-align: left;
-    padding: 6px;
-    border-bottom: 1px solid #ddd;
+  text-align: left;
+  padding: 6px;
+  border-bottom: 1px solid #ddd;
 }
 
 th {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 td {
-    font-family: 'Pretendard-Medium';
+  font-family: "Pretendard-Medium";
 }
 
 td.up {
-    color: #EA4335;
-    /* 상승률 */
+  color: #ea4335;
+  /* 상승률 */
 }
 
 td.down {
-    color: #4285F4;
-    /* 하락률 */
+  color: #4285f4;
+  /* 하락률 */
 }
 
 .assets-summary {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 15px 30px;
-    font-family: 'Pretendard-Medium';
-    font-size: 15px;
-    color: white;
-    background-color: #3947B2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 15px 30px;
+  font-family: "Pretendard-Medium";
+  font-size: 15px;
+  color: white;
+  background-color: #3947b2;
 }
 
-.assets-summary p{
-    margin:0;
+.assets-summary p {
+  margin: 0;
 }
 
 .assets-summary .total-asset,
 .assets-summary .available-asset {
-    flex-grow: 1;
-    
+  flex-grow: 1;
 }
 
 .stocks-table th,
 .owned-stocks th {
-    background-color: white;
-    font-family: 'Pretendard-SemiBold';
-    color: #315784;
+  background-color: white;
+  font-family: "Pretendard-SemiBold";
+  color: #315784;
 }
 
 .interest-stocks td,
 .owned-stocks td {
-    background-color: white;
+  background-color: white;
 }
 
-.additional-value{
-    font-size: 12px;
-    color:#828282;
-    margin: 0;
+.additional-value {
+  font-size: 12px;
+  color: #828282;
+  margin: 0;
 }
 
-.flex-text-group{
-    display: flex;
-    justify-content: space-between;
+.flex-text-group {
+  display: flex;
+  justify-content: space-between;
+}
+.social-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.social-btn img {
+  width: 450px;
+}
+
+.kakao-btn {
+  background-color: #f2f6fb;
+  color: #3c1e1e;
+}
+
+.naver-btn {
+  background-color: #f2f6fb;
+  color: white;
+}
+
+.google-btn {
+  background-color: #f2f6fb;
+  color: #333;
+}
+
+.separator {
+  margin: 10px 0;
+  color: #777;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+}
+
+.separator > hr {
+  width: 180px;
+}
+.separator > span {
+  margin: 0px 15px;
+}
+
+.login-text-content {
+  margin-top: 200px;
+  margin-bottom: 20px;
+  width: 450px;
+}
+
+.login-text-content > h4 {
+  font-family: "Pretendard-Bold";
+  margin-bottom: 10px;
+  color: #315784;
 }
