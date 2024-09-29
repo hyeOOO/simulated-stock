@@ -1,18 +1,24 @@
 package toyproject.simulated_stock.domain.stock.overall.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import toyproject.simulated_stock.api.exception.BusinessLogicException;
+import toyproject.simulated_stock.api.exception.ExceptionCode;
+import toyproject.simulated_stock.domain.stock.overall.dto.StockIndexResponseDto;
 import toyproject.simulated_stock.domain.stock.overall.dto.StockListResponseDto;
 import toyproject.simulated_stock.domain.stock.overall.entity.StockIndex;
 import toyproject.simulated_stock.domain.stock.overall.entity.StockList;
 import toyproject.simulated_stock.domain.stock.overall.repository.StockIndexRepository;
 import toyproject.simulated_stock.domain.stock.overall.repository.StockListRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -58,5 +64,23 @@ public class OverallStockService {
         List<StockIndex> recentStockIndexList = stockIndices.stream().filter(e->e.getBasDt().equals(recentBasDt)).collect(Collectors.toList());
 
         return recentStockIndexList;
+    }
+
+    // 특정 지수 분류와 지수명을 기준으로 지수 정보 조회
+    @Transactional(readOnly = true)
+    public StockIndexResponseDto getMarketIndexByType(String idxCsf, String idxNm) {
+        List<StockIndex> marketIndices = stockIndexRepository.findByIdxCsfAndIdxNm(idxCsf, idxNm)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CANNOT_FOUND_STOCK_DATA));
+        log.info("marketIndex={}", marketIndices);
+        if (marketIndices.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.CANNOT_FOUND_STOCK_DATA);
+        }
+
+        // 가장 최신 날짜를 기준으로 데이터 선택
+        StockIndex latestMarketIndex = marketIndices.stream()
+                .max(Comparator.comparing(StockIndex::getBasDt)) // 기준 일자(basDt)를 기준으로 가장 최신 데이터 선택
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CANNOT_FOUND_STOCK_DATA));
+
+        return StockIndexResponseDto.fromEntity(latestMarketIndex);
     }
 }

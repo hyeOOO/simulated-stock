@@ -5,8 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
-import toyproject.simulated_stock.global.exception.BusinessLogicException;
-import toyproject.simulated_stock.global.exception.ExceptionCode;
+import toyproject.simulated_stock.api.exception.BusinessLogicException;
+import toyproject.simulated_stock.api.exception.ExceptionCode;
 
 import java.math.BigDecimal;
 

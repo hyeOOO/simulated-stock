@@ -11,8 +11,8 @@ import toyproject.simulated_stock.domain.stock.order.entitiy.UserStock;
 import toyproject.simulated_stock.domain.stock.order.repository.StockOrderRepository;
 import toyproject.simulated_stock.domain.stock.order.repository.UserAccountRepository;
 import toyproject.simulated_stock.domain.stock.order.repository.UserStockRepository;
-import toyproject.simulated_stock.global.exception.BusinessLogicException;
-import toyproject.simulated_stock.global.exception.ExceptionCode;
+import toyproject.simulated_stock.api.exception.BusinessLogicException;
+import toyproject.simulated_stock.api.exception.ExceptionCode;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

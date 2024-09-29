@@ -8,10 +8,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+import toyproject.simulated_stock.api.config.OpenApiSecretInfo;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockBasicInfoDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockInvestorsDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsByPeriodDto;
@@ -20,9 +20,8 @@ import toyproject.simulated_stock.domain.stock.detail.option.QuotationsByPeriodO
 import toyproject.simulated_stock.domain.stock.detail.token.AccessTokenService;
 import toyproject.simulated_stock.domain.stock.overall.entity.StockList;
 import toyproject.simulated_stock.domain.stock.overall.repository.StockListRepository;
-import toyproject.simulated_stock.global.config.OpenApiSecretInfo;
-import toyproject.simulated_stock.global.exception.BusinessLogicException;
-import toyproject.simulated_stock.global.exception.ExceptionCode;
+import toyproject.simulated_stock.api.exception.BusinessLogicException;
+import toyproject.simulated_stock.api.exception.ExceptionCode;
 
 @RequiredArgsConstructor
 @Service

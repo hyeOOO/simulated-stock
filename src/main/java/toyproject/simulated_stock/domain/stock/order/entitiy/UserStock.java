@@ -2,8 +2,8 @@ package toyproject.simulated_stock.domain.stock.order.entitiy;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import toyproject.simulated_stock.global.exception.BusinessLogicException;
-import toyproject.simulated_stock.global.exception.ExceptionCode;
+import toyproject.simulated_stock.api.exception.BusinessLogicException;
+import toyproject.simulated_stock.api.exception.ExceptionCode;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
