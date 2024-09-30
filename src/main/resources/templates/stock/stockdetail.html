@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Detail</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Chart.js 라이브러리 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1 th:text="${stockInfo.stockName} + ' (' + ${stockInfo.stockCode} + ')'">종목명 (종목코드)</h1>
+<p>시장 구분: <span th:text="${stockInfo.mrktCtg}"></span></p> <!-- 시장 구분 표시 -->
+
+<div id="stockQuotations">
+    <!-- 주식 시세 정보가 표시될 영역 -->
+</div>
+<div id="stockInvestors">
+    <!-- 투자자 정보가 표시될 영역 -->
+</div>
+<canvas id="stockChart" width="400" height="200"></canvas> <!-- 차트 표시 영역 -->
+
+<script th:inline="javascript">
+    // Thymeleaf에서 받은 stockCode를 JavaScript 변수에 저장
+    const stockCode = /*[[${stockInfo.stockCode}]]*/ 'defaultCode';
+
+    // 종목 기본 정보는 이미 Thymeleaf를 통해 렌더링된 상태이므로 따로 호출할 필요는 없습니다.
+
+    // 주식 현재가 시세 API 호출
+    fetch(`/stock/quotations/${stockCode}`)
+        .then(response => response.json())
+        .then(data => {
+            const quotationsDiv = document.getElementById('stockQuotations');
+            quotationsDiv.innerHTML = `
+                <p>현재가: ${data.output.stck_prpr}</p>
+                <p>전일 대비: ${data.output.prdy_vrss}</p>
+                <p>등락률: ${data.output.prdy_ctrt}%</p>
+                <p>시가: ${data.output.stck_oprc}</p>
+                <p>고가: ${data.output.stck_hgpr}</p>
+                <p>저가: ${data.output.stck_lwpr}</p>
+                <p>거래량: ${data.output.acml_vol}</p>
+                <p>거래대금: ${data.output.acml_tr_pbmn}</p>
+            `;
+        })
+        .catch(error => console.error('Error fetching stock quotations:', error));
+
+    // 투자자 정보 API 호출
+    fetch(`/stock/investors/${stockCode}`)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); // 데이터 확인용
+        const investorsDiv = document.getElementById('stockInvestors');
+
+        // output 배열에서 첫 번째 항목 가져오기
+        const latestData = data.output[0];  // 첫 번째 데이터 가져오기
+
+        if (latestData) {
+            investorsDiv.innerHTML = `
+                <p>개인 투자자 순매수 수량: ${latestData.prsn_ntby_qty}</p>
+                <p>외국인 투자자 순매수 수량: ${latestData.frgn_ntby_qty}</p>
+                <p>기관 투자자 순매수 수량: ${latestData.orgn_ntby_qty}</p>
+            `;
+        } else {
+            investorsDiv.innerHTML = `<p>투자자 정보를 불러오지 못했습니다.</p>`;
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching stock investors:', error);
+        document.getElementById('stockInvestors').innerHTML = `<p>API 오류로 데이터를 불러오지 못했습니다.</p>`;
+    });
+
+    // 차트 데이터 API 호출
+    /*fetch(`/stock/quotations/${stockCode}/period?option=DAILY`)
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('stockChart').getContext('2d');
+            const chartData = {
+                labels: data.output.map(item => item.stck_bsop_date), // 날짜
+                datasets: [{
+                    label: '종가',
+                    data: data.output.map(item => item.stck_clpr), // 종가
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false
+                }]
+            };
+
+            new Chart(ctx, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    scales: {
+                        x: { display: true, title: { display: true, text: '날짜' } },
+                        y: { display: true, title: { display: true, text: '가격' } }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching chart data:', error));*/
+</script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package toyproject.simulated_stock.domain.stock.detail.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -10,20 +11,24 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-import toyproject.simulated_stock.api.exception.CustomException;
+import toyproject.simulated_stock.api.config.OpenApiSecretInfo;
+import toyproject.simulated_stock.domain.stock.detail.dto.StockBasicInfoDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockInvestorsDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsByPeriodDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsDto;
 import toyproject.simulated_stock.domain.stock.detail.option.QuotationsByPeriodOption;
 import toyproject.simulated_stock.domain.stock.detail.token.AccessTokenService;
-import toyproject.simulated_stock.api.config.OpenApiSecretInfo;
-
-import static toyproject.simulated_stock.api.exception.ErrorCode.*;
+import toyproject.simulated_stock.domain.stock.overall.entity.StockList;
+import toyproject.simulated_stock.domain.stock.overall.repository.StockListRepository;
+import toyproject.simulated_stock.api.exception.BusinessLogicException;
+import toyproject.simulated_stock.api.exception.ExceptionCode;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class DetailStockService {
     private final OpenApiSecretInfo openApiSecretInfo;
+    private final StockListRepository stockListRepository;
 
     private final String STOCK_DEFAULT_URL = "https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations";
 
@@ -136,6 +141,14 @@ public class DetailStockService {
         return null;
     }
 
+    //종목 기본 정보
+    public StockBasicInfoDto getStockBasicInfo(String stockCode, String marketCategory) {
+        StockList stockInfo = stockListRepository.findBySrtnCdAndMrktCtg(stockCode, marketCategory)
+                .orElseThrow(() -> new RuntimeException("해당 종목 정보를 찾을 수 없습니다."));
+
+        // DTO로 변환
+        return StockBasicInfoDto.convertEntityToDto(stockInfo);
+    }
 
 
     private void handleErrors(Exception e){
@@ -144,13 +157,13 @@ public class DetailStockService {
 
         switch (errCode){
             case "EGW00001":    // 일시적인 오류
-                throw new CustomException(MEMBER_EXISTS);
+                throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
             case "EGW00002":    // 서버 에러
-                throw new CustomException(MEMBER_NOT_FOUND);
+                throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
             case "EGW00121":    // 유효하지 않은 토큰
-                throw new CustomException(INVALID_TOKEN);
+                throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
             case "EGW00201":    // 초당 거래건수 초과
-                throw new CustomException(UNABLE_TO_REQUEST_AGAIN);
+                throw new BusinessLogicException(ExceptionCode.UNABLE_TO_REQUEST_AGAIN);
         }
     }
 }

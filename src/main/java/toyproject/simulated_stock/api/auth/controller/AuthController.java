@@ -29,6 +29,10 @@ public class AuthController {
     public String mainPage(){
         return "main";
     }
+    @GetMapping("/mainHard")
+    public String mainHard(){
+        return "main_hardcoding";
+    }
 
     @GetMapping("/login")
     public String loginPage(@AuthenticationPrincipal UserDetails userDetails) {

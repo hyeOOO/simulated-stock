@@ -1,47 +1,47 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username:
-    password:
-    url:
+    username: root
+    password: malKong6497*
+    url: jdbc:mysql://127.0.0.1:3306/simulatedstock
     hikari:
-      maximum-pool-size:
+      maximum-pool-size: 20
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        format_sql: true
-        highlight_sql: true
-        use_sql_comments: true
-        dialect: org.hibernate.dialect.MySQLDialect
+        #format_sql: true
+        #highlight_sql: true
+        #use_sql_comments: true
+        #dialect: org.hibernate.dialect.MySQLDialect
   data:
     redis:
-      port:
-      host:
+      port: 6379
+      host: localhost
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id:
-            client-secret:
+            client-id: 345686368525-lfvml3s4c4dq4rnp1fh6h8dg8lfs8qen.apps.googleusercontent.com
+            client-secret: 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
             redirect-uri: "{baseUrl}/login/oauth2/code/google"
             scope: email, profile
           kakao:
-            client-id:
+            client-id: f2dea06ee438dc124ffcad396a6fb8f8
             client-secret:
             redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
-            authorization-grant-type:
-            client-authentication-method:
-            scope:
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            scope: profile_nickname, profile_image, account_email
           naver:
-            client-id:
-            client-secret:
+            client-id: yCrnYjWKesfwCwV73_LO
+            client-secret: RjI7Og6k4_
             redirect-uri: "{baseUrl}/login/oauth2/code/naver"
-            authorization-grant-type:
-            scope:
+            authorization-grant-type: authorization_code
+            scope: name, email, profile_image
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -59,8 +59,8 @@ spring:
     mode: HTML
     cache: false
 jwt:
-  key:
+  key: c3ByaW5nLWJvb3QtYXBpLWp3dC1zZWNyZXQta2V5LXN1cGVyLXNlY3JldC15ZXMteWVzLXllcy0yNAo=
 open-api:
-  serviceKey :
-  appKey :
-  appSecret :
+  serviceKey : 5whgZDtsPND6A14rSvNbuPwwmOduWcVxJvskqlemW97KFMUUrZrrgkca/obsjPYDMzMJOEnsegJKe7plug9PBw==
+  appKey : PSq5bfgjVYzdcBvR7vnoyoqOyg0G2Cm3bWsE
+  appSecret : MWJWawQHSwotnm/6VuMNVUvjx69G4033QrVMGK5EmI/eMJgcX6rNt+Hi/CLMQzl0QcWAmNpnVrsHzNhMla28T6qaZVBIc7psHXLCmXJkVN3JZ+Za4iVWyqOhNFTD/UDvCIa0G2BPjpkdU0WEV5fAoUFJxBmzf9L+MSk5yWTt23+SJVn372g=

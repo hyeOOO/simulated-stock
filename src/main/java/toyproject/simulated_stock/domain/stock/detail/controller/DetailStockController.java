@@ -4,15 +4,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import toyproject.simulated_stock.domain.stock.detail.dto.StockBasicInfoDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockInvestorsDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsByPeriodDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsDto;
 import toyproject.simulated_stock.domain.stock.detail.option.QuotationsByPeriodOption;
 import toyproject.simulated_stock.domain.stock.detail.service.DetailStockService;
+import toyproject.simulated_stock.domain.stock.overall.entity.StockList;
+import toyproject.simulated_stock.domain.stock.overall.repository.StockListRepository;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,6 +24,7 @@ import toyproject.simulated_stock.domain.stock.detail.service.DetailStockService
 @Slf4j
 public class DetailStockController {
     private final DetailStockService detailStockService;
+
     //주식 현재가 시세
     @GetMapping("/quotations/{stockCode}")
     public ResponseEntity<StockQuotationsDto> getStockQuotations(@PathVariable("stockCode") String stockCode){
@@ -40,5 +45,13 @@ public class DetailStockController {
         StockQuotationsByPeriodDto response = detailStockService.getQuotationsByPeriod(stockCode, option);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    //종목 기본 정보
+    @GetMapping("/info/{stockCode}")
+    public String getStockDetail(@PathVariable String stockCode, Model model) {
+        StockQuotationsDto stockQuotations = detailStockService.getQuotations(stockCode);
+
+        model.addAttribute("stockQuotations", stockQuotations.getOutput());
+        return "stock/stockDetail";
     }
 }

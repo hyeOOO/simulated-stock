@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock List</title>
+    <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body>
+<h1>Stock List</h1>
+<table id="stockTable">
+    <thead>
+    <tr>
+        <th>종목명</th>
+        <th>종가</th>
+        <th>등락률</th>
+        <th>시가</th>
+        <th>고가</th>
+        <th>저가</th>
+        <th>거래량</th>
+        <th>시가총액</th>
+    </tr>
+    </thead>
+    <tbody id="stockBody">
+    <!-- JavaScript로 데이터를 여기에 추가 -->
+    </tbody>
+</table>
+
+<script>
+    // 페이지 로드 후 주식 데이터를 가져오는 함수
+    window.onload = function() {
+        fetch('/api/stock/list')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('stockBody');
+                data.forEach(stock => {
+                    const row = document.createElement('tr');
+                    const stockLink = `/stock/${stock.srtnCd}?marketCategory=${stock.mrktCtg}`; // 동적으로 링크 생성
+                    row.innerHTML = `
+                        <td>
+                            <a href="${stockLink}">${stock.itmsNm}</a> <!-- 동적으로 링크 설정 -->
+                        </td>
+                        <td>${stock.clpr}</td>
+                        <td>${stock.fltRt}</td>
+                        <td>${stock.mkp}</td>
+                        <td>${stock.hipr}</td>
+                        <td>${stock.lopr}</td>
+                        <td>${stock.trqu}</td>
+                        <td>${stock.mrktTotAmt}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching stock data:', error));
+    };
+</script>
+</body>
+</html>
