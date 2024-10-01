@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: malKong6497*
-    url: jdbc:mysql://127.0.0.1:3306/simulatedstock
+    username:
+    password:
+    url:
     hikari:
       maximum-pool-size: 20
   jpa:
-    show-sql: true
+    #show-sql: true
     hibernate:
       ddl-auto: update
     properties:
@@ -25,42 +25,42 @@ spring:
       client:
         registration:
           google:
-            client-id: 345686368525-lfvml3s4c4dq4rnp1fh6h8dg8lfs8qen.apps.googleusercontent.com
-            client-secret: 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
-            redirect-uri: "{baseUrl}/login/oauth2/code/google"
-            scope: email, profile
-          kakao:
-            client-id: f2dea06ee438dc124ffcad396a6fb8f8
+            client-id:
             client-secret:
-            redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
-            authorization-grant-type: authorization_code
-            client-authentication-method: client_secret_post
-            scope: profile_nickname, profile_image, account_email
+            redirect-uri:
+            scope:
+          kakao:
+            client-id:
+            client-secret:
+            redirect-uri:
+            authorization-grant-type:
+            client-authentication-method:
+            scope:
           naver:
-            client-id: yCrnYjWKesfwCwV73_LO
-            client-secret: RjI7Og6k4_
-            redirect-uri: "{baseUrl}/login/oauth2/code/naver"
-            authorization-grant-type: authorization_code
-            scope: name, email, profile_image
+            client-id:
+            client-secret:
+            redirect-uri:
+            authorization-grant-type:
+            scope:
         provider:
           kakao:
-            authorization-uri: https://kauth.kakao.com/oauth/authorize
-            token-uri: https://kauth.kakao.com/oauth/token
-            user-info-uri: https://kapi.kakao.com/v2/user/me
-            user-name-attribute: id
+            authorization-uri:
+            token-uri:
+            user-info-uri:
+            user-name-attribute:
           naver:
-            authorization-uri: https://nid.naver.com/oauth2.0/authorize
-            token-uri: https://nid.naver.com/oauth2.0/token
-            user-info-uri: https://openapi.naver.com/v1/nid/me
-            user-name-attribute: response
+            authorization-uri:
+            token-uri:
+            user-info-uri:
+            user-name-attribute:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
     mode: HTML
     cache: false
 jwt:
-  key: c3ByaW5nLWJvb3QtYXBpLWp3dC1zZWNyZXQta2V5LXN1cGVyLXNlY3JldC15ZXMteWVzLXllcy0yNAo=
+  key:
 open-api:
-  serviceKey : 5whgZDtsPND6A14rSvNbuPwwmOduWcVxJvskqlemW97KFMUUrZrrgkca/obsjPYDMzMJOEnsegJKe7plug9PBw==
-  appKey : PSq5bfgjVYzdcBvR7vnoyoqOyg0G2Cm3bWsE
-  appSecret : MWJWawQHSwotnm/6VuMNVUvjx69G4033QrVMGK5EmI/eMJgcX6rNt+Hi/CLMQzl0QcWAmNpnVrsHzNhMla28T6qaZVBIc7psHXLCmXJkVN3JZ+Za4iVWyqOhNFTD/UDvCIa0G2BPjpkdU0WEV5fAoUFJxBmzf9L+MSk5yWTt23+SJVn372g=
+  serviceKey :
+  appKey :
+  appSecret :

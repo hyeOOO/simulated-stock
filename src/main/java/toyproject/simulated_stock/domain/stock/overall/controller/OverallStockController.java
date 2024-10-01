@@ -57,7 +57,7 @@ public class OverallStockController {
     public ResponseEntity<StockIndexResponseDto> getMarketIndex(
             @PathVariable String idxCsf,
             @PathVariable String idxNm) {
-        log.info("idxCsf={}, idxNm={}", idxCsf, idxNm);
+        //log.info("idxCsf={}, idxNm={}", idxCsf, idxNm);
         StockIndexResponseDto marketIndex = overallStockService.getMarketIndexByType(idxCsf, idxNm);
         return ResponseEntity.ok(marketIndex);
     }
