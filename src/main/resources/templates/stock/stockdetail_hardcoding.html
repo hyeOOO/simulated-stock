@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="layout/css/custom-style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/cb31ad365a.js" crossorigin="anonymous"></script>
+</head>
+<body class="body">
+<div class="sidenav">
+    <img src="layout/srcs/logo.svg" alt="logo" class="logo"/>
+    <a href="#" class="menu">HOME</a>
+    <a href="#" class="menu">TOP 10</a>
+    <a href="#" class="menu">관심 종목</a>
+    <a href="#" class="menu">자산 관리</a>
+    <div class="flex-container">
+        <img src="layout/srcs/icons/user-logo.svg" alt="icon" class="flex-component"/>
+        <a id="userName" class="flex-component" href="javascript:void(0);" th:text="${#authentication.name}"
+           onclick="logout()" th:if="${#authorization.expression('isAuthenticated()')}"></a>
+        <a class="flex-component" href="/login" th:unless="${#authorization.expression('isAuthenticated()')}">
+            Login
+        </a>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="search-group">
+        <i class="fa-solid fa-magnifying-glass fa-lg" style="color: #315784;"></i>
+        <input type="text" class="search-control" placeholder="검색어를 입력하세요.">
+    </div>
+
+    <!-- 종목 상세 정보 표시 부분 -->
+    <h5 class="title">종목 현재 시세 조회</h5>
+    <div class="section-group">
+        <div class="left-section">
+            <div class="stock-detail-header">
+                <h1><strong>삼성전자</strong> <span style="color: red">79,600</span></h1>
+                <p>▲ 1,200 (+1.53%)</p>
+                <p>시가: 78,000 | 고가: 80,000 | 저가: 77,500 | 거래량: 22,801,339 | 시가총액: 475조</p>
+            </div>
+
+            <!-- 차트 영역 (차트는 일단 하드코딩) -->
+            <div class="stock-chart">
+                <img src="chart-placeholder.png" alt="차트 예시" style="width: 100%;">
+            </div>
+
+            <!-- 투자 정보 표 -->
+            <h6>투자 정보</h6>
+            <table class="table table-striped">
+                <tr>
+                    <th>PER</th>
+                    <td>15.47</td>
+                    <th>배당수익률</th>
+                    <td>1.25%</td>
+                </tr>
+                <tr>
+                    <th>PBR</th>
+                    <td>1.02</td>
+                    <th>EPS</th>
+                    <td>5,500원</td>
+                </tr>
+                <tr>
+                    <th>ROE</th>
+                    <td>10.54%</td>
+                    <th>시가총액</th>
+                    <td>475조 1,947억원</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="right-section">
+            <!-- 매수/매도 영역 (하드코딩된 UI) -->
+            <h6>주문 입력</h6>
+            <form>
+                <div class="form-group">
+                    <label for="orderType">주문 유형</label>
+                    <select id="orderType" class="form-control">
+                        <option>매수</option>
+                        <option>매도</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">수량</label>
+                    <input type="number" id="quantity" class="form-control" placeholder="수량 입력">
+                </div>
+                <div class="form-group">
+                    <label for="price">가격</label>
+                    <input type="text" id="price" class="form-control" placeholder="가격 입력">
+                </div>
+                <button type="submit" class="btn btn-primary">확인</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        let accessToken = getCookie("Authorization")
+        console.log(accessToken);
+
+        if(accessToken!=null){
+            axios.get('/members/info', {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            .then(response => {
+                const memberInfo = response.data;
+                document.getElementById('userName').textContent = memberInfo.name;
+            })
+            .catch(error => {
+                console.error('Failed to fetch member info:', error);
+                if (error.response && error.response.status === 401) {
+                    alert('세션이 만료되었습니다. 다시 로그인해주세요.');
+                    window.location.href = '/login';
+                } else {
+                    alert('사용자 정보를 가져오는데 실패했습니다.');
+                }
+            });
+        }
+    });
+    function logout() {
+        axios.get('/auth/logout')
+            .then(() => {
+                window.location.href = '/login';
+            })
+            .catch(error => {
+                console.error('Logout failed:', error);
+                // 오류 발생 시 사용자에게 알림
+                alert('로그아웃 중 오류가 발생했습니다. 다시 시도해 주세요.');
+            });
+    }
+    function getCookie(cookieName) {
+        let name = cookieName + "=";
+        let decodedCookie = decodeURIComponent(document.cookie); // 쿠키 값이 인코딩되어 있을 수 있으므로 디코딩
+        let cookieArray = decodedCookie.split(';'); // 각 쿠키는 세미콜론으로 구분됨
+
+        for (let i = 0; i < cookieArray.length; i++) {
+            let cookie = cookieArray[i].trim(); // 공백 제거
+
+            // 쿠키 이름으로 시작하는지 확인
+            if (cookie.indexOf(name) === 0) {
+                return cookie.substring(name.length, cookie.length); // 쿠키 값 반환
+            }
+        }
+        return ""; // 해당 이름의 쿠키가 없으면 빈 문자열 반환
+    }
+</script>
+</body>
+</html>

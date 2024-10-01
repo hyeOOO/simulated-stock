@@ -2,6 +2,7 @@ package toyproject.simulated_stock.domain.stock.detail.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,7 +20,7 @@ import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsDto;
 import toyproject.simulated_stock.domain.stock.detail.option.QuotationsByPeriodOption;
 import toyproject.simulated_stock.domain.stock.detail.token.AccessTokenService;
 import toyproject.simulated_stock.domain.stock.overall.entity.StockList;
-import toyproject.simulated_stock.domain.stock.overall.repository.StockListRepository;
+import toyproject.simulated_stock.domain.stock.overall.repository.query.QueryStockListRepository;
 import toyproject.simulated_stock.api.exception.BusinessLogicException;
 import toyproject.simulated_stock.api.exception.ExceptionCode;
 
@@ -28,7 +29,8 @@ import toyproject.simulated_stock.api.exception.ExceptionCode;
 @Slf4j
 public class DetailStockService {
     private final OpenApiSecretInfo openApiSecretInfo;
-    private final StockListRepository stockListRepository;
+    @Qualifier("stockListQueryRepositoryImpl") // 명시적으로 주입할 빈을 지정
+    private final QueryStockListRepository stockListQueryRepository;
 
     private final String STOCK_DEFAULT_URL = "https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations";
 
@@ -141,12 +143,18 @@ public class DetailStockService {
         return null;
     }
 
-    //종목 기본 정보
+    /**
+     * 주어진 종목 코드와 시장 카테고리로 최신 주식 정보를 조회
+     * @param stockCode
+     * @param marketCategory
+     * @return 특정 종목의 정보를 담은 DTO
+     */
+    @Transactional(readOnly = true)
     public StockBasicInfoDto getStockBasicInfo(String stockCode, String marketCategory) {
-        StockList stockInfo = stockListRepository.findBySrtnCdAndMrktCtg(stockCode, marketCategory)
-                .orElseThrow(() -> new RuntimeException("해당 종목 정보를 찾을 수 없습니다."));
+        // QueryDSL을 사용하여 최신 주식 정보 조회
+        StockList stockInfo = stockListQueryRepository.findLatestStockInfo(stockCode, marketCategory);
 
-        // DTO로 변환
+        // DTO로 변환 후 반환
         return StockBasicInfoDto.convertEntityToDto(stockInfo);
     }
 
