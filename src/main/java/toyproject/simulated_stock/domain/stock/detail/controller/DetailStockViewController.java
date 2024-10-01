@@ -20,7 +20,7 @@ public class DetailStockViewController {
     private final DetailStockService detailStockService;
 
     // 종목 상세 페이지 렌더링
-    @GetMapping("/{stockCode}")
+    @GetMapping("/detail/{stockCode}")
     public String getStockDetailPage(@PathVariable("stockCode") String stockCode,
                                      @RequestParam("marketCategory") String marketCategory,
                                      Model model) {
@@ -29,6 +29,6 @@ public class DetailStockViewController {
 
         // 조회한 정보를 모델에 추가하여 뷰로 전달
         model.addAttribute("stockInfo", stockInfo);
-        return "stock/stockdetail";
+        return "stock/stockdetail_hardcoding";
     }
 }
