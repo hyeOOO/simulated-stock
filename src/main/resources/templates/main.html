@@ -42,7 +42,7 @@
     <div class="section-group">
         <div class="left-section">
             <div class="section">
-                <h6>관심 종목</h6>
+                <h6>인기 종목</h6>
                 <table class="stocks-table">
                     <thead>
                     <tr>
@@ -54,6 +54,7 @@
                     </tr>
                     </thead>
                     <tbody id="stockBody">
+                        <!-- 주식 리스트 데이터가 동적으로 추가됩니다 -->
                     </tbody>
                 </table>
             </div>
@@ -153,7 +154,7 @@
     }
 
     // 국내 지수 정보 가져오기
-    function fetchMarketStats() {
+    async function fetchMarketStats() {
         console.log("국내지수 부르기");
         const indices = [
             { idxCsf: 'KOSPI시리즈', idxNm: '코스피' },
@@ -161,11 +162,16 @@
             { idxCsf: 'KOSPI시리즈', idxNm: '코스피 200' }
         ];
 
-        indices.forEach(index => {
-        const { idxCsf, idxNm } = index;
-        axios.get(`/api/stock/index/${idxCsf}/${idxNm}`)
-            .then(response => {
-                const marketStats = document.getElementById('marketStats');
+        const marketStats = document.getElementById('marketStats');
+        marketStats.innerHTML = ''; // 기존 내용을 지워 초기화
+
+        // 순차적으로 요청하여 순서 보장
+        for (const index of indices) {
+            const { idxCsf, idxNm } = index;
+
+            try {
+                // 각 인덱스에 대해 순차적으로 API 요청
+                const response = await axios.get(`/api/stock/index/${idxCsf}/${idxNm}`);
                 const statData = response.data;
 
                 // 상승/하락에 따른 스타일 및 아이콘 설정
@@ -186,9 +192,93 @@
 
                 // 카드 추가
                 marketStats.innerHTML += cardHTML;
+            } catch (error) {
+                console.error(`Error fetching market stats for ${idxNm}:`, error);
+            }
+        }
+    }
+
+    // 주식 리스트 정보 가져오기(현재는 그냥 단순 리스트)
+    async function fetchStockList() {
+        console.log("관심 종목 리스트 가져오기");
+
+        axios.get('/api/stock/list')
+            .then(response => {
+                console.log("응답 데이터 타입:", typeof response.data); // 데이터 타입 확인
+                console.log("응답 데이터 구조:", response.data);         // 데이터가 예상과 일치하는지 확인
+                const tbody = document.getElementById('stockBody');
+                tbody.innerHTML = ''; // 기존 내용을 지우기
+
+                if (Array.isArray(response.data) && response.data.length > 0) {
+                    response.data.forEach(stock => {
+                        const fltRtValue = parseFloat(stock.fltRt); // 등락률을 숫자로 변환
+                        let color = 'black'; // 기본 색상
+                        let icon = '-';      // 기본 아이콘
+
+                        // 등락률에 따른 색상 및 아이콘 설정
+                        if (fltRtValue > 0) {
+                            color = 'red';  // 상승일 때 빨간색
+                            icon = '▲';    // 상승 아이콘
+                        } else if (fltRtValue < 0) {
+                            color = 'blue'; // 하락일 때 파란색
+                            icon = '▼';    // 하락 아이콘
+                        }
+
+                        // 거래량 및 거래대금을 정리
+                        const formattedTrqu = Number(stock.trqu).toLocaleString(); // 거래량
+                        const formattedTrPrc = Number(stock.trPrc).toLocaleString(); // 거래대금
+
+                        // 시가 총액 포맷
+                        const formattedMrktTotAmt = Number(stock.mrktTotAmt).toLocaleString() + " 원";
+
+                        // HTML 행 생성
+                        const rowHTML = `
+                            <tr>
+                                <td><a href="/stock/${stock.srtnCd}?marketCategory=${stock.mrktCtg}">${stock.itmsNm}</a></td>
+                                <td style="color: ${color}">${stock.clpr}</td>
+                                <td style="color: ${color}">${icon} ${stock.fltRt}%</td>
+                                <td>${formattedMrktTotAmt}</td>
+                                <td>${formattedTrqu}<br/><p class="additional-value">${formattedTrPrc} 원</p></td>
+                            </tr>`;
+
+                        // 테이블에 행 추가
+                        tbody.innerHTML += rowHTML;
+                    });
+                } else {
+                    console.warn('관심 종목 데이터가 없습니다.');
+                    tbody.innerHTML = `<tr><td colspan="5">관심 종목 데이터가 없습니다.</td></tr>`;
+                }
             })
-            .catch(error => console.error('Error fetching market stats:', error));
-        });
+            .catch(error => {
+                console.error('Error fetching stock list:', error);
+                console.error("에러 상태 코드:", error.response?.status);  // 에러 상태 코드 확인
+                console.error("에러 메시지:", error.response?.data);        // 에러 응답 내용 확인
+                alert(`관심 종목을 가져오는 중 오류가 발생했습니다. (상태 코드: ${error.response?.status})`);
+            });
+    }
+
+
+    // 시가총액 형식 변환 함수 (예: 18조 4,500억원)
+    function formatMarketCap(value) {
+        const units = ['억원', '조', '천억', '백억'];
+        let formattedValue = value;
+
+        // 억 단위로 변환
+        const billions = (value / 1e8).toFixed(1);
+        formattedValue = `${billions}억원`;
+
+        return formattedValue;
+    }
+
+    // 거래량 형식 변환 함수 (예: 22,801,339)
+    function formatVolume(volume) {
+        return volume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    // 거래대금 형식 변환 함수 (예: 1조 8,023억원)
+    function formatPrice(price) {
+        const billions = (price / 1e8).toFixed(1);
+        return `${billions}억원`;
     }
 </script>
 </body>

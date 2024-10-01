@@ -17,7 +17,7 @@ public class OverallStockViewController {
 
     private final OverallStockService overallStockService;
 
-    //@GetMapping("/stock-view")
+    @GetMapping("/stock-view")
     public String viewStocks(Model model) {
         List<StockListResponseDto> stocks = overallStockService.getStockListDto();
         model.addAttribute("stocks", stocks);

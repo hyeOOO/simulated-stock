@@ -32,7 +32,12 @@ public class OverallStockService {
 
         String recentBasDt = stockLists.get(0).getBasDt();
 
-        List<StockList> recentStockList = stockLists.stream().filter(e -> e.getBasDt().equals(recentBasDt)).collect(Collectors.toList());
+        // 최근 일자의 데이터를 거래량 기준으로 정렬하고 상위 10개만 선택
+        List<StockList> recentStockList = stockLists.stream()
+                .filter(e -> e.getBasDt().equals(recentBasDt)) // 최근 기준일자와 동일한 데이터 필터링
+                .sorted((stock1, stock2) -> Long.compare(Long.parseLong(stock2.getTrqu()), Long.parseLong(stock1.getTrqu()))) // 거래량 기준으로 내림차순 정렬
+                .limit(10) // 상위 10개만 선택
+                .collect(Collectors.toList());
 
         return recentStockList;
     }

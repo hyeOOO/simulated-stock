@@ -65,7 +65,7 @@ public class SecurityConfig {
 
                                         //API 추가
                                         new AntPathRequestMatcher("/api/**"),  // 주식 리스트 API
-                                        new AntPathRequestMatcher("/mainHard")  // 주식 리스트 API
+                                        new AntPathRequestMatcher("/mainHard")  // 임시
                                 ).permitAll()
                                 .anyRequest().authenticated()
                 )
