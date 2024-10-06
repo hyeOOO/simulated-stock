@@ -1,0 +1,621 @@
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("../srcs/fonts/Pretendard-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Pretendard-Bold";
+  src: url("../srcs/fonts/Pretendard-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Pretendard-SemiBold";
+  src: url("../srcs/fonts/Pretendard-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Pretendard-Medium";
+  src: url("../srcs/fonts/Pretendard-Medium.ttf") format("truetype");
+}
+
+.sidenav {
+  height: 100%;
+  width: 310px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #3947b2;
+  font-family: "Pretendard-Regular";
+}
+
+.sidenav a {
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  background-color: #4c59ba;
+}
+
+.logo {
+  margin-top: 42px;
+  margin-left: 42px;
+  margin-bottom: 42px;
+}
+
+.menu {
+  padding: 19px 42px;
+}
+
+.login {
+  bottom: 0px;
+  position: absolute;
+  width: 100%;
+}
+
+.user-icon {
+  bottom: 0px;
+  position: absolute;
+}
+
+.flex-container {
+  bottom: 0px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transition: 0.3s;
+}
+
+.flex-container:hover {
+  background-color: #4c59ba;
+  cursor: pointer;
+}
+
+.flex-container img {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 42px;
+}
+
+.flex-container a {
+  padding-left: 20px;
+}
+
+.main-content {
+  margin-left: 410px;
+  /* 사이드바 너비만큼 마진을 설정 */
+  margin-right: 225px;
+  /* padding: 20px; */
+}
+
+.content {
+  height: 2000px;
+  /* 스크롤 테스트를 위해 임시로 큰 높이를 설정 */
+}
+
+.search-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transition: 0.3s;
+  margin-top: 42px;
+  padding: 22px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.05);
+}
+
+.search-control {
+  border-width: 0;
+  width: 100%;
+}
+
+.search-control:focus {
+  outline: none;
+}
+
+.search-control {
+  margin-left: 20px;
+}
+
+.body {
+  background-color: #f2f6fb;
+  font-family: "Pretendard-Regular";
+}
+
+input::placeholder {
+  font-family: "Pretendard-Regular";
+  color: #315784;
+  opacity: 0.5;
+}
+
+.title {
+  font-family: "Pretendard-Bold";
+  color: #315784;
+  margin: 20px 0px;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.stat-box {
+  background-color: white;
+  padding: 20px 20px 10px 20px;
+  width: 31%;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-name {
+  font-family: "Pretendard-Bold";
+}
+
+.stat-value {
+  font-family: "Pretendard-Bold";
+  font-size: 40px;
+  color: #ea4335;
+}
+
+.stat-change {
+  font-family: "Pretendard-Medium";
+  font-size: 16px;
+  color: #ea4335;
+}
+
+.down-stat {
+  color: #4285f4;
+}
+
+.section-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+}
+
+.left-section {
+  flex: 3;
+  padding-right: 20px;
+}
+
+.right-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 6px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+td {
+  font-family: "Pretendard-Medium";
+}
+
+td.up {
+  color: #ea4335;
+  /* 상승률 */
+}
+
+td.down {
+  color: #4285f4;
+  /* 하락률 */
+}
+
+.assets-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 15px 30px;
+  font-family: "Pretendard-Medium";
+  font-size: 15px;
+  color: white;
+  background-color: #3947b2;
+}
+
+.assets-summary p {
+  margin: 0;
+}
+
+.assets-summary .total-asset,
+.assets-summary .available-asset {
+  flex-grow: 1;
+}
+
+.stocks-table th,
+.owned-stocks th {
+  background-color: white;
+  font-family: "Pretendard-SemiBold";
+  color: #315784;
+}
+
+.interest-stocks td,
+.owned-stocks td {
+  background-color: white;
+}
+
+.additional-value {
+  font-size: 12px;
+  color: #828282;
+  margin: 0;
+}
+
+.flex-text-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+        /* ====== Stock Detail Header Styles ====== */
+        .stock-detail-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            height: auto;
+            gap: 10px; /* 각 요소 간의 간격 조절 */
+        }
+
+        /* 왼쪽 영역 (종목명, 종목 코드, 아이콘) */
+        .stock-header-left {
+            display: flex;
+            align-items: center;
+            flex-grow: 1; /* 비율에 따라 크기 조정 */
+        }
+
+        .stock-header-left .stock-icon {
+            font-size: 18px; /* 아이콘 크기 축소 */
+            margin-right: 8px;
+            color: #f1c40f;
+        }
+
+        .stock-header-left .stock-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-family: "Pretendard-SemiBold";
+        }
+
+        .stock-header-left .stock-name {
+            font-size: 20px; /* 글자 크기 축소 */
+            font-weight: 600;
+            margin: 0;
+            color: #3947b2;
+        }
+
+        .stock-header-left .stock-code {
+            font-size: 12px;
+            color: #888;
+            margin-top: 2px; /* 위쪽 여백 축소 */
+        }
+
+        /* 가운데 영역 (현재가와 등락률) */
+        .stock-header-center {
+            text-align: center;
+            margin: 0 20px; /* 여백 조절 */
+            flex-grow: 0.5; /* 비율에 따라 크기 조정 */
+        }
+
+        .stock-header-center .price {
+            font-size: 26px; /* 글자 크기 축소 */
+            font-family: "Pretendard-SemiBold";
+            color: #e74c3c;
+            font-weight: 700;
+            margin-bottom: 0; /* 가격과 변동률 사이 여백 축소 */
+        }
+
+        .stock-header-center .price-change {
+            font-size: 12px; /* 글자 크기 축소 */
+            color: #e74c3c;
+        }
+
+        /* 오른쪽 영역 (세부 정보) */
+        .stock-header-right {
+            display: flex;
+            flex-wrap: wrap;
+            width: 350px; /* 우측 영역의 너비를 충분히 확보 */
+            justify-content: flex-start;
+        }
+
+        /* 오른쪽 영역 내부의 info-item 간격 조정 */
+        .stock-header-right .info-item {
+            width: 28%; /* 한 줄에 3개씩 배치 (width 조정) */
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 5px; /* 세로 간격 축소 */
+            align-items: center;
+            margin-right: 0; /* 간격 조정 */
+        }
+
+        /* 내부 텍스트의 간격 및 정렬 조정 */
+        .stock-header-right .info-item p {
+            margin: 0;
+            font-size: 12px;
+            margin-right: 3px; /* 텍스트 간 간격 축소 */
+            white-space: nowrap; /* 줄 바꿈 방지 */
+        }
+
+        .stock-header-right .info-item .label {
+            font-weight: normal;
+            color: #666;
+        }
+
+        .stock-header-right .info-item .value {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* ====== Investment Info Table Styles ====== */
+        /* 투자 정보 테이블 스타일 */
+        .investment-info-table {
+            width: 100%;
+            border-collapse: collapse; /* 셀 간의 간격 제거 */
+            margin-top: 10px;
+        }
+
+        /* 테이블 셀 공통 스타일 */
+        .investment-info-table th,
+        .investment-info-table td {
+            padding: 15px 15px; /* 셀 내부 여백 */
+            border-bottom: 1px solid #ddd; /* 셀 구분선 */
+        }
+
+        /* 첫 번째 열 (항목명) 스타일 */
+        .investment-info-table th {
+            font-weight: 600;
+            font-size: 14px;
+            font-family: "Pretendard-SemiBold";
+            color: #333;
+            text-align: left; /* 항목명은 왼쪽 정렬 */
+            background: none; /* 배경색 제거 */
+        }
+
+        /* 중간 열 (값) 스타일 */
+        .investment-info-table td {
+            font-size: 14px;
+            color: #333;
+            text-align: right; /* 기본적으로 값은 오른쪽 정렬 */
+            background: none; /* 배경색 제거 */
+        }
+
+        /* 왼쪽 정렬해야 하는 열 */
+        .investment-info-table td:first-child {
+            text-align: left; /* 첫 번째 열만 왼쪽 정렬 */
+        }
+
+        /* 강조된 텍스트 스타일링 */
+        .investment-info-table .highlight {
+            color: #e74c3c; /* 빨간색 */
+            font-weight: 600;
+        }
+
+        .investment-info-table .highlight-blue {
+            color: #3498db; /* 파란색 */
+            font-weight: 600;
+        }
+
+        /* 마지막 행의 경계선 제거 */
+        .investment-info-table tr:last-child th,
+        .investment-info-table tr:last-child td {
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* ====== Chart Container Styles ====== */
+        .stock-chart-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .chart-tabs {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .chart-tabs button {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            background: #ecf0f1;
+            cursor: pointer;
+            font-size: 15px;
+            font-family: "Pretendard-Medium";
+            margin-right: 5px;
+            border-radius: 5px;
+        }
+
+        .chart-tabs button.active {
+            background: #3947b2;
+            color: white;
+        }
+
+        .chart-box {
+            padding: 20px;
+        }
+
+        .user-asset {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 15px 30px;
+          font-family: "Pretendard-Medium";
+          font-size: 15px;
+          color: white;
+          background-color: #3947b2;
+        }
+
+        .user-asset p {
+          margin: 0;
+        }
+
+        .user-asset .total-asset,
+        .user-asset .available-asset {
+          flex-grow: 1;
+        }
+
+        /* ======= Order Form Styles ======= */
+        /* 주문 입력 폼 전체 */
+        .order-form {
+            border: 1px solid #ddd;
+            padding: 25px;
+            background: #fff;
+            border-radius: 10px;
+            margin-top: 20px;
+            width: 320px; /* 폼의 가로 크기를 조정 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-form h6 {
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        /* 매수/매도 버튼 그룹 */
+        .btn-group button {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-group button {
+            padding: 5px 10px;
+            font-size: 15px;
+            font-family: "Pretendard-Medium";
+            border: 1px solid #ddd;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+        }
+
+        .btn-group button.active {
+            background: #3947b2;
+            color: white;
+            border: 1px solid #3947b2;
+        }
+
+        /* 주문 구분 라디오 버튼 */
+        .radio-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 15px;
+            justify-content: flex-start;
+        }
+
+        .radio-group input[type='radio'] {
+            margin: 0 5px 0 15px;
+        }
+
+        .radio-group label {
+            margin: 0;
+            padding-right: 10px;
+            font-weight: 500;
+        }
+
+        /* 입력 필드 스타일 */
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            width: 30%;
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            text-align: left;
+        }
+
+        .form-group input {
+            padding: 8px;
+            font-size: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 65%;
+            margin-right: 5px;
+        }
+
+        .form-group input::placeholder {
+            text-align: right;
+            color: #aaa;
+        }
+
+        .form-group .unit {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        /* 예약/매수하기 버튼 */
+        .submit-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .submit-group button {
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .reserve-action {
+            width: 38%;
+            background: #b0b0b0;
+            color: white;
+        }
+
+        .buy-action {
+            width: 58%;
+            background: #3947b2;
+            color: white;
+        }
+
+        .reserve-action:hover {
+            background: #949494;
+        }
+
+        .buy-action:hover {
+            background: #2b3b91;
+        }
+
+        .right-section-sticky {
+            position: sticky; /* 고정된 위치로 설정 */
+            top: 20px; /* 상단 여백을 설정하여 스크롤 시 고정 위치 조정 */
+            height: fit-content;
+        }
