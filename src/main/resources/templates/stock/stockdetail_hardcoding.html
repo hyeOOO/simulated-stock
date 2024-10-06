@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="layout/css/custom-style.css">
+    <link rel="stylesheet" href="/layout/css/custom-stockdetail-style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -12,13 +12,13 @@
 </head>
 <body class="body">
 <div class="sidenav">
-    <img src="layout/srcs/logo.svg" alt="logo" class="logo"/>
+    <img src="/layout/srcs/logo.svg" alt="logo" class="logo"/>
     <a href="#" class="menu">HOME</a>
     <a href="#" class="menu">TOP 10</a>
     <a href="#" class="menu">관심 종목</a>
     <a href="#" class="menu">자산 관리</a>
     <div class="flex-container">
-        <img src="layout/srcs/icons/user-logo.svg" alt="icon" class="flex-component"/>
+        <img src="/layout/srcs/icons/user-logo.svg" alt="icon" class="flex-component"/>
         <a id="userName" class="flex-component" href="javascript:void(0);" th:text="${#authentication.name}"
            onclick="logout()" th:if="${#authorization.expression('isAuthenticated()')}"></a>
         <a class="flex-component" href="/login" th:unless="${#authorization.expression('isAuthenticated()')}">
@@ -34,69 +34,384 @@
     </div>
 
     <!-- 종목 상세 정보 표시 부분 -->
-    <h5 class="title">종목 현재 시세 조회</h5>
+    <h5 class="title">&nbsp;</h5>
     <div class="section-group">
         <div class="left-section">
-            <div class="stock-detail-header">
-                <h1><strong>삼성전자</strong> <span style="color: red">79,600</span></h1>
-                <p>▲ 1,200 (+1.53%)</p>
-                <p>시가: 78,000 | 고가: 80,000 | 저가: 77,500 | 거래량: 22,801,339 | 시가총액: 475조</p>
+            <div class="section">
+                <!-- 종목 상세 정보 표시 부분 -->
+                <div class="stock-detail-header">
+                    <!-- 왼쪽 영역: 종목명과 코드, 아이콘 -->
+                    <div class="stock-header-left">
+                        <i class="fas fa-star stock-icon"></i>
+                        <div class="stock-info">
+                            <h1 class="stock-name">삼성전자</h1>
+                            <span class="stock-code">005930</span>
+                        </div>
+                    </div>
+
+                    <!-- 가운데 영역: 현재가와 등락률 -->
+                    <div class="stock-header-center">
+                        <div class="price">79,600</div>
+                        <div class="price-change">▲ 1,000 | +1.27%</div>
+                    </div>
+
+                    <!-- 오른쪽 영역: 세부 정보 (2줄로 배치) -->
+                    <div class="stock-header-right">
+                        <div class="info-item">
+                            <p>전일</p>
+                            <p><span>78,600</span></p>
+                        </div>
+                        <div class="info-item">
+                            <p>고가</p>
+                            <p><span>80,500</span></p>
+                        </div>
+                        <div class="info-item">
+                            <p>거래량</p>
+                            <p><span>22,780,406</span> (67%)</p>
+                        </div>
+                        <div class="info-item">
+                            <p>시가</p>
+                            <p><span>79,700</span></p>
+                        </div>
+                        <div class="info-item">
+                            <p>저가</p>
+                            <p><span>79,000</span></p>
+                        </div>
+                        <div class="info-item">
+                            <p>거래대금</p>
+                            <p><span>1,818,617</span>백만</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stock-chart-container">
+                    <div class="chart-tabs">
+                        <button class="active">1일</button>
+                        <button>1개월</button>
+                        <button>3개월</button>
+                        <button>1년</button>
+                        <button>3년</button>
+                    </div>
+                    <div class="chart-box">
+                        <img src="chart-placeholder.png" alt="차트 예시" style="width: 100%;">
+                    </div>
+                </div>
             </div>
 
-            <!-- 차트 영역 (차트는 일단 하드코딩) -->
-            <div class="stock-chart">
-                <img src="chart-placeholder.png" alt="차트 예시" style="width: 100%;">
+            <h5 class="title">투자 정보</h5>
+            <div class="section">
+                <table class="investment-info-table">
+                    <tbody>
+                    <tr>
+                        <th>상한가</th>
+                        <td class="highlight">79,600</td>
+                        <th>외국인 비율</th>
+                        <td>55.50%(+0.11%)</td>
+                    </tr>
+                    <tr>
+                        <th>하한가</th>
+                        <td class="highlight-blue">55,100</td>
+                        <th>시가총액</th>
+                        <td>4,751,947 억(1위)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최고</th>
+                        <td>86,000</td>
+                        <th>EPS/PER</th>
+                        <td>2,131/36.9(원/배)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최저</th>
+                        <td>65,800</td>
+                        <th>BPS/PBR</th>
+                        <td>52,002/1.51(원/배)</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <!-- 투자 정보 표 -->
-            <h6>투자 정보</h6>
-            <table class="table table-striped">
-                <tr>
-                    <th>PER</th>
-                    <td>15.47</td>
-                    <th>배당수익률</th>
-                    <td>1.25%</td>
-                </tr>
-                <tr>
-                    <th>PBR</th>
-                    <td>1.02</td>
-                    <th>EPS</th>
-                    <td>5,500원</td>
-                </tr>
-                <tr>
-                    <th>ROE</th>
-                    <td>10.54%</td>
-                    <th>시가총액</th>
-                    <td>475조 1,947억원</td>
-                </tr>
-            </table>
+            <h5 class="title">투자 정보</h5>
+            <div class="section">
+                <table class="investment-info-table">
+                    <tbody>
+                    <tr>
+                        <th>상한가</th>
+                        <td class="highlight">79,600</td>
+                        <th>외국인 비율</th>
+                        <td>55.50%(+0.11%)</td>
+                    </tr>
+                    <tr>
+                        <th>하한가</th>
+                        <td class="highlight-blue">55,100</td>
+                        <th>시가총액</th>
+                        <td>4,751,947 억(1위)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최고</th>
+                        <td>86,000</td>
+                        <th>EPS/PER</th>
+                        <td>2,131/36.9(원/배)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최저</th>
+                        <td>65,800</td>
+                        <th>BPS/PBR</th>
+                        <td>52,002/1.51(원/배)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h5 class="title">투자 정보</h5>
+            <div class="section">
+                <table class="investment-info-table">
+                    <tbody>
+                    <tr>
+                        <th>상한가</th>
+                        <td class="highlight">79,600</td>
+                        <th>외국인 비율</th>
+                        <td>55.50%(+0.11%)</td>
+                    </tr>
+                    <tr>
+                        <th>하한가</th>
+                        <td class="highlight-blue">55,100</td>
+                        <th>시가총액</th>
+                        <td>4,751,947 억(1위)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최고</th>
+                        <td>86,000</td>
+                        <th>EPS/PER</th>
+                        <td>2,131/36.9(원/배)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최저</th>
+                        <td>65,800</td>
+                        <th>BPS/PBR</th>
+                        <td>52,002/1.51(원/배)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h5 class="title">투자 정보</h5>
+            <div class="section">
+                <table class="investment-info-table">
+                    <tbody>
+                    <tr>
+                        <th>상한가</th>
+                        <td class="highlight">79,600</td>
+                        <th>외국인 비율</th>
+                        <td>55.50%(+0.11%)</td>
+                    </tr>
+                    <tr>
+                        <th>하한가</th>
+                        <td class="highlight-blue">55,100</td>
+                        <th>시가총액</th>
+                        <td>4,751,947 억(1위)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최고</th>
+                        <td>86,000</td>
+                        <th>EPS/PER</th>
+                        <td>2,131/36.9(원/배)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최저</th>
+                        <td>65,800</td>
+                        <th>BPS/PBR</th>
+                        <td>52,002/1.51(원/배)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h5 class="title">투자 정보</h5>
+            <div class="section">
+                <table class="investment-info-table">
+                    <tbody>
+                    <tr>
+                        <th>상한가</th>
+                        <td class="highlight">79,600</td>
+                        <th>외국인 비율</th>
+                        <td>55.50%(+0.11%)</td>
+                    </tr>
+                    <tr>
+                        <th>하한가</th>
+                        <td class="highlight-blue">55,100</td>
+                        <th>시가총액</th>
+                        <td>4,751,947 억(1위)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최고</th>
+                        <td>86,000</td>
+                        <th>EPS/PER</th>
+                        <td>2,131/36.9(원/배)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최저</th>
+                        <td>65,800</td>
+                        <th>BPS/PBR</th>
+                        <td>52,002/1.51(원/배)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h5 class="title">투자 정보</h5>
+            <div class="section">
+                <table class="investment-info-table">
+                    <tbody>
+                    <tr>
+                        <th>상한가</th>
+                        <td class="highlight">79,600</td>
+                        <th>외국인 비율</th>
+                        <td>55.50%(+0.11%)</td>
+                    </tr>
+                    <tr>
+                        <th>하한가</th>
+                        <td class="highlight-blue">55,100</td>
+                        <th>시가총액</th>
+                        <td>4,751,947 억(1위)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최고</th>
+                        <td>86,000</td>
+                        <th>EPS/PER</th>
+                        <td>2,131/36.9(원/배)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최저</th>
+                        <td>65,800</td>
+                        <th>BPS/PBR</th>
+                        <td>52,002/1.51(원/배)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h5 class="title">투자 정보</h5>
+            <div class="section">
+                <table class="investment-info-table">
+                    <tbody>
+                    <tr>
+                        <th>상한가</th>
+                        <td class="highlight">79,600</td>
+                        <th>외국인 비율</th>
+                        <td>55.50%(+0.11%)</td>
+                    </tr>
+                    <tr>
+                        <th>하한가</th>
+                        <td class="highlight-blue">55,100</td>
+                        <th>시가총액</th>
+                        <td>4,751,947 억(1위)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최고</th>
+                        <td>86,000</td>
+                        <th>EPS/PER</th>
+                        <td>2,131/36.9(원/배)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최저</th>
+                        <td>65,800</td>
+                        <th>BPS/PBR</th>
+                        <td>52,002/1.51(원/배)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h5 class="title">투자 정보</h5>
+            <div class="section">
+                <table class="investment-info-table">
+                    <tbody>
+                    <tr>
+                        <th>상한가</th>
+                        <td class="highlight">79,600</td>
+                        <th>외국인 비율</th>
+                        <td>55.50%(+0.11%)</td>
+                    </tr>
+                    <tr>
+                        <th>하한가</th>
+                        <td class="highlight-blue">55,100</td>
+                        <th>시가총액</th>
+                        <td>4,751,947 억(1위)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최고</th>
+                        <td>86,000</td>
+                        <th>EPS/PER</th>
+                        <td>2,131/36.9(원/배)</td>
+                    </tr>
+                    <tr>
+                        <th>52주 최저</th>
+                        <td>65,800</td>
+                        <th>BPS/PBR</th>
+                        <td>52,002/1.51(원/배)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="right-section">
-            <!-- 매수/매도 영역 (하드코딩된 UI) -->
-            <h6>주문 입력</h6>
-            <form>
-                <div class="form-group">
-                    <label for="orderType">주문 유형</label>
-                    <select id="orderType" class="form-control">
-                        <option>매수</option>
-                        <option>매도</option>
-                    </select>
+        <div class="right-section right-section-sticky">
+            <div class="section user-asset">
+                <div class="flex-text-group">
+                    <p>총 자산</p>
+                    <p class="total-asset">10,962,194 원</p>
                 </div>
-                <div class="form-group">
-                    <label for="quantity">수량</label>
-                    <input type="number" id="quantity" class="form-control" placeholder="수량 입력">
+                <div class="flex-text-group">
+                    <p>가용 자산</p>
+                    <p class="available-asset">2,264,568 원</p>
                 </div>
-                <div class="form-group">
-                    <label for="price">가격</label>
-                    <input type="text" id="price" class="form-control" placeholder="가격 입력">
+            </div>
+
+            <div class="section order-form">
+                <h6>주문 입력</h6>
+                <div class="btn-group">
+                    <button id="buy-btn" class="active">매수</button>
+                    <button id="sell-btn">매도</button>
                 </div>
-                <button type="submit" class="btn btn-primary">확인</button>
-            </form>
+                <form>
+                    <!-- 주문 구분 -->
+                    <div class="radio-group">
+                        <label>주문 구분</label>
+                        <input type="radio" id="fixed-price" name="priceType" checked>
+                        <label for="fixed-price">지정가</label>
+                        <input type="radio" id="market-price" name="priceType">
+                        <label for="market-price">시장가</label>
+                    </div>
+
+                    <!-- 주문 수량 -->
+                    <div class="form-group">
+                        <label for="quantity">주문 수량</label>
+                        <input type="text" id="quantity" placeholder="주">
+                    </div>
+
+                    <!-- 매수 가격 -->
+                    <div class="form-group">
+                        <label for="price">매수 가격</label>
+                        <input type="text" id="price" placeholder="원">
+                    </div>
+
+                    <!-- 주문 총액 -->
+                    <div class="form-group">
+                        <label for="total">주문 총액</label>
+                        <input type="text" id="total" placeholder="원">
+                    </div>
+
+                    <div class="submit-group">
+                        <button type="button" class="reserve-action">예약</button>
+                        <button type="submit" class="buy-action">매수하기</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-
+</body>
+</html>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
@@ -151,5 +466,3 @@
         return ""; // 해당 이름의 쿠키가 없으면 빈 문자열 반환
     }
 </script>
-</body>
-</html>
