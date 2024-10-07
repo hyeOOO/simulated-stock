@@ -1,165 +1,199 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/layout/css/custom-style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/layout/css/custom-style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/cb31ad365a.js" crossorigin="anonymous"></script>
-</head>
-<body class="body">
-<div class="sidenav">
-    <img src="/layout/srcs/logo.svg" alt="logo" class="logo"/>
-    <a href="#" class="menu">HOME</a>
-    <a href="#" class="menu">TOP 10</a>
-    <a href="#" class="menu">관심 종목</a>
-    <a href="#" class="menu">자산 관리</a>
-    <div class="flex-container">
-        <img src="/layout/srcs/icons/user-logo.svg" alt="icon" class="flex-component"/>
+    <script
+      src="https://kit.fontawesome.com/cb31ad365a.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="body">
+    <div class="sidenav">
+      <img src="/layout/srcs/logo.svg" alt="logo" class="logo" />
+      <a href="#" class="menu">HOME</a>
+      <a href="#" class="menu">TOP 10</a>
+      <a href="#" class="menu">관심 종목</a>
+      <a href="#" class="menu">자산 관리</a>
+      <div class="flex-container">
+        <img
+          src="/layout/srcs/icons/user-logo.svg"
+          alt="icon"
+          class="flex-component"
+        />
         <!-- 사용자 이름을 표시하고, 클릭 시 로그아웃 -->
-        <a id="userName" class="flex-component" href="javascript:void(0);" th:text="${#authentication.name}"
-           onclick="logout()" th:if="${#authorization.expression('isAuthenticated()')}"></a>
+        <a
+          id="userName"
+          class="flex-component"
+          href="javascript:void(0);"
+          th:text="${#authentication.name}"
+          onclick="logout()"
+          th:if="${#authorization.expression('isAuthenticated()')}"
+        ></a>
 
         <!-- 비로그인 시 로그인 버튼 표시 -->
-        <a class="flex-component" href="/login" th:unless="${#authorization.expression('isAuthenticated()')}">
-            Login
+        <a
+          class="flex-component"
+          href="/login"
+          th:unless="${#authorization.expression('isAuthenticated()')}"
+        >
+          Login
         </a>
+      </div>
     </div>
-</div>
-<div class="main-content">
-    <div class="search-group">
-        <i class="fa-solid fa-magnifying-glass fa-lg" style="color: #315784;"></i>
-        <input type="text" class="search-control" placeholder="검색어를 입력하세요.">
-    </div>
-    <h5 class="title">국내 지수</h5>
-    <div class="stats" id="marketStats">
+    <div class="main-content">
+      <div class="search-group">
+        <i
+          class="fa-solid fa-magnifying-glass fa-lg"
+          style="color: #315784"
+        ></i>
+        <input
+          type="text"
+          class="search-control"
+          placeholder="검색어를 입력하세요."
+        />
+      </div>
+      <h5 class="title">국내 지수</h5>
+      <div class="stats" id="marketStats">
         <!-- 코스피, 코스닥, 코스피 200 등의 지수 정보를 여기서 렌더링 -->
-    </div>
-    <h5 class="title">관심 종목</h5>
-    <div class="section-group">
+      </div>
+      <h5 class="title">관심 종목</h5>
+      <div class="section-group">
         <div class="left-section">
-            <div class="section">
-                <h6>인기 종목</h6>
-                <table class="stocks-table">
-                    <thead>
-                    <tr>
-                        <th>종목명</th>
-                        <th>현재가</th>
-                        <th>등락률</th>
-                        <th>시가총액</th>
-                        <th>거래량/거래대금</th>
-                    </tr>
-                    </thead>
-                    <tbody id="stockBody">
-                        <!-- 주식 리스트 데이터가 동적으로 추가됩니다 -->
-                    </tbody>
-                </table>
-            </div>
+          <div class="section">
+            <h6>인기 종목</h6>
+            <table class="stocks-table">
+              <thead>
+                <tr>
+                  <th>종목명</th>
+                  <th>현재가</th>
+                  <th>등락률</th>
+                  <th>시가총액</th>
+                  <th>거래량/거래대금</th>
+                </tr>
+              </thead>
+              <tbody id="stockBody">
+                <!-- 주식 리스트 데이터가 동적으로 추가됩니다 -->
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="right-section">
-            <div class="section assets-summary">
-                <div class="flex-text-group">
-                    <p>총 자산</p>
-                    <p id="totalAsset" class="total-asset">0 원</p>
-                </div>
-                <div class="flex-text-group">
-                    <p>가용 자산</p>
-                    <p id="availableAsset" class="available-asset">0 원</p>
-                </div>
+          <div class="section assets-summary">
+            <div class="flex-text-group">
+              <p>총 자산</p>
+              <p id="totalAsset" class="total-asset">0 원</p>
             </div>
-            <div class="section">
-                <h6>보유 종목</h6>
-                <table class="owned-stocks">
-                    <thead>
-                    <tr>
-                        <th>종목명</th>
-                        <th>현재가</th>
-                        <th>등락률</th>
-                    </tr>
-                    </thead>
-                    <tbody id="ownedStockBody">
-                    </tbody>
-                </table>
+            <div class="flex-text-group">
+              <p>가용 자산</p>
+              <p id="availableAsset" class="available-asset">0 원</p>
             </div>
+          </div>
+          <div class="section">
+            <h6>보유 종목</h6>
+            <table class="owned-stocks">
+              <thead>
+                <tr>
+                  <th>종목명</th>
+                  <th>현재가</th>
+                  <th>등락률</th>
+                </tr>
+              </thead>
+              <tbody id="ownedStockBody"></tbody>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        let accessToken = getCookie("Authorization");
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        let accessToken = getCookie('Authorization');
         let userId = null;
 
-        if(accessToken!=null){
-            axios.get('/members/info', {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
+        if (accessToken && accessToken.trim() !== '') {
+          axios
+            .get('/members/info', {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
             })
-            .then(response => {
-                const memberInfo = response.data;
-                document.getElementById('userName').textContent = memberInfo.name;
-                initializePageData(userId); // 이 시점에서 페이지 데이터를 초기화
+            .then((response) => {
+              const memberInfo = response.data;
+              document.getElementById('userName').textContent = memberInfo.name;
+              initializePageData(userId); // 이 시점에서 페이지 데이터를 초기화
             })
-            .catch(error => {
-                console.error('Failed to fetch member info:', error);
-                if (error.response && error.response.status === 401) {
-                    alert('세션이 만료되었습니다. 다시 로그인해주세요.');
-                    window.location.href = '/login';
-                } else {
-                    alert('사용자 정보를 가져오는데 실패했습니다.');
-                }
+            .catch((error) => {
+              if (error.response && error.response.status === 401) {
+                alert('세션이 만료되었습니다. 다시 로그인해주세요.');
+                window.location.href = '/login';
+              } else {
+                alert('사용자 정보를 가져오는데 실패했습니다.');
+              }
             });
         } else {
-            initializePageData(userId);  // 비로그인 상태에서도 페이지 데이터 초기화
+          initializePageData(userId); // 비로그인 상태에서도 페이지 데이터 초기화
         }
-    });
+      });
 
-    function initializePageData(userId) {
+      function initializePageData(userId) {
         fetchMarketStats();
         fetchStockList();
         if (userId) {
-            fetchOwnedStocks(userId);
-            fetchUserAssets(userId);
+          fetchOwnedStocks(userId);
+          fetchUserAssets(userId);
         }
-    }
+      }
 
-    async function getUserInfo(accessToken) {
+      async function getUserInfo(accessToken) {
         try {
-            const response = await axios.get('/members/info', { headers: { 'Authorization': `Bearer ${accessToken}` } });
-            document.getElementById('userName').textContent = response.data.name;
-            return response.data;
+          const response = await axios.get('/members/info', {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          });
+          document.getElementById('userName').textContent = response.data.name;
+          return response.data;
         } catch (error) {
-            console.error('Failed to fetch member info:', error);
+          console.error('Failed to fetch member info:', error);
         }
-    }
+      }
 
-    function logout() {
-        axios.get('/auth/logout').then(() => window.location.href = '/login')
-            .catch(error => alert('로그아웃 중 오류가 발생했습니다.'));
-    }
+      function logout() {
+        axios
+          .get('/auth/logout')
+          .then(() => (window.location.href = '/login'))
+          .catch((error) => alert('로그아웃 중 오류가 발생했습니다.'));
+      }
 
-    function getCookie(cookieName) {
-        let name = cookieName + "=";
+      function getCookie(cookieName) {
+        let name = cookieName + '=';
         let decodedCookie = decodeURIComponent(document.cookie);
         let cookieArray = decodedCookie.split(';');
         for (let i = 0; i < cookieArray.length; i++) {
-            let cookie = cookieArray[i].trim();
-            if (cookie.indexOf(name) === 0) return cookie.substring(name.length);
+          let cookie = cookieArray[i].trim();
+          if (cookie.indexOf(name) === 0) return cookie.substring(name.length);
         }
-        return "";
-    }
+        return '';
+      }
 
-    // 국내 지수 정보 가져오기
-    async function fetchMarketStats() {
-        console.log("국내지수 부르기");
+      // 국내 지수 정보 가져오기
+      async function fetchMarketStats() {
+        console.log('국내지수 부르기');
         const indices = [
-            { idxCsf: 'KOSPI시리즈', idxNm: '코스피' },
-            { idxCsf: 'KOSDAQ시리즈', idxNm: '코스닥' },
-            { idxCsf: 'KOSPI시리즈', idxNm: '코스피 200' }
+          { idxCsf: 'KOSPI시리즈', idxNm: '코스피' },
+          { idxCsf: 'KOSDAQ시리즈', idxNm: '코스닥' },
+          { idxCsf: 'KOSPI시리즈', idxNm: '코스피 200' },
         ];
 
         const marketStats = document.getElementById('marketStats');
@@ -167,20 +201,22 @@
 
         // 순차적으로 요청하여 순서 보장
         for (const index of indices) {
-            const { idxCsf, idxNm } = index;
+          const { idxCsf, idxNm } = index;
 
-            try {
-                // 각 인덱스에 대해 순차적으로 API 요청
-                const response = await axios.get(`/api/stock/index/${idxCsf}/${idxNm}`);
-                const statData = response.data;
+          try {
+            // 각 인덱스에 대해 순차적으로 API 요청
+            const response = await axios.get(
+              `/api/stock/index/${idxCsf}/${idxNm}`
+            );
+            const statData = response.data;
 
-                // 상승/하락에 따른 스타일 및 아이콘 설정
-                const isUp = parseFloat(statData.fltRt) > 0;
-                const color = isUp ? 'red' : 'blue';
-                const icon = isUp ? '▲' : '▼';
+            // 상승/하락에 따른 스타일 및 아이콘 설정
+            const isUp = parseFloat(statData.fltRt) > 0;
+            const color = isUp ? 'red' : 'blue';
+            const icon = isUp ? '▲' : '▼';
 
-                // HTML 카드 생성
-                const cardHTML = `
+            // HTML 카드 생성
+            const cardHTML = `
                     <div class="stat-box">
                         <h6 class="stat-name">${statData.idxNm}</h6>
                         <p class="stat-value" style="font-size: 24px; color: ${color};">${statData.clpr}</p>
@@ -190,49 +226,51 @@
                     </div>
                 `;
 
-                // 카드 추가
-                marketStats.innerHTML += cardHTML;
-            } catch (error) {
-                console.error(`Error fetching market stats for ${idxNm}:`, error);
-            }
+            // 카드 추가
+            marketStats.innerHTML += cardHTML;
+          } catch (error) {
+            console.error(`Error fetching market stats for ${idxNm}:`, error);
+          }
         }
-    }
+      }
 
-    // 주식 리스트 정보 가져오기(현재는 그냥 단순 리스트)
-    async function fetchStockList() {
-        console.log("관심 종목 리스트 가져오기");
+      // 주식 리스트 정보 가져오기(현재는 그냥 단순 리스트)
+      async function fetchStockList() {
+        console.log('관심 종목 리스트 가져오기');
 
-        axios.get('/api/stock/list')
-            .then(response => {
-                console.log("응답 데이터 타입:", typeof response.data); // 데이터 타입 확인
-                console.log("응답 데이터 구조:", response.data);         // 데이터가 예상과 일치하는지 확인
-                const tbody = document.getElementById('stockBody');
-                tbody.innerHTML = ''; // 기존 내용을 지우기
+        axios
+          .get('/api/stock/list')
+          .then((response) => {
+            console.log('응답 데이터 타입:', typeof response.data); // 데이터 타입 확인
+            console.log('응답 데이터 구조:', response.data); // 데이터가 예상과 일치하는지 확인
+            const tbody = document.getElementById('stockBody');
+            tbody.innerHTML = ''; // 기존 내용을 지우기
 
-                if (Array.isArray(response.data) && response.data.length > 0) {
-                    response.data.forEach(stock => {
-                        const fltRtValue = parseFloat(stock.fltRt); // 등락률을 숫자로 변환
-                        let color = 'black'; // 기본 색상
-                        let icon = '-';      // 기본 아이콘
+            if (Array.isArray(response.data) && response.data.length > 0) {
+              response.data.forEach((stock) => {
+                const fltRtValue = parseFloat(stock.fltRt); // 등락률을 숫자로 변환
+                let color = 'black'; // 기본 색상
+                let icon = '-'; // 기본 아이콘
 
-                        // 등락률에 따른 색상 및 아이콘 설정
-                        if (fltRtValue > 0) {
-                            color = 'red';  // 상승일 때 빨간색
-                            icon = '▲';    // 상승 아이콘
-                        } else if (fltRtValue < 0) {
-                            color = 'blue'; // 하락일 때 파란색
-                            icon = '▼';    // 하락 아이콘
-                        }
+                // 등락률에 따른 색상 및 아이콘 설정
+                if (fltRtValue > 0) {
+                  color = 'red'; // 상승일 때 빨간색
+                  icon = '▲'; // 상승 아이콘
+                } else if (fltRtValue < 0) {
+                  color = 'blue'; // 하락일 때 파란색
+                  icon = '▼'; // 하락 아이콘
+                }
 
-                        // 거래량 및 거래대금을 정리
-                        const formattedTrqu = Number(stock.trqu).toLocaleString(); // 거래량
-                        const formattedTrPrc = Number(stock.trPrc).toLocaleString(); // 거래대금
+                // 거래량 및 거래대금을 정리
+                const formattedTrqu = Number(stock.trqu).toLocaleString(); // 거래량
+                const formattedTrPrc = Number(stock.trPrc).toLocaleString(); // 거래대금
 
-                        // 시가 총액 포맷
-                        const formattedMrktTotAmt = Number(stock.mrktTotAmt).toLocaleString() + " 원";
+                // 시가 총액 포맷
+                const formattedMrktTotAmt =
+                  Number(stock.mrktTotAmt).toLocaleString() + ' 원';
 
-                        // HTML 행 생성
-                        const rowHTML = `
+                // HTML 행 생성
+                const rowHTML = `
                             <tr>
                                 <td><a href="/stock/detail/${stock.srtnCd}?marketCategory=${stock.mrktCtg}">${stock.itmsNm}</a></td>
                                 <td style="color: ${color}">${stock.clpr}</td>
@@ -241,25 +279,26 @@
                                 <td>${formattedTrqu}<br/><p class="additional-value">${formattedTrPrc} 원</p></td>
                             </tr>`;
 
-                        // 테이블에 행 추가
-                        tbody.innerHTML += rowHTML;
-                    });
-                } else {
-                    console.warn('관심 종목 데이터가 없습니다.');
-                    tbody.innerHTML = `<tr><td colspan="5">관심 종목 데이터가 없습니다.</td></tr>`;
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching stock list:', error);
-                console.error("에러 상태 코드:", error.response?.status);  // 에러 상태 코드 확인
-                console.error("에러 메시지:", error.response?.data);        // 에러 응답 내용 확인
-                alert(`관심 종목을 가져오는 중 오류가 발생했습니다. (상태 코드: ${error.response?.status})`);
-            });
-    }
+                // 테이블에 행 추가
+                tbody.innerHTML += rowHTML;
+              });
+            } else {
+              console.warn('관심 종목 데이터가 없습니다.');
+              tbody.innerHTML = `<tr><td colspan="5">관심 종목 데이터가 없습니다.</td></tr>`;
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching stock list:', error);
+            console.error('에러 상태 코드:', error.response?.status); // 에러 상태 코드 확인
+            console.error('에러 메시지:', error.response?.data); // 에러 응답 내용 확인
+            alert(
+              `관심 종목을 가져오는 중 오류가 발생했습니다. (상태 코드: ${error.response?.status})`
+            );
+          });
+      }
 
-
-    // 시가총액 형식 변환 함수 (예: 18조 4,500억원)
-    function formatMarketCap(value) {
+      // 시가총액 형식 변환 함수 (예: 18조 4,500억원)
+      function formatMarketCap(value) {
         const units = ['억원', '조', '천억', '백억'];
         let formattedValue = value;
 
@@ -268,18 +307,18 @@
         formattedValue = `${billions}억원`;
 
         return formattedValue;
-    }
+      }
 
-    // 거래량 형식 변환 함수 (예: 22,801,339)
-    function formatVolume(volume) {
+      // 거래량 형식 변환 함수 (예: 22,801,339)
+      function formatVolume(volume) {
         return volume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
+      }
 
-    // 거래대금 형식 변환 함수 (예: 1조 8,023억원)
-    function formatPrice(price) {
+      // 거래대금 형식 변환 함수 (예: 1조 8,023억원)
+      function formatPrice(price) {
         const billions = (price / 1e8).toFixed(1);
         return `${billions}억원`;
-    }
-</script>
-</body>
+      }
+    </script>
+  </body>
 </html>
