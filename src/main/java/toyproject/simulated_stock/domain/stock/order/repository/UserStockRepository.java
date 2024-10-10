@@ -1,6 +1,7 @@
 package toyproject.simulated_stock.domain.stock.order.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import toyproject.simulated_stock.domain.stock.order.entitiy.UserStock;
 
 import java.util.List;

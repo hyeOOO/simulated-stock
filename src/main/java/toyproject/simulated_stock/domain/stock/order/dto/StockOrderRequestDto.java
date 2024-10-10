@@ -11,5 +11,5 @@ public class StockOrderRequestDto {
     private String stockName;
     private int quantity;
     private BigDecimal price;
-    private String mrtgType; //KOSPI, KOSDAQ, KONEX
+    private MrtgType mrtgType; //KOSPI, KOSDAQ, KONEX
 }

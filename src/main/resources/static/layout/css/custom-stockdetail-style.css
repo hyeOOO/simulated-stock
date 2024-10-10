@@ -377,6 +377,7 @@ td.down {
         /* 투자 정보 테이블 스타일 */
         .investment-info-table {
             width: 100%;
+            table-layout: fixed;
             border-collapse: collapse; /* 셀 간의 간격 제거 */
             margin-top: 10px;
         }
