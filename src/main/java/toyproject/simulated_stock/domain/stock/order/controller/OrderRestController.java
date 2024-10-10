@@ -31,4 +31,11 @@ public class OrderRestController {
         stockOrderService.sellStock(request.getUserId(), request.getStockCode(), request.getQuantity(), request.getPrice());
         return ResponseEntity.ok("매도가 완료되었습니다.");
     }
+
+    // 특정 사용자의 보유 주식 개수를 반환하는 API
+    @GetMapping("/holding/{userId}/{stockCode}")
+    public ResponseEntity<Integer> getStockHolding(@PathVariable String userId, @PathVariable String stockCode) {
+        int holdingQuantity = stockOrderService.getHoldingStockQuantity(userId, stockCode);
+        return ResponseEntity.ok(holdingQuantity);
+    }
 }

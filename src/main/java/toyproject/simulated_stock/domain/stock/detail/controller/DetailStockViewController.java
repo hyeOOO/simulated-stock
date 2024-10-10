@@ -29,6 +29,6 @@ public class DetailStockViewController {
 
         // 조회한 정보를 모델에 추가하여 뷰로 전달
         model.addAttribute("stockInfo", stockInfo);
-        return "stock/stockdetail_hardcoding";
+        return "stock/stockdetail";
     }
 }

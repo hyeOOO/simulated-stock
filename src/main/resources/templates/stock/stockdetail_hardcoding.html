@@ -9,6 +9,10 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/cb31ad365a.js" crossorigin="anonymous"></script>
+
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/indicators/indicators-all.js"></script>
+    <script src="https://code.highcharts.com/stock/indicators/ema.js"></script>
 </head>
 <body class="body">
 <div class="sidenav">
@@ -93,7 +97,7 @@
                         <button>3년</button>
                     </div>
                     <div class="chart-box">
-                        <img src="chart-placeholder.png" alt="차트 예시" style="width: 100%;">
+                        <div id="stock-chart" style="height: 400px; min-width: 800px;"></div>
                     </div>
                 </div>
             </div>
@@ -465,4 +469,141 @@
         }
         return ""; // 해당 이름의 쿠키가 없으면 빈 문자열 반환
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        let stockChart;
+
+        // 샘플 주가 데이터 (시가, 고가, 저가, 종가, 거래량)
+        const sampleData = [
+            [Date.UTC(2023, 2, 18), 78000, 79000, 77000, 78500, 2000000],
+            [Date.UTC(2023, 2, 19), 78500, 80000, 78000, 79500, 2100000],
+            [Date.UTC(2023, 2, 20), 79500, 80500, 78500, 80000, 2200000],
+            // 더 많은 샘플 데이터 추가
+        ];
+
+        function createChart(data) {
+            stockChart = Highcharts.stockChart('stock-chart', {
+                rangeSelector: {
+                    selected: 1, // 초기 선택된 범위 (예: 1개월)
+                },
+                title: {
+                    text: 'Sample Stock Price with Volume',
+                },
+                yAxis: [
+                    {
+                        labels: {
+                            align: 'right',
+                            x: -3,
+                        },
+                        title: {
+                            text: '주가',
+                        },
+                        height: '60%',
+                        lineWidth: 2,
+                        resize: {
+                            enabled: true,
+                        },
+                    },
+                    {
+                        labels: {
+                            align: 'right',
+                            x: -3,
+                        },
+                        title: {
+                            text: '거래량',
+                        },
+                        top: '65%',
+                        height: '35%',
+                        offset: 0,
+                        lineWidth: 2,
+                    },
+                ],
+
+                tooltip: {
+                    split: true,
+                },
+
+                series: [
+                    {
+                        type: 'candlestick',
+                        name: '주가',
+                        data: data.map((item) => [item[0], item[1], item[2], item[3], item[4]]),
+                        dataGrouping: {
+                            units: [
+                                ['day', [1]],
+                                ['week', [1]],
+                                ['month', [1, 2, 3, 4, 6]],
+                            ],
+                        },
+                    },
+                    {
+                        type: 'column',
+                        name: '거래량',
+                        data: data.map((item) => [item[0], item[5]]),
+                        yAxis: 1,
+                        dataGrouping: {
+                            units: [
+                                ['day', [1]],
+                                ['week', [1]],
+                                ['month', [1, 2, 3, 4, 6]],
+                            ],
+                        },
+                    },
+                    {
+                        type: 'sma',
+                        linkedTo: '주가',
+                        zIndex: 1,
+                        marker: {
+                            enabled: false,
+                        },
+                        params: {
+                            period: 14, // 이동평균의 기간 설정
+                        },
+                    },
+                ],
+            });
+        }
+
+        // 초기 차트 생성
+        createChart(sampleData);
+
+        // 차트 기간 변경 이벤트 처리 함수
+        function changeRange(range) {
+            let newData;
+
+            // 기간에 따라 샘플 데이터 설정 (데이터는 실제 API 연동 시 동적으로 설정)
+            switch (range) {
+                case '1d':
+                    newData = sampleData.slice(-1); // 마지막 1일 데이터
+                    break;
+                case '1m':
+                    newData = sampleData.slice(-30); // 마지막 1개월 데이터 (대략 30일치)
+                    break;
+                case '3m':
+                    newData = sampleData.slice(-90); // 마지막 3개월 데이터
+                    break;
+                case '1y':
+                    newData = sampleData.slice(-250); // 마지막 1년 데이터 (대략 250일치)
+                    break;
+                case '3y':
+                    newData = sampleData; // 전체 데이터 사용 (3년치)
+                    break;
+                default:
+                    newData = sampleData;
+            }
+
+            // 차트 업데이트
+            stockChart.series[0].setData(newData.map((item) => [item[0], item[1], item[2], item[3], item[4]])); // 주가 데이터
+            stockChart.series[1].setData(newData.map((item) => [item[0], item[5]])); // 거래량 데이터
+        }
+
+        // 버튼 클릭 이벤트 바인딩
+        document.querySelectorAll('.chart-tab').forEach((button) => {
+            button.addEventListener('click', function () {
+                document.querySelectorAll('.chart-tab').forEach((btn) => btn.classList.remove('active'));
+                button.classList.add('active');
+                changeRange(button.innerText); // 버튼의 텍스트에 맞게 기간 변경
+            });
+        });
+    });
 </script>

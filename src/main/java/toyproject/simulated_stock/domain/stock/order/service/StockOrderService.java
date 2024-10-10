@@ -98,4 +98,12 @@ public class StockOrderService {
         BigDecimal totalQuantity = BigDecimal.valueOf(currentQuantity + newQuantity);
         return (totalCurrentAmount.add(totalNewAmount)).divide(totalQuantity, RoundingMode.HALF_UP);
     }
+
+    // 보유 주식 수량 조회 로직
+    public int getHoldingStockQuantity(String userId, String stockCode) {
+        // Optional<UserStock>을 통해 객체가 존재하는지 확인하고, 수량을 추출
+        return userStockRepository.findByUserIdAndStockCode(userId, stockCode)
+                .map(UserStock::getQuantity)
+                .orElse(0);  // 주식이 없을 경우 0을 반환
+    }
 }

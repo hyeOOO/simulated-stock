@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockBasicInfoDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockInvestorsDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsByPeriodDto;
@@ -41,8 +38,10 @@ public class DetailStockController {
     }
     //국내 주식 기간별 시세(월/주/월/년)
     @GetMapping("/quotations/{stockCode}/period")
-    public ResponseEntity<StockQuotationsByPeriodDto> getStockQuotationsByPeriod(@PathVariable("stockCode") String stockCode, QuotationsByPeriodOption option){
-        StockQuotationsByPeriodDto response = detailStockService.getQuotationsByPeriod(stockCode, option);
+    public ResponseEntity<StockQuotationsByPeriodDto> getStockQuotationsByPeriod(
+            @PathVariable("stockCode") String stockCode,
+            @ModelAttribute QuotationsByPeriodOption option){
+            StockQuotationsByPeriodDto response = detailStockService.getQuotationsByPeriod(stockCode, option);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -54,4 +53,6 @@ public class DetailStockController {
         model.addAttribute("stockQuotations", stockQuotations.getOutput());
         return "stock/stockDetail";
     }
+
+    //
 }
