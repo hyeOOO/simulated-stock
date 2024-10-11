@@ -46,7 +46,8 @@
                 <div class="stock-detail-header">
                     <!-- 왼쪽 영역: 종목명과 코드, 아이콘 -->
                     <div class="stock-header-left">
-                        <i class="fas fa-star stock-icon"></i>
+                        <!-- 아이콘에 기본적으로 비어있는 별 'far' 클래스를 추가 -->
+                        <i class="far fa-star stock-icon" style="cursor: pointer;"></i>
                         <div class="stock-info">
                             <h1 id="stock-name" class="stock-name" th:text="${stockInfo.stockName}">종목명</h1> <!-- 종목명 -->
                             <span id="stock-code" class="stock-code" th:text="${stockInfo.stockCode}">종목코드</span> <!-- 종목코드 -->
@@ -273,6 +274,64 @@
         }
         return ""; // 해당 이름의 쿠키가 없으면 빈 문자열 반환
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const userId = '1';  // 현재 로그인한 사용자의 ID (예: 고정된 ID)
+    const stockCode = document.getElementById('stock-code').textContent.trim();
+    const starIcon = document.querySelector('.stock-icon');
+
+    // 즐겨찾기 여부 확인
+    function checkFavoriteStatus() {
+        axios.get('/api/favorites/check', {
+            params: {
+                userId: userId,
+                stockCode: stockCode
+            }
+        })
+        .then(response => {
+            const isFavorite = response.data;
+            updateStarIcon(isFavorite);
+        })
+        .catch(error => {
+            console.error('즐겨찾기 상태 확인 실패:', error);
+        });
+    }
+
+    // 아이콘 상태 업데이트 함수
+    function updateStarIcon(isFavorite) {
+        if (isFavorite) {
+            starIcon.classList.add('fas');  // 채워진 별
+            starIcon.classList.remove('far');  // 비어 있는 별 제거
+        } else {
+            starIcon.classList.add('far');  // 비어 있는 별
+            starIcon.classList.remove('fas');  // 채워진 별 제거
+        }
+    }
+
+    // 즐겨찾기 추가/삭제
+    starIcon.addEventListener('click', function () {
+        const isCurrentlyFavorite = starIcon.classList.contains('fas');
+        const apiUrl = isCurrentlyFavorite ? '/api/favorites/remove' : '/api/favorites/add';
+
+        axios.post(apiUrl, null, {
+            params: {
+                userId: userId,
+                stockCode: stockCode
+            }
+        })
+        .then(response => {
+            alert(response.data);  // 성공 메시지 출력
+            updateStarIcon(!isCurrentlyFavorite);  // 상태 반전
+        })
+        .catch(error => {
+            console.error(`즐겨찾기 업데이트 실패: ${error.response ? error.response.data : error.message}`);
+            alert('즐겨찾기 상태를 업데이트하는데 실패했습니다.');
+        });
+    });
+
+    // 페이지 로드 시 즐겨찾기 상태 확인
+    checkFavoriteStatus();
+});
 
     document.addEventListener('DOMContentLoaded', function () {
         const stockCode = document.getElementById("stock-code").textContent.trim();
