@@ -189,6 +189,7 @@
 
       // 국내 지수 정보 가져오기
       async function fetchMarketStats() {
+        let accessToken = getCookie('Authorization');
         console.log('국내지수 부르기');
         const indices = [
           { idxCsf: 'KOSPI시리즈', idxNm: '코스피' },
@@ -228,6 +229,7 @@
 
             // 카드 추가
             marketStats.innerHTML += cardHTML;
+            getUserInfo(accessToken);
           } catch (error) {
             console.error(`Error fetching market stats for ${idxNm}:`, error);
           }
@@ -236,11 +238,13 @@
 
       // 주식 리스트 정보 가져오기(현재는 그냥 단순 리스트)
       async function fetchStockList() {
+        let accessToken = getCookie('Authorization');
         console.log('관심 종목 리스트 가져오기');
 
         axios
           .get('/api/stock/list')
           .then((response) => {
+            getUserInfo(accessToken);
             console.log('응답 데이터 타입:', typeof response.data); // 데이터 타입 확인
             console.log('응답 데이터 구조:', response.data); // 데이터가 예상과 일치하는지 확인
             const tbody = document.getElementById('stockBody');

@@ -36,8 +36,8 @@ public class TokenProvider {
     private String key;
 
     private SecretKey secretKey;
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30L;
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60L * 24 * 7;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30L; // 30분
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60L * 24 * 7; // 7일
     public static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String KEY_ROLE = "role";
     private final TokenService tokenService;
