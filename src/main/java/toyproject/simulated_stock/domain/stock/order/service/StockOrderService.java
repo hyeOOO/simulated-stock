@@ -30,7 +30,8 @@ public class StockOrderService {
     @Transactional
     public void buyStock(String userId, String stockCode, int quantity, BigDecimal price) {
         //매수하려는 유저의 계좌
-        UserAccount userAccount = userAccountRepository.findByUserId(userId)
+
+        UserAccount userAccount = userAccountRepository.findByMemberId(Long.parseLong(userId))
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         //가격 계산
@@ -61,7 +62,7 @@ public class StockOrderService {
     //매도
     public void sellStock(String userId, String stockCode, int quantity, BigDecimal price) {
         //사용자의 주식 계좌 정보 조회
-        UserAccount userAccount = userAccountRepository.findByUserId(userId)
+        UserAccount userAccount = userAccountRepository.findByMemberId(Long.parseLong(userId))
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         //보유 주식 정보 조회
