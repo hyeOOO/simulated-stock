@@ -1,4 +1,4 @@
-package toyproject.simulated_stock.domain.member;
+package toyproject.simulated_stock.domain.member.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html
+        lang="ko"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/layout/css/custom-assetmanagement-style.css" />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script
+            src="https://kit.fontawesome.com/cb31ad365a.js"
+            crossorigin="anonymous"
+    ></script>
+</head>
+<body class="body">
+<div class="sidenav">
+    <img src="/layout/srcs/logo.svg" alt="logo" class="logo"/>
+    <a href="#">HOME</a>
+    <a href="#">TOP 10</a>
+    <a href="#">관심 종목</a>
+    <a href="#">자산 관리</a>
+    <div class="flex-container">
+        <img
+                src="/layout/srcs/icons/user-logo.svg"
+                alt="icon"
+                class="flex-component"
+        />
+        <!-- 사용자 이름을 표시하고, 클릭 시 로그아웃 -->
+        <a
+                id="userName"
+                class="flex-component"
+                href="javascript:void(0);"
+                th:text="${#authentication.name}"
+                onclick="logout()"
+                th:if="${#authorization.expression('isAuthenticated()')}"
+        ></a>
+
+        <!-- 비로그인 시 로그인 버튼 표시 -->
+        <a
+                class="flex-component"
+                href="/login"
+                th:unless="${#authorization.expression('isAuthenticated()')}"
+        >
+            Login
+        </a>
+    </div>
+</div>
+</div>
+
+<div class="main-content">
+    <div class="search-group">
+        <i class="fa-solid fa-magnifying-glass fa-lg" style="color: #315784;"></i>
+        <input type="text" class="search-control" placeholder="검색어를 입력하세요.">
+    </div>
+
+    <!-- 자산 현황 -->
+    <h5 class="title">자산 현황</h5>
+    <div class="stats-container">
+        <!-- 자산 정보 -->
+        <div class="stat-box">
+            <h6>자산 정보</h6>
+            <table>
+                <tr>
+                    <td>총 자산</td>
+                    <td>10,962,194 원</td>
+                </tr>
+                <tr>
+                    <td>가용 자산</td>
+                    <td>2,264,568 원</td>
+                </tr>
+                <tr>
+                    <td>보유 주식 총액</td>
+                    <td>8,697,626 원</td>
+                </tr>
+                <tr>
+                    <td>손익</td>
+                    <td>962,194 원</td>
+                </tr>
+                <tr>
+                    <td>손익률</td>
+                    <td>11.8%</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 보유 종목 차트 -->
+        <div class="chart-box">
+            <h6 class="chart-title">보유 종목</h6>
+            <canvas id="pieChart"></canvas>
+        </div>
+
+        <!-- 자산 기록 차트 -->
+        <div class="chart-box">
+            <h6 class="chart-title">자산 기록</h6>
+            <canvas id="barChart"></canvas>
+        </div>
+    </div>
+
+    <!-- 거래 기록 -->
+    <h5 class="title">거래 기록</h5>
+    <div class="section">
+
+        <!-- 상단 필터 버튼 그룹 -->
+        <div class="filter-btn-group">
+            <button class="active">전체</button>
+            <button>매수</button>
+            <button>매도</button>
+        </div>
+
+        <!-- 거래 기록 테이블 -->
+        <table class="order-info-table">
+            <thead>
+            <tr>
+                <th>종목명</th>
+                <th>거래타입</th>
+                <th>가격</th>
+                <th>수량</th>
+                <th>총 가격</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>삼성전자</td>
+                <td class="order-type up">매수</td>
+                <td>79,600</td>
+                <td>50</td>
+                <td>3,980,000</td>
+            </tr>
+            <tr>
+                <td>에코프로</td>
+                <td class="order-type down">매도</td>
+                <td>200,500</td>
+                <td>30</td>
+                <td>6,015,000</td>
+            </tr>
+            <tr>
+                <td>현대차</td>
+                <td class="order-type down">매도</td>
+                <td>268,000</td>
+                <td>10</td>
+                <td>2,680,000</td>
+            </tr>
+            <!-- 추가 기록들 -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let accessToken = getCookie('Authorization');
+        let userId = null;
+
+        if (accessToken && accessToken.trim() !== '') {
+          axios
+            .get('/members/info', {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            })
+            .then((response) => {
+              const memberInfo = response.data;
+              document.getElementById('userName').textContent = memberInfo.name;
+              initializePageData(userId); // 이 시점에서 페이지 데이터를 초기화
+            })
+            .catch((error) => {
+              if (error.response && error.response.status === 401) {
+                alert('세션이 만료되었습니다. 다시 로그인해주세요.');
+                window.location.href = '/login';
+              } else {
+                alert('사용자 정보를 가져오는데 실패했습니다.');
+              }
+            });
+        } else {
+          initializePageData(userId); // 비로그인 상태에서도 페이지 데이터 초기화
+        }
+      });
+
+      function initializePageData(userId) {
+        fetchMarketStats();
+        fetchStockList();
+        if (userId) {
+          fetchOwnedStocks(userId);
+          fetchUserAssets(userId);
+        }
+      }
+
+      async function getUserInfo(accessToken) {
+        try {
+          const response = await axios.get('/members/info', {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          });
+          document.getElementById('userName').textContent = response.data.name;
+          return response.data;
+        } catch (error) {
+          console.error('Failed to fetch member info:', error);
+        }
+      }
+
+      function logout() {
+        axios
+          .get('/auth/logout')
+          .then(() => (window.location.href = '/login'))
+          .catch((error) => alert('로그아웃 중 오류가 발생했습니다.'));
+      }
+
+      function getCookie(cookieName) {
+        let name = cookieName + '=';
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let cookieArray = decodedCookie.split(';');
+        for (let i = 0; i < cookieArray.length; i++) {
+          let cookie = cookieArray[i].trim();
+          if (cookie.indexOf(name) === 0) return cookie.substring(name.length);
+        }
+        return '';
+      }
+</script>
+
+<script>
+    // Pie chart for 보유종목
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    const pieChart = new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: ['삼성전자', '에코프로비엠', '현대차', '에코프로'],
+            datasets: [{
+                data: [997, 676, 788, 367],
+                backgroundColor: ['#3947b2', '#f1c40f', '#e74c3c', '#2ecc71']
+            }]
+        }
+    });
+
+    // Bar chart for 자산 기록
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    const barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: ['0', '1', '2', '3', '4'],
+            datasets: [
+                {
+                    label: '보유 주식',
+                    data: [600, 750, 600, 750, 600],
+                    backgroundColor: '#3947b2'
+                },
+                {
+                    label: '가용 자산',
+                    data: [400, 500, 400, 500, 400],
+                    backgroundColor: '#3498db'
+                }
+            ]
+        }
+    });
+</script>
+</body>
+</html>

@@ -41,4 +41,9 @@ public class MemberController {
             @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(memberService.memberEdit(request, userDetails.getUsername()));
     }
+
+    @GetMapping("/asset")
+    public String assetManagement () {
+        return "member/assetmanagement_hardcoding";
+    }
 }
