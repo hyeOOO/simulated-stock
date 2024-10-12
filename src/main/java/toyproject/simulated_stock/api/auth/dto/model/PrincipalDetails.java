@@ -58,6 +58,6 @@ public record PrincipalDetails(
 
     @Override
     public String getUsername() {
-        return member.getMemberKey();
+        return member.getName();
     }
 }
