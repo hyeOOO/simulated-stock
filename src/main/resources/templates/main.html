@@ -132,7 +132,6 @@
             })
             .then((response) => {
               const memberInfo = response.data;
-              document.getElementById('userName').textContent = memberInfo.name;
               initializePageData(userId); // 이 시점에서 페이지 데이터를 초기화
             })
             .catch((error) => {
@@ -229,7 +228,7 @@
 
             // 카드 추가
             marketStats.innerHTML += cardHTML;
-            getUserInfo(accessToken);
+            //getUserInfo(accessToken);
           } catch (error) {
             console.error(`Error fetching market stats for ${idxNm}:`, error);
           }
@@ -244,7 +243,7 @@
         axios
           .get('/api/stock/list')
           .then((response) => {
-            getUserInfo(accessToken);
+            //getUserInfo(accessToken);
             console.log('응답 데이터 타입:', typeof response.data); // 데이터 타입 확인
             console.log('응답 데이터 구조:', response.data); // 데이터가 예상과 일치하는지 확인
             const tbody = document.getElementById('stockBody');
