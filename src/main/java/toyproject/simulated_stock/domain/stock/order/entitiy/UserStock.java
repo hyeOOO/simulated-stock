@@ -25,6 +25,7 @@ public class UserStock {
 
     private BigDecimal minPrice; // 최소 매수가
     private BigDecimal maxPrice; // 최대 매수가
+    private BigDecimal totalPrice; //매수시 가격과 개수에 따른 누적합
 
     @Enumerated(EnumType.STRING)
     private MarketType mrtgType; // KOSPI, KOSDAQ, KONEX
@@ -61,6 +62,10 @@ public class UserStock {
 
         // 최소/최대 가격 업데이트
         updateMinMaxPrice(newPrice);
+
+        BigDecimal newTotalAmount = newPrice.multiply(BigDecimal.valueOf(quantity));  // 새로 매수한 주식의 총 가격
+        // 누적 총 가격 업데이트 (이전 가격 + 새로 매수한 가격)
+        this.totalPrice = this.totalPrice.add(newTotalAmount);
     }
 
     // 매수 시 최소/최대 가격 갱신 메소드
@@ -80,6 +85,10 @@ public class UserStock {
             throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_STOCK);
         }
         this.quantity -= quantity;
+
+        // 매도 수량에 해당하는 매수 금액 차감 (평균 매수가 기준)
+        BigDecimal amountToDeduct = this.avgPrice.multiply(BigDecimal.valueOf(quantity));
+        this.totalPrice = this.totalPrice.subtract(amountToDeduct);
 
         // 최소/최대 가격 갱신 (필요시)
         //updateMinMaxPrice(price);

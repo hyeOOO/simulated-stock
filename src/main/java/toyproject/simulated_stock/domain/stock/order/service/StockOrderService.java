@@ -4,15 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toyproject.simulated_stock.domain.stock.order.entitiy.OrderType;
-import toyproject.simulated_stock.domain.stock.order.entitiy.StockOrder;
-import toyproject.simulated_stock.domain.stock.order.entitiy.UserAccount;
-import toyproject.simulated_stock.domain.stock.order.entitiy.UserStock;
+import toyproject.simulated_stock.domain.stock.order.entitiy.*;
 import toyproject.simulated_stock.domain.stock.order.repository.StockOrderRepository;
 import toyproject.simulated_stock.domain.stock.order.repository.UserAccountRepository;
 import toyproject.simulated_stock.domain.stock.order.repository.UserStockRepository;
 import toyproject.simulated_stock.api.exception.BusinessLogicException;
 import toyproject.simulated_stock.api.exception.ExceptionCode;
+import toyproject.simulated_stock.domain.stock.overall.entity.StockList;
+import toyproject.simulated_stock.domain.stock.overall.repository.StockListRepository;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -25,10 +24,15 @@ public class StockOrderService {
     private final UserAccountRepository userAccountRepository;
     private final StockOrderRepository stockOrderRepository;
     private final UserStockRepository userStockRepository;
+    private final StockListRepository stockListRepository;
 
     //매수 로직
     @Transactional
     public void buyStock(String userId, String stockCode, int quantity, BigDecimal price) {
+        //주식 정보
+        StockList stock = stockListRepository.findBysrtnCd(stockCode).get(0);
+        MarketType marketType = convertToMarketType(stock.getMrktCtg());
+
         //매수하려는 유저의 계좌
 
         UserAccount userAccount = userAccountRepository.findByMemberId(Long.parseLong(userId))
@@ -51,7 +55,7 @@ public class StockOrderService {
 
         //주문 기록 생성
         // StockOrder 객체 생성은 생성 메소드 사용
-        StockOrder stockOrder = StockOrder.createOrder(userId, stockCode, quantity, price, OrderType.BUY, userAccount);
+        StockOrder stockOrder = StockOrder.createOrder(userId, stockCode, marketType, quantity, price, OrderType.BUY, userAccount);
 
         // 주문 저장
         stockOrderRepository.save(stockOrder);
@@ -85,11 +89,19 @@ public class StockOrderService {
         }
 
         // 주문 기록 생성
-        StockOrder stockOrder = StockOrder.createOrder(userId, stockCode, quantity, price, OrderType.SELL, userAccount);
+        StockOrder stockOrder = StockOrder.createOrder(userId, stockCode, userStock.getMrtgType(), quantity, price, OrderType.SELL, userAccount);
 
         // 주문 및 유저 정보 저장
         stockOrderRepository.save(stockOrder);
         userAccountRepository.save(userAccount);
+    }
+
+    // 보유 주식 수량 조회 로직
+    public int getHoldingStockQuantity(String userId, String stockCode) {
+        // Optional<UserStock>을 통해 객체가 존재하는지 확인하고, 수량을 추출
+        return userStockRepository.findByUserIdAndStockCode(userId, stockCode)
+                .map(UserStock::getQuantity)
+                .orElse(0);  // 주식이 없을 경우 0을 반환
     }
 
     // 평균 매입 가격 계산 메소드
@@ -100,11 +112,12 @@ public class StockOrderService {
         return (totalCurrentAmount.add(totalNewAmount)).divide(totalQuantity, RoundingMode.HALF_UP);
     }
 
-    // 보유 주식 수량 조회 로직
-    public int getHoldingStockQuantity(String userId, String stockCode) {
-        // Optional<UserStock>을 통해 객체가 존재하는지 확인하고, 수량을 추출
-        return userStockRepository.findByUserIdAndStockCode(userId, stockCode)
-                .map(UserStock::getQuantity)
-                .orElse(0);  // 주식이 없을 경우 0을 반환
+    //MarketType Enum 변환 메소드
+    public MarketType convertToMarketType(String marketTypeStr) {
+        try {
+            return MarketType.valueOf(marketTypeStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid market type: " + marketTypeStr);
+        }
     }
 }
