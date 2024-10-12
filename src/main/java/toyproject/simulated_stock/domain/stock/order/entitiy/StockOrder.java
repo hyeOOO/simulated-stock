@@ -18,7 +18,7 @@ public class StockOrder {
     private String stockName; // 주식 이름
     private int quantity;     // 주문 수량
     private BigDecimal price; // 주문 가격
-    private String mrtgType; //KOSPI, KOSDAQ, KONEX
+    private MarketType mrtgType; //KOSPI, KOSDAQ, KONEX
     private LocalDateTime orderDate; // 주문 날짜
 
     @Enumerated(EnumType.STRING)
@@ -32,10 +32,11 @@ public class StockOrder {
     private UserAccount userAccount;  // 유저 계좌 정보와의 연관 관계
 
     //==생성 메소드==//
-    public static StockOrder createOrder(String userId, String stockCode, int quantity, BigDecimal price, OrderType orderType, UserAccount userAccount) {
+    public static StockOrder createOrder(String userId, String stockCode, MarketType mrtgType, int quantity, BigDecimal price, OrderType orderType, UserAccount userAccount) {
         StockOrder stockOrder = new StockOrder();
         stockOrder.userId = userId;
         stockOrder.stockCode = stockCode;
+        stockOrder.mrtgType = mrtgType;
         stockOrder.quantity = quantity;
         stockOrder.price = price;
         stockOrder.orderType = orderType;
