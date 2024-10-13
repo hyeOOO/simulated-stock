@@ -32,10 +32,11 @@ public class StockOrder {
     private UserAccount userAccount;  // 유저 계좌 정보와의 연관 관계
 
     //==생성 메소드==//
-    public static StockOrder createOrder(String memberId, String stockCode, MarketType mrtgType, int quantity, BigDecimal price, OrderType orderType, UserAccount userAccount) {
+    public static StockOrder createOrder(String memberId, String stockCode, String stockName, MarketType mrtgType, int quantity, BigDecimal price, OrderType orderType, UserAccount userAccount) {
         StockOrder stockOrder = new StockOrder();
         stockOrder.memberId = memberId;
         stockOrder.stockCode = stockCode;
+        stockOrder.stockName = stockName;
         stockOrder.mrtgType = mrtgType;
         stockOrder.quantity = quantity;
         stockOrder.price = price;
