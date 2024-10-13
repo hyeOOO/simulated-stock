@@ -31,14 +31,14 @@ public class StockOrderService {
 
     //매수 로직
     @Transactional
-    public void buyStock(String userId, String stockCode, int quantity, BigDecimal price) {
+    public void buyStock(String memberId, String stockCode, int quantity, BigDecimal price) {
         //주식 정보
         StockList stock = stockListRepository.findBysrtnCd(stockCode).get(0);
         MarketType marketType = convertToMarketType(stock.getMrktCtg());
 
         //매수하려는 유저의 계좌
 
-        UserAccount userAccount = userAccountRepository.findByMemberId(Long.parseLong(userId))
+        UserAccount userAccount = userAccountRepository.findByMemberId(Long.parseLong(memberId))
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         //가격 계산
@@ -51,14 +51,14 @@ public class StockOrderService {
         userAccount.withdraw(totalAmount);
 
         //기존 보유 주식 확인 및 없으면 생성
-        UserStock userStock = userStockRepository.findByMemberIdAndStockCode(userId, stockCode)
-                .orElseGet(() -> UserStock.createUserStock(userId, stockCode, userAccount));
+        UserStock userStock = userStockRepository.findByMemberIdAndStockCode(memberId, stockCode)
+                .orElseGet(() -> UserStock.createUserStock(memberId, stockCode, userAccount));
         // 주식 매수 처리 (비즈니스 메소드 사용)
         userStock.buy(quantity, price);
 
         //주문 기록 생성
         // StockOrder 객체 생성은 생성 메소드 사용
-        StockOrder stockOrder = StockOrder.createOrder(userId, stockCode, marketType, quantity, price, OrderType.BUY, userAccount);
+        StockOrder stockOrder = StockOrder.createOrder(memberId, stockCode, marketType, quantity, price, OrderType.BUY, userAccount);
 
         // 주문 저장
         stockOrderRepository.save(stockOrder);

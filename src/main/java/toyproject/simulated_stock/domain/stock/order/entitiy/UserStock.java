@@ -17,7 +17,7 @@ public class UserStock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String userId;         // 사용자 ID
+    private String memberId;         // 사용자 ID
     private String stockCode;      // 주식 종목 코드
     private String stockName;      // 주식 종목 이름
     private int quantity;          // 보유 주식 수량
@@ -37,9 +37,9 @@ public class UserStock {
     private UserAccount userAccount;  // 유저 계좌 정보와의 연관 관계
 
     // 생성 메소드 (정적 팩토리 메소드)
-    public static UserStock createUserStock(String userId, String stockCode, UserAccount userAccount) {
+    public static UserStock createUserStock(String memberId, String stockCode, UserAccount userAccount) {
         UserStock userStock = new UserStock();
-        userStock.userId = userId;
+        userStock.memberId = memberId;
         userStock.stockCode = stockCode;
         userStock.userAccount = userAccount;
         userStock.quantity = 0;  // 초기 수량
