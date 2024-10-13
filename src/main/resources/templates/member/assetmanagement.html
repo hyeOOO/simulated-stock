@@ -249,9 +249,12 @@ document.addEventListener('DOMContentLoaded', function () {
         tbody.innerHTML = '';  // 기존 데이터를 비움
 
         orders.forEach(order => {
+            const stockLink = `/stock/${order.stockCode}?marketCategory=${stock.mrtgType}`; // 동적으로 링크 생성
             const row = `
                 <tr>
-                    <td>${order.stockName}</td>
+                    <td>
+                        <a href="${stockLink}">${order.stockName}</a> <!-- 동적으로 링크 설정 -->
+                    </td>
                     <td class="order-type ${order.orderType === 'BUY' ? 'up' : 'down'}">
                         ${order.orderType === 'BUY' ? '매수' : '매도'}
                     </td>

@@ -22,7 +22,7 @@ public class OrderRestController {
     //매수
     @PostMapping("/buy")
     public ResponseEntity<String> buyStock(@RequestBody StockOrderRequestDto request) {
-        stockOrderService.buyStock(request.getMemberId(), request.getStockCode(), request.getStockName(), request.getQuantity(), request.getPrice());
+        stockOrderService.buyStock(request.getMemberId(), request.getStockCode(), request.getStockName(), request.getQuantity(), request.getPrice(), request.getMrtgType());
         return ResponseEntity.ok("매수가 완료되었습니다.");
     }
 
