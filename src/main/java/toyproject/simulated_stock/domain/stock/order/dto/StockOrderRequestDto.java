@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @Data
 public class StockOrderRequestDto {
-    private String userId;
+    private String memberId;
     private String stockCode;
     private String stockName;
     private int quantity;

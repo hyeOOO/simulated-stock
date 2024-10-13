@@ -464,10 +464,10 @@
         });
 
         function fetchStockHolding() {
-            const userId = '1';  // 현재 사용자 ID (예: 고정된 ID)
+            const memberId = '1';  // 현재 사용자 ID (예: 고정된 ID)
             const stockCode = document.getElementById('stock-code').textContent.trim();
 
-            axios.get(`/stock/order/holding/${userId}/${stockCode}`)
+            axios.get(`/stock/order/holding/${memberId}/${stockCode}`)
                 .then(response => {
                     const holdingQuantity = response.data;
                     document.getElementById('stock-holding').value = `${holdingQuantity}주`;  // 보유 수량 표시
@@ -523,7 +523,7 @@
             event.preventDefault();  // 기본 제출 방지
 
             // 주문 정보를 수집
-            const userId = '1';  // 사용자 ID 가져오기 (현재는 1로 고정)
+            const memberId = '1';  // 사용자 ID 가져오기 (현재는 1로 고정)
             const stockCode = document.getElementById('stock-code').textContent.trim();  // 종목 코드 가져오기
             const stockName = document.getElementById('stock-name').textContent.trim();  // 종목명 가져오기
             const quantity = parseInt(quantityInput.value.replace(/,/g, ''), 10) || 0;  // 수량
@@ -531,14 +531,14 @@
             const mrtgType = document.getElementById('stock-mrktCtg').value;  // 시장 구분
 
             // 필수 값 검증
-            if (!userId || !stockCode || !stockName || !quantity || !price) {
+            if (!memberId || !stockCode || !stockName || !quantity || !price) {
                 alert('주문 정보를 올바르게 입력해 주세요.');
                 return;
             }
 
             // 주문 DTO 생성
             const requestData = {
-                userId: userId,
+                memberId: memberId,
                 stockCode: stockCode,
                 stockName: stockName,
                 quantity: quantity,

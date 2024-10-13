@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import toyproject.simulated_stock.domain.stock.order.dto.StockOrderListDto;
 import toyproject.simulated_stock.domain.stock.order.entitiy.*;
 import toyproject.simulated_stock.domain.stock.order.repository.StockOrderRepository;
 import toyproject.simulated_stock.domain.stock.order.repository.UserAccountRepository;
@@ -15,6 +16,8 @@ import toyproject.simulated_stock.domain.stock.overall.repository.StockListRepos
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -48,7 +51,7 @@ public class StockOrderService {
         userAccount.withdraw(totalAmount);
 
         //기존 보유 주식 확인 및 없으면 생성
-        UserStock userStock = userStockRepository.findByUserIdAndStockCode(userId, stockCode)
+        UserStock userStock = userStockRepository.findByMemberIdAndStockCode(userId, stockCode)
                 .orElseGet(() -> UserStock.createUserStock(userId, stockCode, userAccount));
         // 주식 매수 처리 (비즈니스 메소드 사용)
         userStock.buy(quantity, price);
@@ -64,13 +67,13 @@ public class StockOrderService {
     }
 
     //매도
-    public void sellStock(String userId, String stockCode, int quantity, BigDecimal price) {
+    public void sellStock(String memberId, String stockCode, int quantity, BigDecimal price) {
         //사용자의 주식 계좌 정보 조회
-        UserAccount userAccount = userAccountRepository.findByMemberId(Long.parseLong(userId))
+        UserAccount userAccount = userAccountRepository.findByMemberId(Long.parseLong(memberId))
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         //보유 주식 정보 조회
-        UserStock userStock = userStockRepository.findByUserIdAndStockCode(userId, stockCode)
+        UserStock userStock = userStockRepository.findByMemberIdAndStockCode(memberId, stockCode)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.HAVE_NO_STOCK));
 
         //매도하려는 수량이 보유한 수량보다 많은지 확인
@@ -89,7 +92,7 @@ public class StockOrderService {
         }
 
         // 주문 기록 생성
-        StockOrder stockOrder = StockOrder.createOrder(userId, stockCode, userStock.getMrtgType(), quantity, price, OrderType.SELL, userAccount);
+        StockOrder stockOrder = StockOrder.createOrder(memberId, stockCode, userStock.getMrtgType(), quantity, price, OrderType.SELL, userAccount);
 
         // 주문 및 유저 정보 저장
         stockOrderRepository.save(stockOrder);
@@ -97,11 +100,35 @@ public class StockOrderService {
     }
 
     // 보유 주식 수량 조회 로직
-    public int getHoldingStockQuantity(String userId, String stockCode) {
+    public int getHoldingStockQuantity(String memberId, String stockCode) {
         // Optional<UserStock>을 통해 객체가 존재하는지 확인하고, 수량을 추출
-        return userStockRepository.findByUserIdAndStockCode(userId, stockCode)
+        return userStockRepository.findByMemberIdAndStockCode(memberId, stockCode)
                 .map(UserStock::getQuantity)
                 .orElse(0);  // 주식이 없을 경우 0을 반환
+    }
+
+    //특정 회원의 모든 주문 기록 가져오기
+    public List<StockOrderListDto> getAllOrdersByMemberId(String memberId) {
+        List<StockOrder> orders = stockOrderRepository.findByMemberId(memberId);
+        return orders.stream()
+                .map(StockOrderListDto::fromEntity)  // 엔티티를 DTO로 변환
+                .collect(Collectors.toList());
+    }
+
+    // 특정 회원의 매수 기록을 DTO로 변환하여 가져오기
+    public List<StockOrderListDto> getBuyOrdersByMemberId(String memberId) {
+        List<StockOrder> buyOrders = stockOrderRepository.findByMemberIdAndOrderType(memberId, OrderType.BUY);
+        return buyOrders.stream()
+                .map(StockOrderListDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    // 특정 회원의 매도 기록을 DTO로 변환하여 가져오기
+    public List<StockOrderListDto> getSellOrdersByMemberId(String memberId) {
+        List<StockOrder> sellOrders = stockOrderRepository.findByMemberIdAndOrderType(memberId, OrderType.SELL);
+        return sellOrders.stream()
+                .map(StockOrderListDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     // 평균 매입 가격 계산 메소드
