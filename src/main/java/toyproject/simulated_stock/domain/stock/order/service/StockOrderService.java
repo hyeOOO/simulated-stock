@@ -31,7 +31,7 @@ public class StockOrderService {
 
     //매수 로직
     @Transactional
-    public void buyStock(String memberId, String stockCode, int quantity, BigDecimal price) {
+    public void buyStock(String memberId, String stockCode, String stockName, int quantity, BigDecimal price) {
         //주식 정보
         StockList stock = stockListRepository.findBysrtnCd(stockCode).get(0);
         MarketType marketType = convertToMarketType(stock.getMrktCtg());
@@ -52,13 +52,13 @@ public class StockOrderService {
 
         //기존 보유 주식 확인 및 없으면 생성
         UserStock userStock = userStockRepository.findByMemberIdAndStockCode(memberId, stockCode)
-                .orElseGet(() -> UserStock.createUserStock(memberId, stockCode, userAccount));
+                .orElseGet(() -> UserStock.createUserStock(memberId, stockCode, stockName, userAccount));
         // 주식 매수 처리 (비즈니스 메소드 사용)
         userStock.buy(quantity, price);
 
         //주문 기록 생성
         // StockOrder 객체 생성은 생성 메소드 사용
-        StockOrder stockOrder = StockOrder.createOrder(memberId, stockCode, marketType, quantity, price, OrderType.BUY, userAccount);
+        StockOrder stockOrder = StockOrder.createOrder(memberId, stockCode, stockName, marketType, quantity, price, OrderType.BUY, userAccount);
 
         // 주문 저장
         stockOrderRepository.save(stockOrder);
@@ -67,7 +67,7 @@ public class StockOrderService {
     }
 
     //매도
-    public void sellStock(String memberId, String stockCode, int quantity, BigDecimal price) {
+    public void sellStock(String memberId, String stockCode, String stockName, int quantity, BigDecimal price) {
         //사용자의 주식 계좌 정보 조회
         UserAccount userAccount = userAccountRepository.findByMemberId(Long.parseLong(memberId))
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
@@ -92,7 +92,7 @@ public class StockOrderService {
         }
 
         // 주문 기록 생성
-        StockOrder stockOrder = StockOrder.createOrder(memberId, stockCode, userStock.getMrtgType(), quantity, price, OrderType.SELL, userAccount);
+        StockOrder stockOrder = StockOrder.createOrder(memberId, stockCode, stockName, userStock.getMrtgType(), quantity, price, OrderType.SELL, userAccount);
 
         // 주문 및 유저 정보 저장
         stockOrderRepository.save(stockOrder);

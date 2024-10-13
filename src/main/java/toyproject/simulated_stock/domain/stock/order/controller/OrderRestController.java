@@ -22,7 +22,7 @@ public class OrderRestController {
     //매수
     @PostMapping("/buy")
     public ResponseEntity<String> buyStock(@RequestBody StockOrderRequestDto request) {
-        stockOrderService.buyStock(request.getMemberId(), request.getStockCode(), request.getQuantity(), request.getPrice());
+        stockOrderService.buyStock(request.getMemberId(), request.getStockCode(), request.getStockName(), request.getQuantity(), request.getPrice());
         return ResponseEntity.ok("매수가 완료되었습니다.");
     }
 
@@ -30,7 +30,7 @@ public class OrderRestController {
     @PostMapping("/sell")
     public ResponseEntity<String> sellStock(@RequestBody StockOrderRequestDto request) {
         // 매도 로직 실행
-        stockOrderService.sellStock(request.getMemberId(), request.getStockCode(), request.getQuantity(), request.getPrice());
+        stockOrderService.sellStock(request.getMemberId(), request.getStockCode(), request.getStockName(), request.getQuantity(), request.getPrice());
         return ResponseEntity.ok("매도가 완료되었습니다.");
     }
 

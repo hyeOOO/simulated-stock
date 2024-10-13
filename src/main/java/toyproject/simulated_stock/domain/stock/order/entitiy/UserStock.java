@@ -37,10 +37,11 @@ public class UserStock {
     private UserAccount userAccount;  // 유저 계좌 정보와의 연관 관계
 
     // 생성 메소드 (정적 팩토리 메소드)
-    public static UserStock createUserStock(String memberId, String stockCode, UserAccount userAccount) {
+    public static UserStock createUserStock(String memberId, String stockCode, String stockName, UserAccount userAccount) {
         UserStock userStock = new UserStock();
         userStock.memberId = memberId;
         userStock.stockCode = stockCode;
+        userStock.stockName = stockName;
         userStock.userAccount = userAccount;
         userStock.quantity = 0;  // 초기 수량
         userStock.avgPrice = BigDecimal.ZERO;  // 초기 평균가
