@@ -44,6 +44,6 @@ public class MemberController {
 
     @GetMapping("/asset")
     public String assetManagement () {
-        return "member/assetmanagement_hardcoding";
+        return "member/assetmanagement";
     }
 }
