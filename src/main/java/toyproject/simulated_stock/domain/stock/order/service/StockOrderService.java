@@ -31,10 +31,10 @@ public class StockOrderService {
 
     //매수 로직
     @Transactional
-    public void buyStock(String memberId, String stockCode, String stockName, int quantity, BigDecimal price) {
+    public void buyStock(String memberId, String stockCode, String stockName, int quantity, BigDecimal price, MarketType marketType) {
         //주식 정보
         StockList stock = stockListRepository.findBysrtnCd(stockCode).get(0);
-        MarketType marketType = convertToMarketType(stock.getMrktCtg());
+        //MarketType marketType = convertToMarketType(stock.getMrktCtg());
 
         //매수하려는 유저의 계좌
 
@@ -52,7 +52,7 @@ public class StockOrderService {
 
         //기존 보유 주식 확인 및 없으면 생성
         UserStock userStock = userStockRepository.findByMemberIdAndStockCode(memberId, stockCode)
-                .orElseGet(() -> UserStock.createUserStock(memberId, stockCode, stockName, userAccount));
+                .orElseGet(() -> UserStock.createUserStock(memberId, stockCode, stockName, marketType, userAccount));
         // 주식 매수 처리 (비즈니스 메소드 사용)
         userStock.buy(quantity, price);
 

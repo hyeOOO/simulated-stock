@@ -2,6 +2,7 @@ package toyproject.simulated_stock.domain.stock.order.entitiy;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 import toyproject.simulated_stock.api.exception.BusinessLogicException;
 import toyproject.simulated_stock.api.exception.ExceptionCode;
 
@@ -25,6 +26,7 @@ public class UserStock {
 
     private BigDecimal minPrice; // 최소 매수가
     private BigDecimal maxPrice; // 최대 매수가
+    @ColumnDefault("0")
     private BigDecimal totalPrice; //매수시 가격과 개수에 따른 누적합
 
     @Enumerated(EnumType.STRING)
@@ -37,7 +39,7 @@ public class UserStock {
     private UserAccount userAccount;  // 유저 계좌 정보와의 연관 관계
 
     // 생성 메소드 (정적 팩토리 메소드)
-    public static UserStock createUserStock(String memberId, String stockCode, String stockName, UserAccount userAccount) {
+    public static UserStock createUserStock(String memberId, String stockCode, String stockName, MarketType marketType, UserAccount userAccount) {
         UserStock userStock = new UserStock();
         userStock.memberId = memberId;
         userStock.stockCode = stockCode;
@@ -47,6 +49,8 @@ public class UserStock {
         userStock.avgPrice = BigDecimal.ZERO;  // 초기 평균가
         userStock.minPrice = null;  // 초기 최저가
         userStock.maxPrice = null;  // 초기 최고가
+        userStock.mrtgType = marketType;
+        userStock.totalPrice = BigDecimal.ZERO;
         return userStock;
     }
 
