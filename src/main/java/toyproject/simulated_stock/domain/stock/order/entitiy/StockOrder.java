@@ -13,7 +13,7 @@ public class StockOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String userId;
+    private String memberId;
     private String stockCode; // 주식 코드
     private String stockName; // 주식 이름
     private int quantity;     // 주문 수량
@@ -32,9 +32,9 @@ public class StockOrder {
     private UserAccount userAccount;  // 유저 계좌 정보와의 연관 관계
 
     //==생성 메소드==//
-    public static StockOrder createOrder(String userId, String stockCode, MarketType mrtgType, int quantity, BigDecimal price, OrderType orderType, UserAccount userAccount) {
+    public static StockOrder createOrder(String memberId, String stockCode, MarketType mrtgType, int quantity, BigDecimal price, OrderType orderType, UserAccount userAccount) {
         StockOrder stockOrder = new StockOrder();
-        stockOrder.userId = userId;
+        stockOrder.memberId = memberId;
         stockOrder.stockCode = stockCode;
         stockOrder.mrtgType = mrtgType;
         stockOrder.quantity = quantity;

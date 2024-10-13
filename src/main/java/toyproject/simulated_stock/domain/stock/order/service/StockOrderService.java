@@ -64,13 +64,13 @@ public class StockOrderService {
     }
 
     //매도
-    public void sellStock(String userId, String stockCode, int quantity, BigDecimal price) {
+    public void sellStock(String memberId, String stockCode, int quantity, BigDecimal price) {
         //사용자의 주식 계좌 정보 조회
-        UserAccount userAccount = userAccountRepository.findByMemberId(Long.parseLong(userId))
+        UserAccount userAccount = userAccountRepository.findByMemberId(Long.parseLong(memberId))
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         //보유 주식 정보 조회
-        UserStock userStock = userStockRepository.findByUserIdAndStockCode(userId, stockCode)
+        UserStock userStock = userStockRepository.findByUserIdAndStockCode(memberId, stockCode)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.HAVE_NO_STOCK));
 
         //매도하려는 수량이 보유한 수량보다 많은지 확인
@@ -89,7 +89,7 @@ public class StockOrderService {
         }
 
         // 주문 기록 생성
-        StockOrder stockOrder = StockOrder.createOrder(userId, stockCode, userStock.getMrtgType(), quantity, price, OrderType.SELL, userAccount);
+        StockOrder stockOrder = StockOrder.createOrder(memberId, stockCode, userStock.getMrtgType(), quantity, price, OrderType.SELL, userAccount);
 
         // 주문 및 유저 정보 저장
         stockOrderRepository.save(stockOrder);
