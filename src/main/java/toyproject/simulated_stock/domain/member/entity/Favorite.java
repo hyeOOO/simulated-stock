@@ -21,11 +21,11 @@ public class Favorite {
     private Long id;
 
     private String stockCode;
-    private Long userId;
+    private String userId;
 
     private LocalDateTime createdDate;
 
-    public static Favorite createFavorite(String stockCode, Long userId) {
+    public static Favorite createFavorite(String stockCode, String userId) {
         Favorite favorite = new Favorite();
         favorite.stockCode = stockCode;
         favorite.userId = userId;

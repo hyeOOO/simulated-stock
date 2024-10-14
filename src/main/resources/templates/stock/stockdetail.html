@@ -253,7 +253,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-    const userId = document.getElementById('memberKey').value;  // 히든 필드에서 ID 가져오기
+    const userId = document.getElementById('memberKey').value;
     const stockCode = document.getElementById('stock-code').textContent.trim();
     const starIcon = document.querySelector('.stock-icon');
 
@@ -467,7 +467,7 @@
         });
 
         function fetchStockHolding() {
-            const memberId = '1';  // 현재 사용자 ID (예: 고정된 ID)
+            const memberId = document.getElementById('memberKey').value;
             const stockCode = document.getElementById('stock-code').textContent.trim();
 
             axios.get(`/stock/order/holding/${memberId}/${stockCode}`)
@@ -526,7 +526,7 @@
             event.preventDefault();  // 기본 제출 방지
 
             // 주문 정보를 수집
-            const memberId = '1';  // 사용자 ID 가져오기 (현재는 1로 고정)
+            const memberId = document.getElementById('memberKey').value;
             const stockCode = document.getElementById('stock-code').textContent.trim();  // 종목 코드 가져오기
             const stockName = document.getElementById('stock-name').textContent.trim();  // 종목명 가져오기
             const quantity = parseInt(quantityInput.value.replace(/,/g, ''), 10) || 0;  // 수량

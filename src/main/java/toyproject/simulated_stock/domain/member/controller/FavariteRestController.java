@@ -12,18 +12,18 @@ public class FavariteRestController {
     private final FavoriteService favoriteService;
 
     @GetMapping("/check")
-    public boolean isFavorite(@RequestParam Long userId, @RequestParam String stockCode) {
+    public boolean isFavorite(@RequestParam String userId, @RequestParam String stockCode) {
         return favoriteService.isFavorite(userId, stockCode);
     }
 
     @PostMapping("/add")
-    public String addFavorite(@RequestParam Long userId, @RequestParam String stockCode) {
+    public String addFavorite(@RequestParam String userId, @RequestParam String stockCode) {
         favoriteService.addFavorite(userId, stockCode);
         return "즐겨찾기에 추가되었습니다.";
     }
 
     @PostMapping("/remove")
-    public String removeFavorite(@RequestParam Long userId, @RequestParam String stockCode) {
+    public String removeFavorite(@RequestParam String userId, @RequestParam String stockCode) {
         favoriteService.removeFavorite(userId, stockCode);
         return "즐겨찾기에서 삭제되었습니다.";
     }

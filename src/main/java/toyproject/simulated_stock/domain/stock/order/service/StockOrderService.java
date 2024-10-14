@@ -1,9 +1,13 @@
 package toyproject.simulated_stock.domain.stock.order.service;
 
+import com.nimbusds.openid.connect.sdk.claims.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import toyproject.simulated_stock.api.auth.exception.AuthException;
+import toyproject.simulated_stock.domain.member.entity.Member;
+import toyproject.simulated_stock.domain.member.repository.MemberRepository;
 import toyproject.simulated_stock.domain.stock.order.dto.StockOrderListDto;
 import toyproject.simulated_stock.domain.stock.order.entitiy.*;
 import toyproject.simulated_stock.domain.stock.order.repository.StockOrderRepository;
@@ -19,6 +23,8 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static toyproject.simulated_stock.api.exception.ErrorCode.MEMBER_NOT_FOUND;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -28,6 +34,7 @@ public class StockOrderService {
     private final StockOrderRepository stockOrderRepository;
     private final UserStockRepository userStockRepository;
     private final StockListRepository stockListRepository;
+    private final MemberRepository memberRepository;
 
     //매수 로직
     @Transactional
@@ -36,9 +43,12 @@ public class StockOrderService {
         StockList stock = stockListRepository.findBysrtnCd(stockCode).get(0);
         //MarketType marketType = convertToMarketType(stock.getMrktCtg());
 
-        //매수하려는 유저의 계좌
+        //멤버 정보
+        Member member = memberRepository.findByMemberKey(memberId)
+                .orElseThrow(() -> new AuthException(MEMBER_NOT_FOUND));
 
-        UserAccount userAccount = userAccountRepository.findByMemberId(Long.parseLong(memberId))
+        //매수하려는 유저의 계좌
+        UserAccount userAccount = userAccountRepository.findByMemberId(member.getId())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         //가격 계산
@@ -68,8 +78,12 @@ public class StockOrderService {
 
     //매도
     public void sellStock(String memberId, String stockCode, String stockName, int quantity, BigDecimal price) {
+        //멤버 정보
+        Member member = memberRepository.findByMemberKey(memberId)
+                .orElseThrow(() -> new AuthException(MEMBER_NOT_FOUND));
+
         //사용자의 주식 계좌 정보 조회
-        UserAccount userAccount = userAccountRepository.findByMemberId(Long.parseLong(memberId))
+        UserAccount userAccount = userAccountRepository.findByMemberId(member.getId())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         //보유 주식 정보 조회
