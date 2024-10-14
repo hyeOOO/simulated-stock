@@ -11,7 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import toyproject.simulated_stock.api.auth.dto.model.PrincipalDetails;
 import toyproject.simulated_stock.api.auth.service.TokenService;
+import toyproject.simulated_stock.api.member.dto.MemberDto;
+import toyproject.simulated_stock.api.member.service.MemberService;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -19,6 +22,7 @@ import toyproject.simulated_stock.api.auth.service.TokenService;
 public class AuthController {
 
     private final TokenService tokenService;
+    private final MemberService memberService;
 
     @GetMapping("/")
     public String home(){
@@ -44,10 +48,11 @@ public class AuthController {
     }
 
     @GetMapping("/auth/success")
-    public String loginSuccess() {
-        return "redirect:/main";
+    public String loginSuccess(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
+        MemberDto memberInfo = memberService.memberInfo(principalDetails.getMemberKey());
+        model.addAttribute("memberInfo", memberInfo);
+        return "main"; // main.html에서 model 데이터를 사용
     }
-
     @GetMapping("/auth/logout")
     public String logout(@AuthenticationPrincipal UserDetails userDetails, @CookieValue(value="Authorization", defaultValue = "", required = false)Cookie jwtCookie, HttpServletResponse response){
         log.info("jwt Cookie = {}", jwtCookie);
