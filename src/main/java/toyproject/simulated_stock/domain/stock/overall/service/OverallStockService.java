@@ -70,7 +70,7 @@ public class OverallStockService {
         // 2. 가장 최근의 basDt 값을 찾습니다.
         String recentBasDt = stockLists.get(0).getBasDt();
 
-        // 3. 최근 basDt와 일치하는 항목들만 필터링하고 상위 10개만 선택합니다.
+        // 3. 최근 basDt와 일치하는 항목들만 필터링합니다.
         List<StockList> recentStockList = stockLists.stream()
                 .filter(e -> e.getBasDt().equals(recentBasDt))
                 .sorted((stock1, stock2) -> Long.compare(Long.parseLong(stock2.getTrqu()), Long.parseLong(stock1.getTrqu()))) // 거래량 기준으로 정렬
@@ -80,6 +80,26 @@ public class OverallStockService {
         return recentStockList.stream()
                 .map(stock -> StockListResponseDto.fromEntity(stock))
                 .collect(Collectors.toList());
+    }
+
+    //모든 주식에서 코드만 반환
+    public List<String> getStockCodeListAll() {
+        // 1. 모든 주식 리스트를 가져옵니다.
+        List<StockList> stockLists = stockListRepository.findAll();
+
+        // 2. 가장 최근의 basDt 값을 찾습니다.
+        String recentBasDt = stockLists.get(0).getBasDt();
+
+        // 3. 최근 basDt와 일치하는 항목들만 필터링하고 거래량 기준으로 정렬합니다.
+        List<StockList> recentStockList = stockLists.stream()
+                .filter(e -> e.getBasDt().equals(recentBasDt))
+                .sorted((stock1, stock2) -> Long.compare(Long.parseLong(stock2.getTrqu()), Long.parseLong(stock1.getTrqu()))) // 거래량 기준으로 정렬
+                .collect(Collectors.toList());
+
+        // 4. 주식 종목 코드(stockCode)를 추출하여 리스트로 변환
+        return recentStockList.stream()
+                .map(StockList::getSrtnCd)  // StockList 엔티티에서 stockCode 추출
+                .collect(Collectors.toList()); // 리스트로 변환하여 반환
     }
 
     public List<StockIndex> getStockIndex(){
