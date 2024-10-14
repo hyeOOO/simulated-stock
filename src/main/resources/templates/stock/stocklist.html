@@ -28,7 +28,7 @@
 <script>
     // 페이지 로드 후 주식 데이터를 가져오는 함수
     window.onload = function() {
-        fetch('/api/stock/list')
+        fetch('/api/stock/listAll')
             .then(response => response.json())
             .then(data => {
                 const tbody = document.getElementById('stockBody');

@@ -32,14 +32,13 @@ public class OverallStockService {
 
         String recentBasDt = stockLists.get(0).getBasDt();
 
-        // 최근 일자의 데이터를 거래량 기준으로 정렬하고 상위 10개만 선택
+        // 최근 일자의 데이터를 거래량 기준으로 정렬
         List<StockList> recentStockList = stockLists.stream()
                 .filter(e -> e.getBasDt().equals(recentBasDt)) // 최근 기준일자와 동일한 데이터 필터링
                 .sorted((stock1, stock2) -> Long.compare(Long.parseLong(stock2.getTrqu()), Long.parseLong(stock1.getTrqu()))) // 거래량 기준으로 내림차순 정렬
-                .limit(10) // 상위 10개만 선택
                 .collect(Collectors.toList());
 
-        return recentStockList;
+        return recentStockList; // 이제 전체 데이터를 반환
     }
 
     // 엔티티 -> DTO 변환 및 반환
@@ -50,9 +49,31 @@ public class OverallStockService {
         // 2. 가장 최근의 basDt 값을 찾습니다.
         String recentBasDt = stockLists.get(0).getBasDt();
 
-        // 3. 최근 basDt와 일치하는 항목들만 필터링합니다.
+        // 3. 최근 basDt와 일치하는 항목들만 필터링하고 상위 10개만 선택합니다.
         List<StockList> recentStockList = stockLists.stream()
                 .filter(e -> e.getBasDt().equals(recentBasDt))
+                .sorted((stock1, stock2) -> Long.compare(Long.parseLong(stock2.getTrqu()), Long.parseLong(stock1.getTrqu()))) // 거래량 기준으로 정렬
+                .limit(10) // 상위 10개만 선택
+                .collect(Collectors.toList());
+
+        // 4. 엔티티를 DTO로 변환합니다.
+        return recentStockList.stream()
+                .map(stock -> StockListResponseDto.fromEntity(stock))
+                .collect(Collectors.toList());
+    }
+
+    // 엔티티 -> DTO 변환 및 반환
+    public List<StockListResponseDto> getStockListAllDto() {
+        // 1. 모든 주식 리스트를 가져옵니다.
+        List<StockList> stockLists = stockListRepository.findAll();
+
+        // 2. 가장 최근의 basDt 값을 찾습니다.
+        String recentBasDt = stockLists.get(0).getBasDt();
+
+        // 3. 최근 basDt와 일치하는 항목들만 필터링하고 상위 10개만 선택합니다.
+        List<StockList> recentStockList = stockLists.stream()
+                .filter(e -> e.getBasDt().equals(recentBasDt))
+                .sorted((stock1, stock2) -> Long.compare(Long.parseLong(stock2.getTrqu()), Long.parseLong(stock1.getTrqu()))) // 거래량 기준으로 정렬
                 .collect(Collectors.toList());
 
         // 4. 엔티티를 DTO로 변환합니다.
