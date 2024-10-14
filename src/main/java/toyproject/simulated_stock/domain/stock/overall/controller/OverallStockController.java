@@ -30,9 +30,14 @@ public class OverallStockController {
 
     @GetMapping("/list")
     public ResponseEntity<List<StockListResponseDto>> getListOfStock(){
-        List<StockList> stockList = overallStockService.getStockList();
-        List<StockListResponseDto> response = stockListMapper.stockListToStockListResponseDto(stockList);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        List<StockListResponseDto> stockList = overallStockService.getStockListDto();
+        return new ResponseEntity<>(stockList, HttpStatus.OK);
+    }
+
+    @GetMapping("/listAll")
+    public ResponseEntity<List<StockListResponseDto>> getAllListOfStock(){
+        List<StockListResponseDto> stockList = overallStockService.getStockListAllDto();
+        return new ResponseEntity<>(stockList, HttpStatus.OK);
     }
 
 //    @GetMapping("/list")
