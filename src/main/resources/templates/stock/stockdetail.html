@@ -23,11 +23,13 @@
     <a href="#" class="menu">자산 관리</a>
     <div class="flex-container">
         <img src="/layout/srcs/icons/user-logo.svg" alt="icon" class="flex-component"/>
-        <a id="userName" class="flex-component" href="javascript:void(0);" th:text="${#authentication.name}"
+        <a id="userName" class="flex-component" href="javascript:void(0);" th:text="${#authentication.principal.nickname}"
            onclick="logout()" th:if="${#authorization.expression('isAuthenticated()')}"></a>
         <a class="flex-component" href="/login" th:unless="${#authorization.expression('isAuthenticated()')}">
             Login
         </a>
+        <!-- 히든 필드 추가 -->
+        <input type="hidden" id="memberKey" th:value="${#authentication.principal.memberKey}" />
     </div>
 </div>
 
@@ -251,10 +253,11 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-    const userId = '1';  // 현재 로그인한 사용자의 ID (예: 고정된 ID)
+    const userId = document.getElementById('memberKey').value;  // 히든 필드에서 ID 가져오기
     const stockCode = document.getElementById('stock-code').textContent.trim();
     const starIcon = document.querySelector('.stock-icon');
 
+    console.log('userId=', userId);
     // 즐겨찾기 여부 확인
     function checkFavoriteStatus() {
         axios.get('/api/favorites/check', {

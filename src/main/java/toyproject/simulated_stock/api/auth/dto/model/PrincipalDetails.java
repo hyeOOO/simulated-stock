@@ -56,8 +56,17 @@ public record PrincipalDetails(
         return null;
     }
 
+    // 복합키(member_key+name) 저장
     @Override
     public String getUsername() {
+        return member.getMemberKey() + ":" + member.getName();
+    }
+
+    public String getMemberKey() {
+        return member.getMemberKey();
+    }
+
+    public String getNickname() {
         return member.getName();
     }
 }

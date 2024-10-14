@@ -22,11 +22,8 @@
     <a href="#" class="menu">자산 관리</a>
     <div class="flex-container">
         <img src="layout/srcs/icons/user-logo.svg" alt="icon" class="flex-component"/>
-        <!-- 사용자 이름을 표시하고, 클릭 시 로그아웃 -->
-        <a class="flex-component" href="javascript:void(0);" th:text="${#authentication.name}"
+        <a id="userName" class="flex-component" href="javascript:void(0);" th:text="${#authentication.principal.nickname}"
            onclick="logout()" th:if="${#authorization.expression('isAuthenticated()')}"></a>
-
-        <!-- 비로그인 시 로그인 버튼 표시 -->
         <a class="flex-component" href="/login" th:unless="${#authorization.expression('isAuthenticated()')}">
             Login
         </a>

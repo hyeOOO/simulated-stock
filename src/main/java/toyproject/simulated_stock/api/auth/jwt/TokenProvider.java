@@ -15,8 +15,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import toyproject.simulated_stock.api.auth.dto.model.PrincipalDetails;
 import toyproject.simulated_stock.api.auth.exception.TokenException;
 import toyproject.simulated_stock.api.auth.service.TokenService;
+import toyproject.simulated_stock.domain.member.entity.Member;
 import toyproject.simulated_stock.domain.redis.entity.Token;
 
 import javax.crypto.SecretKey;
@@ -64,13 +66,15 @@ public class TokenProvider {
         Date now = new Date();
         Date expiredDate = new Date(now.getTime() + expireTime);
 
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining());
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 
         return Jwts.builder()
-                .subject(authentication.getName())
-                .claim(KEY_ROLE, authorities)
+                .subject(principalDetails.getUsername())
+                .claim(KEY_ROLE, authentication.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.joining(",")))
+                .claim("memberKey", principalDetails.getMemberKey())
+                .claim("nickname", principalDetails.getNickname())
                 .issuedAt(now)
                 .expiration(expiredDate)
                 .signWith(secretKey, Jwts.SIG.HS512)
@@ -81,8 +85,13 @@ public class TokenProvider {
         Claims claims = parseClaims(token);
         List<SimpleGrantedAuthority> authorities = getAuthorities(claims);
 
-        User principal = new User(claims.getSubject(), "", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        Member member = Member.builder()
+                .memberKey(claims.get("memberKey", String.class))
+                .name(claims.get("nickname", String.class))
+                .build();
+
+        PrincipalDetails principalDetails = new PrincipalDetails(member, null, null);
+        return new UsernamePasswordAuthenticationToken(principalDetails, token, authorities);
     }
 
     private List<SimpleGrantedAuthority> getAuthorities(Claims claims) {
