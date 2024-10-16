@@ -51,6 +51,8 @@
         >
             Login
         </a>
+
+        <input type="hidden" id="memberKey" th:value="${#authentication.principal.memberKey}" th:if="${#authorization.expression('isAuthenticated()')}" />
     </div>
 </div>
 </div>
@@ -135,63 +137,47 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        let accessToken = getCookie('Authorization');
-        let userId = null;
+        initializePageData(); // 비로그인 상태에서도 페이지 데이터 초기화
+    });
 
-        if (accessToken && accessToken.trim() !== '') {
-          axios
-            .get('/members/info', {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            })
-            .then((response) => {
-              const memberInfo = response.data;
-              document.getElementById('userName').textContent = memberInfo.name;
-              initializePageData(userId); // 이 시점에서 페이지 데이터를 초기화
-            })
-            .catch((error) => {
-              if (error.response && error.response.status === 401) {
-                alert('세션이 만료되었습니다. 다시 로그인해주세요.');
-                window.location.href = '/login';
-              } else {
-                alert('사용자 정보를 가져오는데 실패했습니다.');
-              }
-            });
-        } else {
-          initializePageData(userId); // 비로그인 상태에서도 페이지 데이터 초기화
-        }
-      });
-
-      function initializePageData(userId) {
+    function initializePageData(userId) {
         fetchMarketStats();
         fetchStockList();
-        if (userId) {
-          fetchOwnedStocks(userId);
-          fetchUserAssets(userId);
-        }
-      }
 
-      async function getUserInfo(accessToken) {
-        try {
-          const response = await axios.get('/members/info', {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          });
-          document.getElementById('userName').textContent = response.data.name;
-          return response.data;
-        } catch (error) {
-          console.error('Failed to fetch member info:', error);
-        }
-      }
+        const memberKeyElement = document.getElementById('memberKey');
+        if (memberKeyElement && memberKeyElement.value) {
+            const userId = memberKeyElement.value;
+            fetchOwnedStocks(userId);
+            fetchUserAssets(userId);
 
-      function logout() {
+            // 기본적으로 전체 기록을 가져오기
+            fetchStockOrders(userId, 'ALL');
+
+            // 필터 버튼 클릭 시 필터링된 데이터 가져오기
+            document.querySelectorAll('.filter-btn-group button').forEach(button => {
+                button.addEventListener('click', function () {
+                    // 모든 버튼의 활성화 클래스를 제거
+                    document.querySelectorAll('.filter-btn-group button').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // 필터 타입에 따라 거래 기록을 가져옴
+                    const filterType = this.getAttribute('data-filter');
+                    fetchStockOrders(userId, filterType);
+                });
+            });
+        } else {
+          console.log('User not logged in or memberKey not available');
+        }
+    }
+
+    function logout() {
         axios
           .get('/auth/logout')
           .then(() => (window.location.href = '/login'))
           .catch((error) => alert('로그아웃 중 오류가 발생했습니다.'));
-      }
+    }
 
-      function getCookie(cookieName) {
+    function getCookie(cookieName) {
         let name = cookieName + '=';
         let decodedCookie = decodeURIComponent(document.cookie);
         let cookieArray = decodedCookie.split(';');
@@ -200,28 +186,7 @@
           if (cookie.indexOf(name) === 0) return cookie.substring(name.length);
         }
         return '';
-      }
-
-    // 필터 버튼 클릭 시 API 호출
-document.addEventListener('DOMContentLoaded', function () {
-        let memberId = 'd1bc860a5dda4518a728e635bd2f960c';  // 실제 회원 ID로 변경해야 함
-
-        // 기본적으로 전체 기록을 가져오기
-        fetchStockOrders(memberId, 'ALL');
-
-        // 필터 버튼 클릭 시 필터링된 데이터 가져오기
-        document.querySelectorAll('.filter-btn-group button').forEach(button => {
-            button.addEventListener('click', function () {
-                // 모든 버튼의 활성화 클래스를 제거
-                document.querySelectorAll('.filter-btn-group button').forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-
-                // 필터 타입에 따라 거래 기록을 가져옴
-                const filterType = this.getAttribute('data-filter');
-                fetchStockOrders(memberId, filterType);
-            });
-        });
-    });
+    }
 
     // 거래 기록을 가져오는 함수
     function fetchStockOrders(memberId, filterType = 'ALL') {
