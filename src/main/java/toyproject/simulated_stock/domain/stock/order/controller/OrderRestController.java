@@ -35,27 +35,27 @@ public class OrderRestController {
     }
 
     // 특정 사용자의 보유 주식 개수를 반환하는 API
-    @GetMapping("/holding/{memberId}/{stockCode}")
-    public ResponseEntity<Integer> getStockHolding(@PathVariable String memberId, @PathVariable String stockCode) {
-        int holdingQuantity = stockOrderService.getHoldingStockQuantity(memberId, stockCode);
+    @GetMapping("/holding/{memberKey}/{stockCode}")
+    public ResponseEntity<Integer> getStockHolding(@PathVariable String memberKey, @PathVariable String stockCode) {
+        int holdingQuantity = stockOrderService.getHoldingStockQuantity(memberKey, stockCode);
         return ResponseEntity.ok(holdingQuantity);
     }
 
     // 특정 회원의 모든 주문 기록을 DTO로 변환하여 가져오기
-    @GetMapping("/{memberId}/all")
-    public List<StockOrderListDto> getAllOrders(@PathVariable String memberId) {
-        return stockOrderService.getAllOrdersByMemberId(memberId);
+    @GetMapping("/{memberKey}/all")
+    public List<StockOrderListDto> getAllOrders(@PathVariable String memberKey) {
+        return stockOrderService.getAllOrdersByMemberKey(memberKey);
     }
 
     // 특정 회원의 매수 기록을 DTO로 변환하여 가져오기
-    @GetMapping("/{memberId}/buy")
-    public List<StockOrderListDto> getBuyOrders(@PathVariable String memberId) {
-        return stockOrderService.getBuyOrdersByMemberId(memberId);
+    @GetMapping("/{memberKey}/buy")
+    public List<StockOrderListDto> getBuyOrders(@PathVariable String memberKey) {
+        return stockOrderService.getBuyOrdersByMemberKey(memberKey);
     }
 
     // 특정 회원의 매도 기록을 DTO로 변환하여 가져오기
-    @GetMapping("/{memberId}/sell")
-    public List<StockOrderListDto> getSellOrders(@PathVariable String memberId) {
-        return stockOrderService.getSellOrdersByMemberId(memberId);
+    @GetMapping("/{memberKey}/sell")
+    public List<StockOrderListDto> getSellOrders(@PathVariable String memberKey) {
+        return stockOrderService.getSellOrdersByMemberKey(memberKey);
     }
 }

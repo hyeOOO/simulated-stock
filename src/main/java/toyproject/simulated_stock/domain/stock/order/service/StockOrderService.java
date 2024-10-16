@@ -44,8 +44,7 @@ public class StockOrderService {
         //MarketType marketType = convertToMarketType(stock.getMrktCtg());
 
         //멤버 정보
-        Member member = memberRepository.findByMemberKey(memberId)
-                .orElseThrow(() -> new AuthException(MEMBER_NOT_FOUND));
+        Member member = getMember(memberId);
 
         //매수하려는 유저의 계좌
         UserAccount userAccount = userAccountRepository.findByMemberId(member.getId())
@@ -79,8 +78,7 @@ public class StockOrderService {
     //매도
     public void sellStock(String memberId, String stockCode, String stockName, int quantity, BigDecimal price) {
         //멤버 정보
-        Member member = memberRepository.findByMemberKey(memberId)
-                .orElseThrow(() -> new AuthException(MEMBER_NOT_FOUND));
+        Member member = getMember(memberId);
 
         //사용자의 주식 계좌 정보 조회
         UserAccount userAccount = userAccountRepository.findByMemberId(member.getId())
@@ -122,24 +120,27 @@ public class StockOrderService {
     }
 
     //특정 회원의 모든 주문 기록 가져오기
-    public List<StockOrderListDto> getAllOrdersByMemberId(String memberId) {
-        List<StockOrder> orders = stockOrderRepository.findByMemberId(memberId);
+    public List<StockOrderListDto> getAllOrdersByMemberKey(String memberKey) {
+        Member member = getMember(memberKey);
+        List<StockOrder> orders = stockOrderRepository.findByMemberId(String.valueOf(member.getId()));
         return orders.stream()
                 .map(StockOrderListDto::fromEntity)  // 엔티티를 DTO로 변환
                 .collect(Collectors.toList());
     }
 
     // 특정 회원의 매수 기록을 DTO로 변환하여 가져오기
-    public List<StockOrderListDto> getBuyOrdersByMemberId(String memberId) {
-        List<StockOrder> buyOrders = stockOrderRepository.findByMemberIdAndOrderType(memberId, OrderType.BUY);
+    public List<StockOrderListDto> getBuyOrdersByMemberKey(String memberKey) {
+        Member member = getMember(memberKey);
+        List<StockOrder> buyOrders = stockOrderRepository.findByMemberIdAndOrderType(String.valueOf(member.getId()), OrderType.BUY);
         return buyOrders.stream()
                 .map(StockOrderListDto::fromEntity)
                 .collect(Collectors.toList());
     }
 
     // 특정 회원의 매도 기록을 DTO로 변환하여 가져오기
-    public List<StockOrderListDto> getSellOrdersByMemberId(String memberId) {
-        List<StockOrder> sellOrders = stockOrderRepository.findByMemberIdAndOrderType(memberId, OrderType.SELL);
+    public List<StockOrderListDto> getSellOrdersByMemberKey(String memberKey) {
+        Member member = getMember(memberKey);
+        List<StockOrder> sellOrders = stockOrderRepository.findByMemberIdAndOrderType(String.valueOf(member.getId()), OrderType.SELL);
         return sellOrders.stream()
                 .map(StockOrderListDto::fromEntity)
                 .collect(Collectors.toList());
@@ -160,5 +161,12 @@ public class StockOrderService {
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid market type: " + marketTypeStr);
         }
+    }
+
+    //멤버 정보 가져오기
+    private Member getMember(String memberKey) {
+        Member member = memberRepository.findByMemberKey(memberKey)
+                .orElseThrow(() -> new AuthException(MEMBER_NOT_FOUND));
+        return member;
     }
 }
