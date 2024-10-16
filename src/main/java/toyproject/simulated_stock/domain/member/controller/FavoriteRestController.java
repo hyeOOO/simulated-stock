@@ -7,7 +7,7 @@ import toyproject.simulated_stock.domain.member.service.FavoriteService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/favorites")
-public class FavariteRestController {
+public class FavoriteRestController {
 
     private final FavoriteService favoriteService;
 
