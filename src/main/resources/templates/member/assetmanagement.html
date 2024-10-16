@@ -210,7 +210,7 @@
         tbody.innerHTML = '';  // 기존 데이터를 비움
 
         orders.forEach(order => {
-            const stockLink = `/stock/${order.stockCode}?marketCategory=${stock.mrtgType}`; // 동적으로 링크 생성
+            const stockLink = `/stock/${order.stockCode}?marketCategory=${order.mrtgType}`; // 동적으로 링크 생성
             const row = `
                 <tr>
                     <td>
