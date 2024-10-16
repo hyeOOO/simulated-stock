@@ -51,7 +51,7 @@ public class AuthController {
     public String loginSuccess(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
         MemberDto memberInfo = memberService.memberInfo(principalDetails.getMemberKey());
         model.addAttribute("memberInfo", memberInfo);
-        return "main"; // main.html에서 model 데이터를 사용
+        return "redirect:/main";
     }
     @GetMapping("/auth/logout")
     public String logout(@AuthenticationPrincipal UserDetails userDetails, @CookieValue(value="Authorization", defaultValue = "", required = false)Cookie jwtCookie, HttpServletResponse response){
