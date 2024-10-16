@@ -34,6 +34,8 @@
       <a class="flex-component" href="/login" th:unless="${#authorization.expression('isAuthenticated()')}">
         Login
       </a>
+      <!-- 히든 필드 추가 -->
+      <input type="hidden" id="memberKey" th:value="${#authentication.principal.memberKey}" th:if="${#authorization.expression('isAuthenticated()')}" />
     </div>
   </div>
     <div class="main-content">
@@ -103,48 +105,29 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-        let accessToken = getCookie('Authorization');
-        let userId = null;
-
-        console.log('accessToken: ', accessToken);
-        if (accessToken && accessToken.trim() !== '') {
-          axios
-            .get('/members/info', {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            })
-            .then((response) => {
-              const memberInfo = response.data;
-              userId = memberInfo.memberKey;
-              console.log('Logged in user:', userId);
-              initializePageData(userId); // 이 시점에서 페이지 데이터를 초기화
-            })
-            .catch((error) => {
-              if (error.response && error.response.status === 401) {
-                alert('세션이 만료되었습니다. 다시 로그인해주세요.');
-                window.location.href = '/login';
-              } else {
-                alert('사용자 정보를 가져오는데 실패했습니다.');
-              }
-
-              initializePageData(null);
-            });
-        } else {
-          initializePageData(null); // 비로그인 상태에서도 페이지 데이터 초기화
-        }
+        initializePageData();
       });
 
-      function initializePageData(userId) {
-        console.log('Initializing page data for user:', userId);
+      function initializePageData() {
         fetchMarketStats();
         fetchStockList();
-        if (userId) {
+
+        const memberKeyElement = document.getElementById('memberKey');
+        if (memberKeyElement && memberKeyElement.value) {
+          const userId = memberKeyElement.value;
           fetchOwnedStocks(userId);
           fetchUserAssets(userId);
         } else {
-          console.log('No user-specific data to fetch');
+          console.log('User not logged in or memberKey not available');
+          updateUIForLoggedOutUser();
         }
+      }
+
+      function updateUIForLoggedOutUser() {
+        // 로그인하지 않은 사용자를 위한 UI 업데이트
+        document.getElementById('totalAsset').textContent = '로그인 필요';
+        document.getElementById('availableAsset').textContent = '로그인 필요';
+        document.getElementById('ownedStockBody').innerHTML = '<tr><td colspan="3">로그인이 필요합니다</td></tr>';
       }
 
       async function getUserInfo(accessToken) {
@@ -167,7 +150,6 @@
       }
 
       function getCookie(cookieName) {
-        console.log('cookieName=',cookieName);
         let name = cookieName + '=';
         let decodedCookie = decodeURIComponent(document.cookie);
         let cookieArray = decodedCookie.split(';');
