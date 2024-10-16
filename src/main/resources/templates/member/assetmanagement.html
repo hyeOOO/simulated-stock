@@ -72,23 +72,23 @@
             <table>
                 <tr>
                     <td>총 자산</td>
-                    <td>10,962,194 원</td>
+                    <td id="total-assets">- 원</td>
                 </tr>
                 <tr>
                     <td>가용 자산</td>
-                    <td>2,264,568 원</td>
+                    <td id="available-assets">- 원</td>
                 </tr>
                 <tr>
                     <td>보유 주식 총액</td>
-                    <td>8,697,626 원</td>
+                    <td id="stock-total">- 원</td>
                 </tr>
                 <tr>
                     <td>손익</td>
-                    <td>962,194 원</td>
+                    <td id="profit">- 원</td>
                 </tr>
                 <tr>
                     <td>손익률</td>
-                    <td>11.8%</td>
+                    <td id="profit-rate">-%</td>
                 </tr>
             </table>
         </div>
@@ -141,14 +141,10 @@
     });
 
     function initializePageData(userId) {
-        fetchMarketStats();
-        fetchStockList();
-
         const memberKeyElement = document.getElementById('memberKey');
         if (memberKeyElement && memberKeyElement.value) {
             const userId = memberKeyElement.value;
-            fetchOwnedStocks(userId);
-            fetchUserAssets(userId);
+            fetchUserAssets(userId);  // 자산 정보 가져오기
 
             // 기본적으로 전체 기록을 가져오기
             fetchStockOrders(userId, 'ALL');
@@ -230,6 +226,28 @@
             `;
             tbody.innerHTML += row;
         });
+    }
+
+    //자산 정보
+    // 자산 정보를 가져오는 함수
+    function fetchUserAssets(memberKey) {
+        axios.get(`/api/asset/${memberKey}`)
+            .then(response => {
+                const assetData = response.data;
+                updateAssetInfo(assetData);  // 자산 정보를 업데이트
+            })
+            .catch(error => {
+                console.error('Error fetching user assets:', error);
+            });
+    }
+
+    // 자산 정보를 UI에 업데이트하는 함수
+    function updateAssetInfo(assetData) {
+        document.getElementById('total-assets').textContent = `${assetData.totalAssets.toLocaleString()} 원`;
+        document.getElementById('available-assets').textContent = `${assetData.availableAsset.toLocaleString()} 원`; // 수정
+        document.getElementById('stock-total').textContent = `${assetData.stockTotal.toLocaleString()} 원`;
+        document.getElementById('profit').textContent = `${assetData.profit.toLocaleString()} 원`;
+        document.getElementById('profit-rate').textContent = `${assetData.profitRate}%`;
     }
 </script>
 
