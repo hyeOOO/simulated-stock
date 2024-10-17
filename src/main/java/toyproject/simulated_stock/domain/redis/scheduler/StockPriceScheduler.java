@@ -26,7 +26,7 @@ public class StockPriceScheduler {
         List<String> stockCodes = overallStockService.getStockCodeListAll();
 
         // 요청을 분할하여, 1초마다 10개의 종목만 요청 (속도 조절)
-        int batchSize = 10;
+        int batchSize = 2;
         for (int i = 0; i < stockCodes.size(); i += batchSize) {
             List<String> batch = stockCodes.subList(i, Math.min(i + batchSize, stockCodes.size()));
 
@@ -38,7 +38,7 @@ public class StockPriceScheduler {
                     stockCacheService.updateStockPrice(stockCode, stockPriceDto);  // 변환된 데이터를 전달
 
                     // 요청 간 간격 두기 (너무 많은 요청 방지)
-                    Thread.sleep(500);  // 0.5초 지연 시간
+                    Thread.sleep(1000);  // 1초 지연 시간
                 } catch (Exception e) {
                     System.err.println("Error while fetching stock price for: " + stockCode + ". Error: " + e.getMessage());
                 }
