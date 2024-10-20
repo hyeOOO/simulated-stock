@@ -41,7 +41,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
+                .formLogin(form -> form
+                        .loginPage("/login")  // 로그인 페이지 설정
+                        .defaultSuccessUrl("/", true)  // 로그인 성공 후 리다이렉션
+                        .permitAll()
+                )
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
                         .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "DELETE"))
@@ -62,13 +66,13 @@ public class SecurityConfig {
                                         new AntPathRequestMatcher("/login"),
                                         new AntPathRequestMatcher("/auth/success"),
                                         new AntPathRequestMatcher("/oauth2/**"),
-
                                         //API 추가
                                         new AntPathRequestMatcher("/api/**"),  // 주식 리스트 API
                                         new AntPathRequestMatcher("/stock/**"),  // 뷰 로딩 임시
                                         new AntPathRequestMatcher("/stock-view"),  // 뷰 로딩 임시
                                         new AntPathRequestMatcher("/members/**")  // 임시
                                 ).permitAll()
+                                .requestMatchers("/mypage/**").authenticated()
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth-> oauth
@@ -79,8 +83,11 @@ public class SecurityConfig {
                 )
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new TokenExceptionFilter(), tokenAuthenticationFilter.getClass())
-                .exceptionHandling((exceptions)->exceptions
-                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            // 인증되지 않은 사용자의 보호된 리소스 접근 처리
+                            response.sendRedirect("/login");
+                        })
                         .accessDeniedHandler(new CustomAccessDeniedHandler()));
         return http.build();
 

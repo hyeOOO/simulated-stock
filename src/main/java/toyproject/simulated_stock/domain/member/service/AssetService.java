@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import toyproject.simulated_stock.api.auth.exception.AuthException;
 import toyproject.simulated_stock.api.exception.BusinessLogicException;
 import toyproject.simulated_stock.domain.member.dto.TotalAssetDto;
+import toyproject.simulated_stock.domain.member.dto.UserStockListDto;
 import toyproject.simulated_stock.domain.member.entity.Member;
 import toyproject.simulated_stock.domain.member.repository.MemberRepository;
 import toyproject.simulated_stock.domain.redis.dto.StockPriceDto;
@@ -19,6 +20,7 @@ import toyproject.simulated_stock.domain.stock.order.repository.UserStockReposit
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static toyproject.simulated_stock.api.exception.ErrorCode.MEMBER_NOT_FOUND;
 
@@ -80,5 +82,17 @@ public class AssetService {
 
         // 7. 계산된 값들을 DTO에 담아 반환
         return new TotalAssetDto(totalAssets, userAccount.getBalance(), stockTotal, totalProfit, profitRate);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserStockListDto> getUserStockList(String memberKey){
+
+        //보유 주식 목록 가져오기
+        List<UserStock> userStockList = userStockRepository.findByMemberId(memberKey);
+
+        //entity -> dto
+        return userStockList.stream()
+                .map(UserStockListDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }

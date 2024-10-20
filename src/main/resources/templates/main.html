@@ -21,23 +21,42 @@
     ></script>
   </head>
   <body class="body">
-  <div class="sidenav">
-    <img src="/layout/srcs/logo.svg" alt="logo" class="logo"/>
-    <a href="#" class="menu">HOME</a>
-    <a href="#" class="menu">TOP 10</a>
-    <a href="#" class="menu">관심 종목</a>
-    <a href="#" class="menu">자산 관리</a>
-    <div class="flex-container">
-      <img src="/layout/srcs/icons/user-logo.svg" alt="icon" class="flex-component"/>
-      <a id="userName" class="flex-component" href="javascript:void(0);" th:text="${#authentication.principal.nickname}"
-         onclick="logout()" th:if="${#authorization.expression('isAuthenticated()')}"></a>
-      <a class="flex-component" href="/login" th:unless="${#authorization.expression('isAuthenticated()')}">
-        Login
-      </a>
-      <!-- 히든 필드 추가 -->
-      <input type="hidden" id="memberKey" th:value="${#authentication.principal.memberKey}" th:if="${#authorization.expression('isAuthenticated()')}" />
+    <div class="sidenav">
+      <img src="/layout/srcs/logo.svg" alt="logo" class="logo" />
+      <a href="#" class="menu">HOME</a>
+      <a href="#" class="menu">TOP 10</a>
+      <a href="#" class="menu">관심 종목</a>
+      <a href="#" class="menu">자산 관리</a>
+      <div class="flex-container">
+        <img
+          src="/layout/srcs/icons/user-logo.svg"
+          alt="icon"
+          class="flex-component"
+        />
+        <a
+          id="userName"
+          class="flex-component"
+          href="javascript:void(0);"
+          th:text="${#authentication.principal.nickname}"
+          onclick="myPage()"
+          th:if="${#authorization.expression('isAuthenticated()')}"
+        ></a>
+        <a
+          class="flex-component"
+          href="/login"
+          th:unless="${#authorization.expression('isAuthenticated()')}"
+        >
+          Login
+        </a>
+        <!-- 히든 필드 추가 -->
+        <input
+          type="hidden"
+          id="memberKey"
+          th:value="${#authentication.principal.memberKey}"
+          th:if="${#authorization.expression('isAuthenticated()')}"
+        />
+      </div>
     </div>
-  </div>
     <div class="main-content">
       <div class="search-group">
         <i
@@ -127,7 +146,8 @@
         // 로그인하지 않은 사용자를 위한 UI 업데이트
         document.getElementById('totalAsset').textContent = '로그인 필요';
         document.getElementById('availableAsset').textContent = '로그인 필요';
-        document.getElementById('ownedStockBody').innerHTML = '<tr><td colspan="3">로그인이 필요합니다</td></tr>';
+        document.getElementById('ownedStockBody').innerHTML =
+          '<tr><td colspan="3">로그인이 필요합니다</td></tr>';
       }
 
       async function getUserInfo(accessToken) {
@@ -147,6 +167,13 @@
           .get('/auth/logout')
           .then(() => (window.location.href = '/login'))
           .catch((error) => alert('로그아웃 중 오류가 발생했습니다.'));
+      }
+
+      function myPage() {
+        axios
+          .get('/mypage')
+          .then()
+          .catch((error) => alert('마이페이지로 이동 중 오류가 발생했습니다.'));
       }
 
       function getCookie(cookieName) {
