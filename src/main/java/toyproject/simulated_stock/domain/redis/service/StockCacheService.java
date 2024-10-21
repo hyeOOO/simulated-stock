@@ -8,7 +8,6 @@ import toyproject.simulated_stock.domain.redis.dto.StockPriceDto;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsDto;
 import toyproject.simulated_stock.domain.stock.detail.service.DetailStockService;
 
-import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -27,6 +26,14 @@ public class StockCacheService {
         if (cachedPrice != null) {
             return cachedPrice;
         } else {
+            try {
+                //세마포어를 사용할 수 도 있4
+                // 0.5초 대기 (1초에 2번의 호출을 제한하기 위해)
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
             StockQuotationsDto stockData = detailStockService.getQuotations(stockCode);
             StockPriceDto newPrice = StockPriceDto.convertToStockPriceDto(stockCode, stockData);  // 변환
             updateStockPrice(stockCode, newPrice); // 캐시에 저장
@@ -38,6 +45,6 @@ public class StockCacheService {
     // 캐시 업데이트 메소드에서 변환을 추가
     public void updateStockPrice(String stockCode, StockPriceDto stockPriceDto) {
         ValueOperations<String, StockPriceDto> valueOps = redisTemplate.opsForValue();
-        valueOps.set(stockCode, stockPriceDto, 1, TimeUnit.MINUTES); // 1분 동안 캐시 유지
+        valueOps.set(stockCode, stockPriceDto, 5, TimeUnit.MINUTES); // 5분 동안 캐시 유지
     }
 }
