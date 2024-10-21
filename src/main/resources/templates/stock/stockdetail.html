@@ -59,35 +59,35 @@
 
                     <!-- 가운데 영역: 현재가와 등락률 -->
                     <div class="stock-header-center">
-                        <div id="price" class="price">79,600</div> <!-- 현재가 -->
-                        <div id="price-change" class="price-change">▲ 1,000 | +1.27%</div> <!-- 등락률 -->
+                        <div id="price" class="price">-</div> <!-- 현재가 -->
+                        <div id="price-change" class="price-change">▲ - | -%</div> <!-- 등락률 -->
                     </div>
 
                     <!-- 오른쪽 영역: 세부 정보 (2줄로 배치) -->
                     <div class="stock-header-right">
                         <div class="info-item">
                             <p>전일</p>
-                            <p><span id="previous-price">78,600</span></p> <!-- 전일 종가 -->
+                            <p><span id="previous-price">-</span></p> <!-- 전일 종가 -->
                         </div>
                         <div class="info-item">
                             <p>고가</p>
-                            <p><span id="high-price">80,500</span></p> <!-- 고가 -->
+                            <p><span id="high-price">-</span></p> <!-- 고가 -->
                         </div>
                         <div class="info-item">
                             <p>거래량</p>
-                            <p><span id="volume">22,780,406</span></p> <!-- 거래량 -->
+                            <p><span id="volume">-</span></p> <!-- 거래량 -->
                         </div>
                         <div class="info-item">
                             <p>시가</p>
-                            <p><span id="open-price">79,700</span></p> <!-- 시가 -->
+                            <p><span id="open-price">-</span></p> <!-- 시가 -->
                         </div>
                         <div class="info-item">
                             <p>저가</p>
-                            <p><span id="low-price">79,000</span></p> <!-- 저가 -->
+                            <p><span id="low-price">-</span></p> <!-- 저가 -->
                         </div>
                         <div class="info-item">
                             <p>거래대금</p>
-                            <p><span id="transaction-amount">1,818,617</span></p> <!-- 거래대금 -->
+                            <p><span id="transaction-amount">-</span></p> <!-- 거래대금 -->
                         </div>
                     </div>
                 </div>
@@ -164,11 +164,11 @@
             <div class="section user-asset">
                 <div class="flex-text-group">
                     <p>총 자산</p>
-                    <p class="total-asset">10,962,194 원</p>
+                    <p class="total-asset">0 원</p>
                 </div>
                 <div class="flex-text-group">
                     <p>가용 자산</p>
-                    <p class="available-asset">2,264,568 원</p>
+                    <p class="available-asset">0 원</p>
                 </div>
             </div>
 
@@ -313,15 +313,20 @@
         }
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', async function () {
         const stockCode = document.getElementById("stock-code").textContent.trim();
         console.log(`Loaded Stock Code: ${stockCode}`);
 
         let isFetchingStockDetail = false;  // 주식 상세 정보 플래그
         let isFetchingInvestorData = false;  // 투자자 정보 플래그
 
+        // 0.2초 지연을 위한 함수
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
         // 종목 정보를 불러오는 함수
-        function fetchStockDetail(stockCode) {
+        async function fetchStockDetail(stockCode) {
             if (isFetchingStockDetail) return;
             isFetchingStockDetail = true;
 
@@ -345,7 +350,7 @@
         }
 
         // 투자자 정보를 불러오는 함수
-        function fetchStockInvestors(stockCode) {
+        async function fetchStockInvestors(stockCode) {
             if (isFetchingInvestorData) return;
             isFetchingInvestorData = true;
 
@@ -404,8 +409,10 @@
             return parseInt(number).toLocaleString();
         }
 
-        fetchStockDetail(stockCode);
-        fetchStockInvestors(stockCode);
+        // 주식 상세 정보와 투자자 정보를 차례대로 호출, 각 호출 간 0.2초 대기
+        await fetchStockDetail(stockCode);
+        await delay(500);  // 0.2초 대기
+        await fetchStockInvestors(stockCode);
     });
 
     document.addEventListener('DOMContentLoaded', function () {
