@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-    <meta charset="UTF-8">
-</head>
-<body>
 <div class="sidenav" th:fragment="sidenav">
     <img src="/layout/srcs/logo.svg" alt="logo" class="logo" />
     <a href="#" class="menu">HOME</a>
@@ -11,82 +5,47 @@
     <a href="#" class="menu">관심 종목</a>
     <a href="#" class="menu">자산 관리</a>
     <div class="flex-container">
-        <img
-                src="/layout/srcs/icons/user-logo.svg"
-                alt="icon"
-                class="flex-component"
-        />
+        <img src="/layout/srcs/icons/user-logo.svg" alt="icon" class="flex-component" />
         <!-- 사용자 이름을 표시하고, 클릭 시 로그아웃 -->
-        <a
-                id="userName"
-                class="flex-component"
-                href="javascript:void(0);"
-                th:text="${#authentication.principal.nickname}"
-                onclick="logout()"
-                th:if="${#authorization.expression('isAuthenticated()')}"
-        ></a>
+        <a id="userName" class="flex-component" href="javascript:void(0);"
+           th:text="${#authentication.principal.nickname}" onclick="myPage()"
+           th:if="${#authorization.expression('isAuthenticated()')}"></a>
 
         <!-- 비로그인 시 로그인 버튼 표시 -->
         <a class="flex-component" href="/login" th:unless="${#authorization.expression('isAuthenticated()')}">
             Login
         </a>
+        <input type="hidden" id="memberKey" th:value="${#authentication.principal.memberKey}"
+               th:if="${#authorization.expression('isAuthenticated()')}" />
     </div>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        let accessToken = getCookie('Authorization');
-        let userId = null;
 
-        if (accessToken && accessToken.trim() !== '') {
-          axios
-            .get('/members/info', {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            })
-            .then((response) => {
-              const memberInfo = response.data;
-            })
-            .catch((error) => {
-              if (error.response && error.response.status === 401) {
-                alert('세션이 만료되었습니다. 다시 로그인해주세요.');
-                window.location.href = '/login';
-              } else {
-                alert('사용자 정보를 가져오는데 실패했습니다.');
-              }
-            });
-        }
-      });
-
-      async function getUserInfo(accessToken) {
-        try {
-          const response = await axios.get('/members/info', {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          });
-          document.getElementById('userName').textContent = response.data.name;
-          return response.data;
-        } catch (error) {
-          console.error('Failed to fetch member info:', error);
-        }
-      }
-
-      function logout() {
+<script th:fragment="logout-script">
+    function myPage() {
         axios
-          .get('/auth/logout')
-          .then(() => (window.location.href = '/login'))
-          .catch((error) => alert('로그아웃 중 오류가 발생했습니다.'));
-      }
-
-      function getCookie(cookieName) {
+        .get('/mypage')
+        .then()
+        .catch((error) => alert('마이페이지로 이동 중 오류가 발생했습니다.'));
+    }
+    function getCookie(cookieName) {
         let name = cookieName + '=';
         let decodedCookie = decodeURIComponent(document.cookie);
         let cookieArray = decodedCookie.split(';');
         for (let i = 0; i < cookieArray.length; i++) {
-          let cookie = cookieArray[i].trim();
-          if (cookie.indexOf(name) === 0) return cookie.substring(name.length);
+            let cookie = cookieArray[i].trim();
+            if (cookie.indexOf(name) === 0) return cookie.substring(name.length);
         }
         return '';
-      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        let accessToken = getCookie('Authorization');
+
+        if (accessToken && accessToken.trim() !== '') {
+
+        } else {
+            alert('다시 로그인해주세요.');
+            window.location.href = '/login';
+        }
+    });
 </script>
-</body>
-</html>

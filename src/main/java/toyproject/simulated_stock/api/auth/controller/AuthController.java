@@ -4,6 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,6 +46,12 @@ public class AuthController {
             return "redirect:/main";
         }
         return "login";
+    }
+
+    @GetMapping("/mypage")
+    @PreAuthorize("isAuthenticated()")
+    public String mypage(){
+        return "mypage/mypage";
     }
 
     @GetMapping("/auth/success")
