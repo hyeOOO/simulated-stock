@@ -9,11 +9,13 @@ import toyproject.simulated_stock.api.exception.BusinessLogicException;
 import toyproject.simulated_stock.domain.member.dto.TotalAssetDto;
 import toyproject.simulated_stock.domain.member.dto.UserStockListDto;
 import toyproject.simulated_stock.domain.member.entity.Member;
+import toyproject.simulated_stock.domain.member.repository.FavoriteRepository;
 import toyproject.simulated_stock.domain.member.repository.MemberRepository;
 import toyproject.simulated_stock.domain.redis.dto.StockPriceDto;
 import toyproject.simulated_stock.domain.redis.service.StockCacheService;
 import toyproject.simulated_stock.domain.stock.order.entitiy.UserAccount;
 import toyproject.simulated_stock.domain.stock.order.entitiy.UserStock;
+import toyproject.simulated_stock.domain.stock.order.repository.StockOrderRepository;
 import toyproject.simulated_stock.domain.stock.order.repository.UserAccountRepository;
 import toyproject.simulated_stock.domain.stock.order.repository.UserStockRepository;
 
@@ -33,6 +35,8 @@ public class AssetService {
     private final UserAccountRepository userAccountRepository;
     private final UserStockRepository userStockRepository;
     private final StockCacheService stockCacheService;
+    private final StockOrderRepository stockOrderRepository;
+    private final FavoriteRepository favoriteRepository;
 
     //유저 자산 계산 로직
     @Transactional(readOnly = true)
@@ -46,7 +50,7 @@ public class AssetService {
                 .orElseThrow(() -> new IllegalArgumentException("바르지 않은 멤버 입니다. ")); //발생할 오류 고치기
 
         //3. 보유 주식 목록 가져오기
-        List<UserStock> userStockList = userStockRepository.findByMemberId(memberKey);
+        List<UserStock> userStockList = userStockRepository.findByMemberId(Long.toString(member.getId()));
 
         if (userStockList.isEmpty()) {
             return new TotalAssetDto(userAccount.getBalance(), userAccount.getBalance(), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
@@ -87,12 +91,37 @@ public class AssetService {
     @Transactional(readOnly = true)
     public List<UserStockListDto> getUserStockList(String memberKey){
 
+        //유저 정보 불러오기
+        Member member = memberRepository.findByMemberKey(memberKey)
+                .orElseThrow(() -> new AuthException(MEMBER_NOT_FOUND));
+
         //보유 주식 목록 가져오기
-        List<UserStock> userStockList = userStockRepository.findByMemberId(memberKey);
+        List<UserStock> userStockList = userStockRepository.findByMemberId(Long.toString(member.getId()));
 
         //entity -> dto
         return userStockList.stream()
                 .map(UserStockListDto::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    //자산 초기화
+    @Transactional
+    public void resetAccount(String memberKey){
+        BigDecimal initialBalance = new BigDecimal("10000000"); // 1000만원
+
+        //유저 정보 불러오기
+        Member member = memberRepository.findByMemberKey(memberKey)
+                .orElseThrow(() -> new AuthException(MEMBER_NOT_FOUND));
+
+        Long memberId = member.getId();
+
+        // 보유 종목 삭제
+        userStockRepository.deleteByMemberId(Long.toString(memberId));
+        // 계좌 정보 초기화
+        userAccountRepository.updateBalanceByMemberId(memberId, initialBalance);
+        // 매수/매도 내역 삭제
+        stockOrderRepository.deleteByMemberId(memberKey);
+        // 즐겨찾기 내역 삭제
+        favoriteRepository.deleteByUserId(memberKey);
     }
 }

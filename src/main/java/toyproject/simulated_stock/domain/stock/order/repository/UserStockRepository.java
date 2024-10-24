@@ -13,4 +13,7 @@ public interface UserStockRepository extends JpaRepository<UserStock, Long> {
 
     // 사용자의 모든 보유 주식 조회
     List<UserStock> findByMemberId(String memberId);
+
+    // 사용자의 모든 보유 주식 삭제
+    void deleteByMemberId(String memberId);
 }

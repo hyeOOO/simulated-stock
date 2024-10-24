@@ -1,115 +1,228 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-  <head th:replace="~{common/header :: header}"> </head>
-  <body>
-    <div th:replace="~{common/sidebar :: sidenav}"></div>
-    <div class="main-content">
-      <header class="profile-header">
+<head th:replace="~{common/header :: header}"></head>
+<body>
+<div th:replace="~{common/sidebar :: sidenav}"></div>
+<div class="main-content">
+    <header class="profile-header">
         <div class="profile-picture">
-          <button class="edit-button">✏️</button>
+            <img
+                    src="/layout/srcs/icons/user-logo.svg"
+                    alt="icon"
+                    class="flex-component profile-img"
+            />
         </div>
         <div class="profile-info">
-          <h2>박 유경</h2>
-          <p>8만 전자를 향하여</p>
+            <h2 id="userNickname">로그인 후 이용해주세요.</h2>
+            <p id="userComment">로그인 후 이용해주세요.</p>
         </div>
-        <button class="logout-button">로그아웃</button>       
-      </header>
-      <h5 class="title">보유중인 종목</h5>
-      <div class="section-group">
-        <div class="left-section">
-          <div class="section">
-            <table class="stocks-table">
-              <thead>
-                <tr>
-                  <th>종목명</th>
-                  <th>보유량</th>
-                  <th>현재가</th>
-                  <th>수익률</th>
-                  <th>평균매수가</th>
-                  <th>최소매수가</th>
-                  <th>최대매수가</th>
-                </tr>
-              </thead>
-              <tbody id="stockBody">
-                <!-- 주식 리스트 데이터가 동적으로 추가됩니다 -->
-              </tbody>
-            </table>
-          </div>
+        <div class="logout-button-group">
+            <button class="modify-button" onclick="openModal()">수정</button>
+            <button class="logout-button" onclick="logout()">로그아웃</button>
         </div>
-        <div class="right-section">
-          <div class="section assets-summary">
-            <div class="flex-text-group">
-              <p>총 자산</p>
-              <p id="totalAsset" class="total-asset">0 원</p>
+    </header>
+    <hr/>
+    <h5 class="title mypage-have-stock">보유중인 종목</h5>
+    <div class="section-group">
+        <div class="mypage-left-section">
+            <div class="section">
+<!--                보유 종목 리스트 -->
+                <table class="stocks-table">
+                    <thead>
+                    <tr>
+                        <th>종목명</th>
+                        <th>보유량</th>
+                        <th>현재가</th>
+                        <th>수익률</th>
+                        <th>평균매수가</th>
+                        <th>최소매수가</th>
+                        <th>최대매수가</th>
+                        <th>총 매수가</th>
+                    </tr>
+                    </thead>
+                    <tbody id="haveStockBody">
+                    <!-- 주식 리스트 데이터가 동적으로 추가됩니다 -->
+                    </tbody>
+                </table>
             </div>
-            <div class="flex-text-group">
-              <p>가용 자산</p>
-              <p id="availableAsset" class="available-asset">0 원</p>
+            <h5 class="title">관심 종목</h5>
+            <div class="section">
+                <table class="stocks-table">
+                    <thead>
+                    <tr>
+                        <th>종목명</th>
+                        <th>현재가</th>
+                        <th>등락률</th>
+                        <th>시가총액</th>
+                        <th>거래량/거래대금</th>
+                    </tr>
+                    </thead>
+                    <tbody id="favoriteStockBody">
+                </table>
             </div>
-          </div>
-          <div class="section">
-            <h6>보유 종목</h6>
-            <table class="owned-stocks">
-              <thead>
-                <tr>
-                  <th>종목명</th>
-                  <th>현재가</th>
-                  <th>등락률</th>
-                </tr>
-              </thead>
-              <tbody id="ownedStockBody"></tbody>
-            </table>
-          </div>
         </div>
-      </div>
+
+        <div class="mypage-section">
+            <h6>자산 정보</h6>
+            <form>
+                <div class="asset-group" id="stock-holding-info">
+                    <label>총 자산</label>
+                    <p id="totalAsset" class="total-asset">0 원</p>
+                </div>
+                <hr/>
+                <div class="asset-group">
+                    <label>가용 자산</label>
+                    <p id="availableAsset" class="available-asset">0 원</p>
+                </div>
+                <hr/>
+                <div class="asset-group">
+                    <label>보유 주식 총액</label>
+                    <p id="totalStock" class="available-asset">0 원</p>
+                </div>
+                <hr/>
+                <div class="asset-group">
+                    <label>보유 종목 수</label>
+                    <p id="countStock" class="available-asset">0 종목</p>
+                </div>
+
+                <div class="submit-group">
+                    <button type="submit" class="reset-button" onclick="resetAccount()">자산 초기화</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <!-- 로그아웃 스크립트 포함 -->
-    <div th:replace="~{common/sidebar :: logout-script}"></div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        initializePageData();
-      });
+</div>
+<!-- 로그아웃 스크립트 포함 -->
+<div th:replace="~{common/sidebar :: logout-script}"></div>
 
-      function initializePageData() {
-        const memberKeyElement = document.getElementById('memberKey');
-        if (memberKeyElement && memberKeyElement.value) {
-          const userId = memberKeyElement.value;
-          fetchStockList(userId);
-          //fetchOwnedStocks(userId);
-          //fetchUserAssets(userId);
+<!-- 모달창 -->
+<div class="modal-background" id="editModal">
+  <div class="modal-container">
+    <button class="modal-close-button" onclick="closeModal()">X</button>
+    <h2>정보 수정</h2>
+    <div class="modal-input-group">
+      <label for="nickname">닉네임</label>
+      <input type="text" id="nickname" value="닉네임을 입력해주세요." />
+    </div>
+    <div class="modal-input-group">
+      <label for="intro">한 줄 소개</label>
+      <textarea id="intro"></textarea>
+    </div>
+    <button class="modal-save-button" onclick="saveChanges()">저장</button>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      initializePageData();
+    });
+
+    function initializePageData() {
+      const memberKeyElement = document.getElementById("memberKey");
+      if (memberKeyElement && memberKeyElement.value) {
+        const userId = memberKeyElement.value;
+        getUserInfo(userId);
+        fetchHaveStockList(userId);
+        fetchFavoriteStockList(userId);
+        fetchUserAssets(userId);
+      } else {
+        console.log("세션이 만료되었습니다. 재로그인해주세요.");
+        logout();
+      }
+    }
+
+    function logout() {
+      axios
+        .get("/auth/logout")
+        .then(() => (window.location.href = "/login"))
+        .catch((error) => alert("로그아웃 중 오류가 발생했습니다."));
+    }
+
+    function getCookie(cookieName) {
+      let name = cookieName + "=";
+      let decodedCookie = decodeURIComponent(document.cookie);
+      let cookieArray = decodedCookie.split(";");
+      for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i].trim();
+        if (cookie.indexOf(name) === 0) return cookie.substring(name.length);
+      }
+      return "";
+    }
+
+    async function getUserInfo(memberKey) {
+      console.log("유저 정보 가져오기 memberKey : ", memberKey);
+      axios.get(`/members/information/${memberKey}`).then((response) => {
+        const userNameElement = document.getElementById('userNickname');
+        const userCommentElement = document.getElementById('userComment');
+
+        if (userNameElement && userCommentElement) {
+            userNameElement.textContent = response.data.name;
+            userCommentElement.textContent = response.data.comment;
         } else {
-          console.log('세션이 만료되었습니다. 재로그인해주세요.');
-          logout();
+            console.error("userName 또는 userComment 엘리먼트를 찾을 수 없습니다.");
         }
-      }
+      });
+    }
 
-      function logout() {
-        axios
-          .get('/auth/logout')
-          .then(() => (window.location.href = '/login'))
-          .catch((error) => alert('로그아웃 중 오류가 발생했습니다.'));
-      }
+    async function fetchUserAssets(userId) {
+      console.log("유저 자산 정보 가져오기");
 
-      function getCookie(cookieName) {
-        let name = cookieName + '=';
-        let decodedCookie = decodeURIComponent(document.cookie);
-        let cookieArray = decodedCookie.split(';');
-        for (let i = 0; i < cookieArray.length; i++) {
-          let cookie = cookieArray[i].trim();
-          if (cookie.indexOf(name) === 0) return cookie.substring(name.length);
-        }
-        return '';
-      }
+      axios.get(`/api/asset/${userId}`).then((response) => {
+        console.log("응답 데이터 타입:", typeof response.data); // 데이터 타입 확인
+        console.log("응답 데이터 구조:", response.data); // 데이터가 예상과 일치하는지 확인
+      });
+    }
 
-      // 주식 리스트 정보 가져오기(현재는 그냥 단순 리스트)
-      async function fetchStockList(userId) {
-        let accessToken = getCookie('Authorization');
-        console.log('보유중인 종목 리스트 가져오기');
+    // 보유중인 종목 리스트 가져오기
+    async function fetchHaveStockList(userId) {
+      axios
+        .get(`/api/myPage/${userId}/userStock`)
+        .then((response) => {
+          const tbody = document.getElementById("haveStockBody");
+          tbody.innerHTML = ""; // 기존 내용을 지우기
 
-        console.log('userId = ' +userId);
-        axios
-          .get(`/api/mypage/${userId}/userStock`)
+          if (Array.isArray(response.data) && response.data.length > 0) {
+            response.data.forEach((stock) => {
+              //매수 평균가
+              const formattedAvgPrice = Number(stock.avgPrice).toLocaleString() + " 원";
+              //최소 매수가
+              const formattedMinPrice = Number(stock.minPrice).toLocaleString() + " 원";
+              //최대 매수가
+              const formattedMaxPrice = Number(stock.maxPrice).toLocaleString() + " 원";
+              //누적합
+              const formattedTotalPrice = Number(stock.totalPrice).toLocaleString() + " 원";
+
+              // HTML 행 생성
+              const rowHTML = `
+                          <tr>
+                              <td><a href="/stock/detail/${stock.stockCode}?marketCategory=${stock.mrtgType}">${stock.stockName}</a></td>
+                              <td>보유량</td>
+                              <td>현재가</td>
+                              <td>수익률</td>
+                              <td>${formattedAvgPrice}</td>
+                              <td>${formattedMinPrice}</td>
+                              <td>${formattedMaxPrice}</td>
+                              <td>${formattedTotalPrice}</td>
+                          </tr>`;
+
+              // 테이블에 행 추가
+              tbody.innerHTML += rowHTML;
+            });
+          } else {
+            console.warn("보유중인 종목 데이터가 없습니다.");
+            tbody.innerHTML = `<tr><td colspan="5">보유중인 종목 데이터가 없습니다.</td></tr>`;
+          }
+        })
+        .catch((error) => {
+          alert(
+            `보유중인 종목을 가져오는 중 오류가 발생했습니다. (상태 코드: ${error.response?.status})`
+          );
+        });
+    }
+
+    async function fetchFavoriteStockList() {
+         axios
+          .get('/api/stock/list')
           .then((response) => {
             console.log('응답 데이터 타입:', typeof response.data); // 데이터 타입 확인
             console.log('응답 데이터 구조:', response.data); // 데이터가 예상과 일치하는지 확인
@@ -118,38 +231,43 @@
 
             if (Array.isArray(response.data) && response.data.length > 0) {
               response.data.forEach((stock) => {
-                //매수 평균가
-                const formattedAvgPrice =
-                  Number(stock.avgPrice).toLocaleString() + ' 원';
-                //최소 매수가
-                const formattedMinPrice =
-                  Number(stock.minPrice).toLocaleString() + ' 원';
-                //최대 매수가
-                const formattedMaxPrice =
-                  Number(stock.maxPrice).toLocaleString() + ' 원';
-                //누적합
-                const formattedtotalPrice =
-                  Number(stock.totalPrice).toLocaleString() + ' 원';
+                const fltRtValue = parseFloat(stock.fltRt); // 등락률을 숫자로 변환
+                let color = 'black'; // 기본 색상
+                let icon = '-'; // 기본 아이콘
+
+                // 등락률에 따른 색상 및 아이콘 설정
+                if (fltRtValue > 0) {
+                  color = 'red'; // 상승일 때 빨간색
+                  icon = '▲'; // 상승 아이콘
+                } else if (fltRtValue < 0) {
+                  color = 'blue'; // 하락일 때 파란색
+                  icon = '▼'; // 하락 아이콘
+                }
+
+                // 거래량 및 거래대금을 정리
+                const formattedTrqu = Number(stock.trqu).toLocaleString(); // 거래량
+                const formattedTrPrc = Number(stock.trPrc).toLocaleString(); // 거래대금
+
+                // 시가 총액 포맷
+                const formattedMrktTotAmt =
+                  Number(stock.mrktTotAmt).toLocaleString() + ' 원';
 
                 // HTML 행 생성
                 const rowHTML = `
                             <tr>
-                                <td><a href="/stock/detail/${stock.stockCode}?marketCategory=${stock.mrtgType}">${stock.stockName}</a></td>
-                                <td>보유량</td>
-                                <td>현재가</td>
-                                <td>수익률</td>
-                                <td>${formattedAvgPrice}</td>
-                                <td>${formattedMinPrice}</td>
-                                <td>${formattedMaxPrice}</td>
+                                <td><a href="/stock/detail/${stock.srtnCd}?marketCategory=${stock.mrktCtg}">${stock.itmsNm}</a></td>
+                                <td style="color: ${color}">${stock.clpr}</td>
+                                <td style="color: ${color}">${icon} ${stock.fltRt}%</td>
                                 <td>${formattedMrktTotAmt}</td>
+                                <td>${formattedTrqu}<br/><p class="additional-value">${formattedTrPrc} 원</p></td>
                             </tr>`;
 
                 // 테이블에 행 추가
                 tbody.innerHTML += rowHTML;
               });
             } else {
-              console.warn('보유중인 종목 데이터가 없습니다.');
-              tbody.innerHTML = `<tr><td colspan="5">보유중인 종목 데이터가 없습니다.</td></tr>`;
+              console.warn('관심 종목 데이터가 없습니다.');
+              tbody.innerHTML = `<tr><td colspan="5">관심 종목 데이터가 없습니다.</td></tr>`;
             }
           })
           .catch((error) => {
@@ -157,33 +275,110 @@
             console.error('에러 상태 코드:', error.response?.status); // 에러 상태 코드 확인
             console.error('에러 메시지:', error.response?.data); // 에러 응답 내용 확인
             alert(
-              `보유중인 종목을 가져오는 중 오류가 발생했습니다. (상태 코드: ${error.response?.status})`
+              `관심 종목을 가져오는 중 오류가 발생했습니다. (상태 코드: ${error.response?.status})`
             );
           });
+    }
+
+    // 시가총액 형식 변환 함수 (예: 18조 4,500억원)
+    function formatMarketCap(value) {
+      const units = ["억원", "조", "천억", "백억"];
+      let formattedValue = value;
+
+      // 억 단위로 변환
+      const billions = (value / 1e8).toFixed(1);
+      formattedValue = `${billions}억원`;
+
+      return formattedValue;
+    }
+
+    // 거래량 형식 변환 함수 (예: 22,801,339)
+    function formatVolume(volume) {
+      return volume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // 거래대금 형식 변환 함수 (예: 1조 8,023억원)
+    function formatPrice(price) {
+      const billions = (price / 1e8).toFixed(1);
+      return `${billions}억원`;
+    }
+
+    function openModal() {
+      // 현재 화면에 표시된 닉네임과 한줄소개 가져오기
+      const currentNickname = document.getElementById("userNickname").textContent;
+      const currentComment = document.getElementById("userComment").textContent;
+
+      // 모달 입력 필드에 현재 값 설정
+      document.getElementById("nickname").value = currentNickname === "로그인 후 이용해주세요." ? "" : currentNickname;
+      document.getElementById("intro").value = currentComment === "로그인 후 이용해주세요." ? "" : currentComment;
+
+      // 모달 표시
+      document.getElementById("editModal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("editModal").style.display = "none";
+    }
+
+    function saveChanges() {
+      const nickname = document.getElementById("nickname").value;
+      const intro = document.getElementById("intro").value;
+      const memberKeyElement = document.getElementById('memberKey');
+
+      if (!memberKeyElement || !memberKeyElement.value) {
+        console.log('세션이 만료되었습니다.');
+        logout();
+        return;
       }
 
-      // 시가총액 형식 변환 함수 (예: 18조 4,500억원)
-      function formatMarketCap(value) {
-        const units = ['억원', '조', '천억', '백억'];
-        let formattedValue = value;
+      const memberKey = memberKeyElement.value;
+      const requestData = {
+        name: nickname,
+        comment: intro
+      };
 
-        // 억 단위로 변환
-        const billions = (value / 1e8).toFixed(1);
-        formattedValue = `${billions}억원`;
+    // URL 패턴을 컨트롤러와 일치시킴
+    axios.patch(`/members/${memberKey}`, requestData)
+        .then(response => {
+            if (response.data) {
+                document.getElementById('userNickname').textContent = response.data.name;
+                document.getElementById('userComment').textContent =
+                    response.data.comment || '한 줄 소개가 없습니다';
+                closeModal();
+                alert('회원 정보가 성공적으로 수정되었습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating member information:', error);
+            let errorMessage = '회원 정보 수정 중 오류가 발생했습니다.';
 
-        return formattedValue;
-      }
+            if (error.response?.status === 401) {
+                errorMessage = '세션이 만료되었습니다. 다시 로그인해주세요.';
+                logout();
+            } else if (error.response?.data?.message) {
+                errorMessage = error.response.data.message;
+            }
+            alert(errorMessage);
+        });
+    }
 
-      // 거래량 형식 변환 함수 (예: 22,801,339)
-      function formatVolume(volume) {
-        return volume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      }
+    function resetAccount() {
+        const memberKeyElement = document.getElementById('memberKey');
 
-      // 거래대금 형식 변환 함수 (예: 1조 8,023억원)
-      function formatPrice(price) {
-        const billions = (price / 1e8).toFixed(1);
-        return `${billions}억원`;
-      }
-    </script>
-  </body>
+          if (!memberKeyElement || !memberKeyElement.value) {
+            console.log('세션이 만료되었습니다.');
+            logout();
+            return;
+          }
+
+          const memberKey = memberKeyElement.value;
+         axios.delete(`api/myPage/${memberKey}/reset`)
+                .then((response) => {
+                    console.log(response.data);
+                    window.location.href = "/mypage";
+                })
+                .catch((error) => alert("초기화 중 오류가 발생했습니다."));
+    }
+</script>
+</body>
 </html>

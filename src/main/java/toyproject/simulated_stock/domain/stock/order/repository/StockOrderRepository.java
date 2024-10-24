@@ -13,4 +13,7 @@ public interface StockOrderRepository extends JpaRepository<StockOrder, Long> {
 
     // 특정 회원의 매수(BUY) 또는 매도(SELL) 기록 가져오기
     List<StockOrder> findByMemberIdAndOrderType(String memberId, OrderType orderType);
+
+    // 사용자의 거래기록 삭제
+    void deleteByMemberId(String memberId);
 }

@@ -23,9 +23,11 @@ public class MemberService {
         return MemberDto.fromEntity(member);
     }
 
+    @Transactional  // 수정 메서드에는 별도의 @Transactional 추가
     public MemberDto memberEdit(MemberEditRequest request, String memberKey){
         Member member = findByMemberKeyOrThrow(memberKey);
         member.updateMember(request);
+        memberRepository.save(member);
         return MemberDto.fromEntity(member);
     }
 

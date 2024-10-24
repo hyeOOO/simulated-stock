@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.simulated_stock.api.member.dto.MemberEditRequest;
 
+import javax.xml.stream.events.Comment;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -31,8 +33,11 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    @Column
+    private String comment;
+
     @Builder
-    public Member(String name, String email, String profile, String memberKey, Role role) {
+    public Member(String name, String email, String profile, String memberKey, Role role, String comment) {
         this.name = name;
         this.email = email;
         this.profile = profile;
@@ -42,6 +47,7 @@ public class Member {
 
     public void updateMember(MemberEditRequest request) {
         this.name = request.name();
+        this.comment = request.comment();
     }
 
 }

@@ -15,6 +15,7 @@ public class MemberDto {
     private String name;
     private String email;
     private String profile;
+    private String comment;
     private String nickname;   // 추가 (필요한 경우)
 
     public static MemberDto fromEntity(Member member) {
@@ -23,6 +24,7 @@ public class MemberDto {
                 .name(member.getName())
                 .email(member.getEmail())
                 .profile(member.getProfile())
+                .comment(member.getComment())
                 .build();
     }
 }

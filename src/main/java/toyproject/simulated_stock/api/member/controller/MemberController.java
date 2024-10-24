@@ -7,10 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import toyproject.simulated_stock.api.auth.annotation.RoleUser;
 import toyproject.simulated_stock.api.auth.dto.model.PrincipalDetails;
 import toyproject.simulated_stock.api.member.dto.MemberDto;
@@ -31,17 +28,21 @@ public class MemberController {
         return ResponseEntity.ok(memberService.memberInfo(principalDetails.getMemberKey()));
     }
 
+    @GetMapping("/information/{memberKey}")
+    public ResponseEntity<MemberDto> getUserInfo(@PathVariable String memberKey) {
+        return ResponseEntity.ok(memberService.memberInfo(memberKey));
+    }
+
     @GetMapping
     public String memberMainPage() {
         return "main";
     }
 
-    @RoleUser
-    @PatchMapping
+    @PatchMapping("/{memberKey}")  // memberKey를 path variable로 받도록 수정
     public ResponseEntity<MemberDto> memberEdit(
             @RequestBody @Valid MemberEditRequest request,
-            @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        return ResponseEntity.ok(memberService.memberEdit(request, principalDetails.getMemberKey()));
+            @PathVariable String memberKey) {
+        return ResponseEntity.ok(memberService.memberEdit(request, memberKey));
     }
 
     @GetMapping("/asset")
