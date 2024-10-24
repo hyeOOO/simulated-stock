@@ -14,18 +14,21 @@ public class StockPriceDto implements Serializable {
     private String stockCode;      // 주식 코드
     private String stockName;      // 주식 이름
     private BigDecimal currentPrice; // 현재가 시세
+    private String priceChangeRate; // 등락률
 
     // 생성자 추가
-    public StockPriceDto(String stockCode, String stockName, BigDecimal currentPrice) {
+    public StockPriceDto(String stockCode, String stockName, BigDecimal currentPrice, String priceChangeRate) {
         this.stockCode = stockCode;
         this.stockName = stockName;
         this.currentPrice = currentPrice;
+        this.priceChangeRate = priceChangeRate;
     }
 
     // 예시 변환 코드 (StockQuotationsDto -> StockPriceDto)
     public static StockPriceDto convertToStockPriceDto(String stockCode, StockQuotationsDto stockQuotationsDto) {
         String stockName = stockQuotationsDto.getOutput().getRprs_mrkt_kor_name();  // 주식 이름
         BigDecimal currentPrice = new BigDecimal(stockQuotationsDto.getOutput().getStck_prpr());  // 현재가 시세
-        return new StockPriceDto(stockCode, stockName, currentPrice);  // 변환 후 반환
+        String priceChangeRate = stockQuotationsDto.getOutput().getPrdy_ctrt();
+        return new StockPriceDto(stockCode, stockName, currentPrice, priceChangeRate);  // 변환 후 반환
     }
 }
