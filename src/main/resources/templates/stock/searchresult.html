@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{common/header :: header}"></head>
+<head>
+    <title>검색 결과</title>
+    <style>
+        .search-section-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        .filter-btn-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn-group button {
+            background-color: #f5f5f5;
+            border: none;
+            padding: 5px 7px;
+            font-size: 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .filter-btn-group button.active {
+            background-color: #3947b2;
+            border-radius: 5px;
+            color: white;
+        }
+
+        /* hover 시 활성화된 버튼과 같은 스타일 */
+        .filter-btn-group button:hover {
+            background-color: #3947b2;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .results-table th {
+            background-color: white;
+            color: #315784;
+            font-family: "Pretendard-Bold";
+            text-align: left;
+            padding: 15px 10px;
+        }
+
+        .results-table td {
+            font-family: "Pretendard-Regular";
+            color: black;
+            padding: 15px 10px;
+        }
+
+        .results-table td.up {
+            color: #ea4335; /* 상승률 */
+        }
+
+        .results-table td.down {
+            color: #4285f4; /* 하락률 */
+        }
+    </style>
+</head>
+<body class="body">
+<div th:replace="~{common/sidebar :: sidenav}"></div>
+
+<div class="main-content">
+    <!-- 검색 창 -->
+    <div class="search-group">
+        <i class="fa-solid fa-magnifying-glass fa-lg" style="color: #315784;"></i>
+        <input type="text" class="search-control" placeholder="검색어를 입력하세요.">
+    </div>
+
+    <h5 class="title">검색결과</h5>
+    <div class="section">
+        <!-- 필터 버튼 그룹 -->
+        <div class="filter-btn-group">
+            <button class="active">전체</button>
+            <button>코스피</button>
+            <button>코스닥</button>
+        </div>
+
+        <!-- 검색 결과 테이블 -->
+        <table class="results-table">
+            <thead>
+            <tr>
+                <th>종목명</th>
+                <th>현재가</th>
+                <th>등락률</th>
+                <th>시가총액</th>
+                <th>거래량/거래대금</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>삼성전자</td>
+                <td>79,600</td>
+                <td class="up">+1.27%</td>
+                <td>475조 1,947억원</td>
+                <td>22,801,339주 / 12,801억원</td>
+            </tr>
+            <tr>
+                <td>에코프로비엠</td>
+                <td>200,500</td>
+                <td class="down">-4.07%</td>
+                <td>12조 3,450억원</td>
+                <td>3,021,244주 / 8,700억원</td>
+            </tr>
+            <!-- 추가 데이터 -->
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

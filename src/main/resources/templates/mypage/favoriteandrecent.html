@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="~{common/header :: header}"></head>
+<head>
+    <title>관심 종목</title>
+    <link rel="stylesheet" href="/layout/css/custom-favoriteandrecent-style.css" />
+</head>
+
+<body class="body">
+<div th:replace="~{common/sidebar :: sidenav}"></div>
+
+<div class="main-content">
+    <!-- 검색 창 -->
+    <div class="search-group">
+        <i class="fa-solid fa-magnifying-glass fa-lg" style="color: #315784;"></i>
+        <input type="text" class="search-control" placeholder="검색어를 입력하세요.">
+    </div>
+
+    <!-- 즐겨찾기 영역 -->
+    <h5 class="title">즐겨찾기</h5>
+    <div class="section-group">
+        <div class="table-section">
+            <div class="filter-btn-group">
+                <button class="active" data-filter="ALL">전체</button>
+                <button data-filter="KOSPI">코스피</button>
+                <button data-filter="KOSDAQ">코스닥</button>
+            </div>
+
+            <table class="stocks-table">
+                <thead>
+                <tr>
+                    <th>종목명</th>
+                    <th>현재가</th>
+                    <th>등락률</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="active">
+                    <td>삼성전자</td>
+                    <td>79,600</td>
+                    <td class="up">+1.27%</td>
+                </tr>
+                <tr>
+                    <td>에코프로비엠</td>
+                    <td>200,500</td>
+                    <td class="down">-4.07%</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 차트 영역 -->
+        <div class="chart-section">
+            <div class="chart-title">
+                <div class="stock-name">
+                    <i class="fa-solid fa-star stock-icon"></i>
+                    <span>삼성전자</span>
+                </div>
+                <div>
+                    <span class="stock-price">79,600</span><br>
+                    <span class="stock-change">▲ 1,000 | +1.27%</span> <!-- 가격 변동 정보 추가 -->
+                </div>
+            </div>
+            <div id="favoriteChart1" class="chart-box"></div>
+        </div>
+    </div>
+
+    <!-- 최근 조회 영역 -->
+    <h5 class="title">최근 조회</h5>
+    <div class="section-group">
+        <div class="table-section">
+            <div class="filter-btn-group">
+                <button class="active" data-filter="ALL">전체</button>
+                <button data-filter="KOSPI">코스피</button>
+                <button data-filter="KOSDAQ">코스닥</button>
+            </div>
+
+            <table class="stocks-table">
+                <thead>
+                <tr>
+                    <th>종목명</th>
+                    <th>현재가</th>
+                    <th>등락률</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="active">
+                    <td>삼성전자</td>
+                    <td>79,600</td>
+                    <td class="up">+1.27%</td>
+                </tr>
+                <tr>
+                    <td>에코프로비엠</td>
+                    <td>200,500</td>
+                    <td class="down">-4.07%</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 차트 영역 -->
+        <div class="chart-section">
+            <div class="chart-title">
+                <div class="stock-name">
+                    <i class="fa-solid fa-star stock-icon"></i>
+                    <span>삼성전자</span>
+                </div>
+                <div>
+                    <span class="stock-price">79,600</span><br>
+                    <span class="stock-change">▲ 1,000 | +1.27%</span> <!-- 가격 변동 정보 추가 -->
+                </div>
+            </div>
+            <div id="recentChart" class="chart-box"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

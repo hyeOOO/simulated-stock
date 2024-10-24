@@ -34,9 +34,14 @@ public class AuthController {
     public String mainPage(){
         return "main";
     }
-    @GetMapping("/mainHard")
+    @GetMapping("/favorite")
     public String mainHard(){
-        return "main_hardcoding";
+        return "mypage/favoriteandrecent";
+    }
+
+    @GetMapping("/search")
+    public String search(){
+        return "stock/searchresult";
     }
 
     @GetMapping("/login")
