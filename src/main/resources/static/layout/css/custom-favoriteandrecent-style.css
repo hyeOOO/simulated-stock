@@ -1,0 +1,132 @@
+.section-group {
+          margin-bottom : 40px;
+        }
+
+        .table-section {
+            flex: 1;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-right: 20px;
+        }
+
+        .chart-section {
+            flex: 2;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-btn-group {
+            display: inline-flex;
+            background-color: #F7F7F7; /* 버튼 그룹의 배경색 */
+            border-radius: 12px; /* 버튼 그룹의 둥근 모서리 */
+            overflow: hidden;
+            padding: 2px; /* 버튼과 그룹의 경계를 나누기 위한 패딩 */
+        }
+
+        .filter-btn-group button {
+            border: none;
+            padding: 5px 7px; /* 버튼 패딩 */
+            font-family: "Pretendard-Bold";
+            cursor: pointer;
+            font-size: 15px;
+            background-color: transparent; /* 기본적으로 투명한 배경 */
+            color: black;
+            margin: 0; /* 버튼 사이의 간격 제거 */
+        }
+
+        .filter-btn-group button.active {
+            background-color: #3947b2; /* 활성화된 버튼의 배경색 */
+            color: white;
+            border-radius: 5px; /* 활성화된 버튼의 둥근 모서리 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 활성화된 버튼의 그림자 */
+        }
+
+        .filter-btn-group button:hover {
+            background-color: #3947b2; /* 활성화된 버튼의 배경색 */
+            color: white;
+            border-radius: 5px; /* 활성화된 버튼의 둥근 모서리 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 활성화된 버튼의 그림자 */
+        }
+
+        .stocks-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .stocks-table th,
+        .stocks-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* 테이블 헤더 배경 제거 */
+        .stocks-table th {
+            background-color: white; /* 배경색 제거 */
+            font-family: "Pretendard-SemiBold";
+            color: #315784;
+        }
+
+        /* 활성화된 항목의 스타일 (파란색 배경) */
+        .stocks-table tr.active {
+            background-color: #3947b2;
+            color: white;
+        }
+
+        .stocks-table td {
+            font-family: "Pretendard-Medium";
+        }
+
+        .stocks-table td.up {
+            color: #ea4335;
+            /* 상승률 */
+        }
+
+        .stocks-table td.down {
+            color: #4285f4;
+            /* 하락률 */
+        }
+
+        .chart-title {
+            font-family: "Pretendard-Bold";
+            color: #315784;
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 8px;
+            width: 40%;
+        }
+
+        .chart-title .stock-name {
+            display: flex;
+            align-items: center;
+        }
+
+        .chart-title .stock-name .stock-icon {
+            color: gold;
+            margin-right: 8px;
+        }
+
+        .chart-title .stock-price {
+            font-family: "Pretendard-Bold";
+            color: #ea4335;
+            font-size: 24px;
+        }
+
+        .chart-title .stock-change {
+            font-family: "Pretendard-Medium";
+            font-size: 14px;
+            color: #ea4335;
+            margin-top: 5px;
+        }
+
+        .chart-box {
+            height: 400px;
+        }

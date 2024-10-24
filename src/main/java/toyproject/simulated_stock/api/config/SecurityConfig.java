@@ -70,7 +70,9 @@ public class SecurityConfig {
                                         new AntPathRequestMatcher("/api/**"),  // 주식 리스트 API
                                         new AntPathRequestMatcher("/stock/**"),  // 뷰 로딩 임시
                                         new AntPathRequestMatcher("/stock-view"),  // 뷰 로딩 임시
-                                        new AntPathRequestMatcher("/members/**")  // 임시
+                                        new AntPathRequestMatcher("/members/**"),  // 임시
+                                        new AntPathRequestMatcher("/favorite"),  // 임시
+                                        new AntPathRequestMatcher("/search")  // 임시
                                 ).permitAll()
                                 .requestMatchers("/mypage/**").authenticated()
                                 .anyRequest().authenticated()
