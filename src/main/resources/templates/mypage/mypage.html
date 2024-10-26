@@ -92,8 +92,6 @@
         </div>
     </div>
 </div>
-<!-- 로그아웃 스크립트 포함 -->
-<div th:replace="~{common/sidebar :: logout-script}"></div>
 
 <!-- 모달창 -->
 <div class="modal-background" id="editModal">
@@ -380,5 +378,7 @@
                 .catch((error) => alert("초기화 중 오류가 발생했습니다."));
     }
 </script>
+<!-- 스크립트는 body 끝 부분에 배치 -->
+<script th:replace="~{common/sidebar :: sidenav-script}"></script>
 </body>
 </html>
