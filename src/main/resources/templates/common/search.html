@@ -1,0 +1,113 @@
+<div class="search-group" th:fragment="searchForm">
+    <i id="searchIcon" class="fa-solid fa-magnifying-glass fa-lg" style="color: #315784;"></i>
+    <input type="text" class="search-control" name="keyword" id="search-keyword" placeholder="검색어를 입력하세요." th:value="${keyword}">
+    <input type="hidden" id="hidden-keyword" th:value="${keyword}">
+</div>
+
+<script th:inline="javascript" th:fragment="search-script">
+    let currentFilter = 'ALL'; // 현재 필터 상태 저장
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const keyword = document.getElementById("hidden-keyword").value.trim(); // 히든 필드에서 키워드 가져오기
+        let searchKeyword = document.getElementById("search-keyword").value.trim();
+
+        // 검색 아이콘 클릭 이벤트 리스너 등록
+        const searchIcon = document.getElementById("searchIcon");
+        searchIcon.addEventListener("click", function() {
+            performSearch(); // 클릭 시 performSearch 함수 호출
+        });
+
+        // 검색 입력 필드에서 Enter 키 이벤트 리스너 등록
+        const searchKeywordInput = document.getElementById("search-keyword");
+        searchKeywordInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // 기본 Enter 제출 동작 방지
+                performSearch(); // Enter 키 입력 시 performSearch 함수 호출
+            }
+        });
+    });
+
+    function performSearch() {
+        event.preventDefault(); // 폼 제출 기본 동작 막기
+        let keyword = document.getElementById("search-keyword").value.trim();
+        if (!keyword) {
+            window.location.href = "/main"; // 검색어가 없을 경우 메인 페이지로 이동
+            return;
+        }
+        // 키워드와 필터를 URL 쿼리 파라미터에 담아 페이지 이동
+        const targetUrl = `/search?keyword=${encodeURIComponent(keyword)}&marketType=${currentFilter}`;
+        window.location.href = targetUrl;
+    }
+
+    function applyFilter(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        const keyword = document.getElementById("hidden-keyword").value; // 히든 필드에서 키워드 가져오기
+
+        // 새 필터와 검색어로 검색
+        searchStocks(keyword, filter);
+    }
+
+
+    function searchStocks(keyword, market) {
+        axios.get(`/api/search`, {
+            params: {
+                keyword: keyword,
+                marketType: market
+            }
+        })
+        .then(response => {
+            const results = response.data;
+            displayResults(results);
+        })
+        .catch(error => {
+            console.error("검색 중 오류 발생:", error);
+        });
+    }
+
+    // 검색 결과를 동적으로 테이블에 렌더링
+    function displayResults(results) {
+        const tbody = document.getElementById("results-tbody");
+        tbody.innerHTML = '';
+
+        if (results.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center;">검색 결과가 없습니다.</td></tr>`;
+            return;
+        }
+
+        results.forEach(stock => {
+            const fltRtValue = parseFloat(stock.fltRt); // 등락률을 숫자로 변환
+            let color = 'black'; // 기본 색상
+            let icon = '-'; // 기본 아이콘
+
+            // 등락률에 따른 색상 및 아이콘 설정
+            if (fltRtValue > 0) {
+                color = 'red'; // 상승일 때 빨간색
+                icon = '▲'; // 상승 아이콘
+            } else if (fltRtValue < 0) {
+                color = 'blue'; // 하락일 때 파란색
+                icon = '▼'; // 하락 아이콘
+            }
+
+            // 거래량 및 거래대금을 정리
+            const formattedTrqu = Number(stock.trqu).toLocaleString(); // 거래량
+            const formattedTrPrc = Number(stock.trPrc).toLocaleString(); // 거래대금
+
+            // 시가 총액 포맷
+            const formattedMrktTotAmt = Number(stock.mrktTotAmt).toLocaleString() + ' 원';
+
+            // HTML 행 생성
+            const rowHTML = `
+                <tr>
+                    <td><a href="/stock/detail/${stock.srtnCd}?marketCategory=${stock.mrktCtg}">${stock.itmsNm}</a></td>
+                    <td style="color: ${color}">${stock.clpr}</td>
+                    <td style="color: ${color}">${icon} ${stock.fltRt}%</td>
+                    <td>${formattedMrktTotAmt}</td>
+                    <td>${formattedTrqu}<br/><p class="additional-value">${formattedTrPrc} 원</p></td>
+                </tr>`;
+
+            tbody.innerHTML += rowHTML;
+        });
+    }
+</script>

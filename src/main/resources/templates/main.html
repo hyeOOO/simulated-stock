@@ -51,10 +51,9 @@
       </div>
     </div>
     <div class="main-content">
-      <div class="search-group">
-        <i class="fa-solid fa-magnifying-glass fa-lg" style="color: #315784"></i>
-        <input type="text" class="search-control" placeholder="검색어를 입력하세요." />
-      </div>
+      <!-- 검색 창 -->
+      <div th:replace="~{common/search :: searchForm}"></div>
+
       <h5 class="title">국내 지수</h5>
       <div class="stats" id="marketStats">
         <!-- 코스피, 코스닥, 코스피 200 등의 지수 정보를 여기서 렌더링 -->
@@ -307,5 +306,7 @@
         return `${billions}억원`;
       }
     </script>
+
+    <script th:replace="~{common/search :: search-script}"></script>
   </body>
 </html>
