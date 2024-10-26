@@ -10,18 +10,15 @@
 
 <div class="main-content">
     <!-- 검색 창 -->
-    <div class="search-group">
-        <i class="fa-solid fa-magnifying-glass fa-lg" style="color: #315784;"></i>
-        <input type="text" class="search-control" placeholder="검색어를 입력하세요.">
-    </div>
+    <div th:replace="~{common/search :: searchForm}"></div>
 
     <h5 class="title">검색결과</h5>
     <div class="section">
         <!-- 필터 버튼 그룹 -->
         <div class="filter-btn-group">
-            <button class="active">전체</button>
-            <button>코스피</button>
-            <button>코스닥</button>
+            <button class="filter-btn active" onclick="applyFilter('ALL')">전체</button>
+            <button class="filter-btn" onclick="applyFilter('KOSPI')">코스피</button>
+            <button class="filter-btn" onclick="applyFilter('KOSDAQ')">코스닥</button>
         </div>
 
         <!-- 검색 결과 테이블 -->
@@ -35,25 +32,16 @@
                 <th>거래량/거래대금</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td>삼성전자</td>
-                <td>79,600</td>
-                <td class="up">+1.27%</td>
-                <td>475조 1,947억원</td>
-                <td>22,801,339주 / 12,801억원</td>
-            </tr>
-            <tr>
-                <td>에코프로비엠</td>
-                <td>200,500</td>
-                <td class="down">-4.07%</td>
-                <td>12조 3,450억원</td>
-                <td>3,021,244주 / 8,700억원</td>
-            </tr>
-            <!-- 추가 데이터 -->
+            <tbody id="results-tbody">
+            <!-- 검색 결과가 여기에 동적으로 추가됩니다 -->
             </tbody>
         </table>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<!-- 스크립트는 body 끝 부분에 배치 -->
+<script th:replace="~{common/sidebar :: sidenav-script}"></script>
+
+<script th:replace="~{common/search :: search-script}"></script>
 </body>
 </html>

@@ -8,4 +8,8 @@ import java.util.List;
 
 public interface StockListRepository extends JpaRepository<StockList, Long>, QueryStockListRepository {
     List<StockList> findBysrtnCd(String stockCode);
+
+    List<StockList> findByItmsNmContaining(String itmsNm);
+
+    List<StockList> findByItmsNmContainingAndMrktCtg(String itmsNm, String mrktCtg);
 }

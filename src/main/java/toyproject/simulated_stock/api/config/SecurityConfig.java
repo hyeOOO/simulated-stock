@@ -72,6 +72,7 @@ public class SecurityConfig {
                                         new AntPathRequestMatcher("/stock-view"),  // 뷰 로딩 임시
                                         new AntPathRequestMatcher("/members/**"),  // 임시
                                         new AntPathRequestMatcher("/favorite"),  // 임시
+                                        new AntPathRequestMatcher("/search/**"),  // 임시
                                         new AntPathRequestMatcher("/search")  // 임시
                                 ).permitAll()
                                 .requestMatchers("/mypage/**").authenticated()
