@@ -39,11 +39,6 @@ public class AuthController {
         return "mypage/favoriteandrecent";
     }
 
-    @GetMapping("/search")
-    public String search(){
-        return "stock/searchresult";
-    }
-
     @GetMapping("/login")
     public String loginPage(@AuthenticationPrincipal UserDetails userDetails) {
         if(userDetails!=null){
