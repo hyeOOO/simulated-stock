@@ -1,4 +1,4 @@
-<div class="sidenav" th:fragment="sidenav">
+<div class="sidenav" th:fragment="sidebar">
     <img src="/layout/srcs/logo.svg" alt="logo" class="logo" />
     <a href="/" class="menu">HOME</a>
     <a href="#" class="menu">TOP 10</a>
@@ -7,9 +7,11 @@
     <div class="flex-container">
         <img src="/layout/srcs/icons/user-logo.svg" alt="icon" class="flex-component" />
         <!-- 사용자 이름을 표시하고, 클릭 시 로그아웃 -->
-        <a id="userName" class="flex-component" href="javascript:void(0);"
+        <a id="userName"
+           class="flex-component"
+           href="javascript:void(0);"
            th:text="${#authentication.principal.nickname}"
-           data-action="mypage"
+           onclick="myPage()"
            th:if="${#authorization.expression('isAuthenticated()')}"></a>
 
         <!-- 비로그인 시 로그인 버튼 표시 -->
@@ -21,7 +23,11 @@
     </div>
 </div>
 
-<script th:inline="javascript" th:fragment="sidenav-script">
+<script th:inline="javascript" th:fragment="sidebar-script">
+    function myPage() {
+        window.location.href='/mypage';
+      }
+
     document.addEventListener('DOMContentLoaded', function () {
         // myPage 링크에 이벤트 리스너 추가
         const mypageLink = document.querySelector('[data-action="mypage"]');
@@ -33,25 +39,6 @@
                     .catch((error) => alert('마이페이지로 이동 중 오류가 발생했습니다.'));
             });
         }
-
-        // 기존의 쿠키 체크 코드
-        let accessToken = getCookie('Authorization');
-        if (accessToken && accessToken.trim() !== '') {
-
-        } else {
-            alert('다시 로그인해주세요.');
-            window.location.href = '/login';
-        }
     });
 
-    function getCookie(cookieName) {
-        let name = cookieName + '=';
-        let decodedCookie = decodeURIComponent(document.cookie);
-        let cookieArray = decodedCookie.split(';');
-        for (let i = 0; i < cookieArray.length; i++) {
-          let cookie = cookieArray[i].trim();
-          if (cookie.indexOf(name) === 0) return cookie.substring(name.length);
-        }
-        return '';
-      }
 </script>
