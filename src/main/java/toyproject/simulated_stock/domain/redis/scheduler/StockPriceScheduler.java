@@ -7,6 +7,8 @@ import toyproject.simulated_stock.domain.redis.dto.StockPriceDto;
 import toyproject.simulated_stock.domain.redis.service.StockCacheService;
 import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsDto;
 import toyproject.simulated_stock.domain.stock.detail.service.DetailStockService;
+import toyproject.simulated_stock.domain.stock.overall.entity.StockList;
+import toyproject.simulated_stock.domain.stock.overall.repository.StockListRepository;
 import toyproject.simulated_stock.domain.stock.overall.service.OverallStockService;
 
 import java.util.List;
@@ -18,6 +20,7 @@ public class StockPriceScheduler {
     private final StockCacheService stockCacheService;
     private final OverallStockService overallStockService;
     private final DetailStockService detailStockService;  // 실제 주식 시세를 가져오는 서비스
+    private final StockListRepository stockListRepository;
 
     //1분마다 실행하는 스케쥴러
     // 1분마다 주식 시세를 업데이트하는 스케줄러 (거래량에 따라 일부 종목은 덜 자주 갱신)
@@ -34,7 +37,8 @@ public class StockPriceScheduler {
                 try {
                     // 현재가 요청 후 캐싱
                     StockQuotationsDto stockData = detailStockService.getQuotations(stockCode);
-                    StockPriceDto stockPriceDto = StockPriceDto.convertToStockPriceDto(stockCode, stockData);
+                    List<StockList> stockList = stockListRepository.findBysrtnCd(stockCode);
+                    StockPriceDto stockPriceDto = StockPriceDto.convertToStockPriceDto(stockCode, stockData, stockList.get(0));
                     stockCacheService.updateStockPrice(stockCode, stockPriceDto);  // 변환된 데이터를 전달
 
                     // 요청 간 간격 두기 (너무 많은 요청 방지)
