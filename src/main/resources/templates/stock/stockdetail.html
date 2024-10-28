@@ -202,6 +202,7 @@
             const userId = memberKeyElement.value;
             const stockCode = document.getElementById('stock-code').textContent.trim();
             const starIcon = document.querySelector('.stock-icon');
+            const mrtgType = document.getElementById('stock-mrktCtg').value;  // 시장 구분
 
             // 즐겨찾기 여부 확인
             function checkFavoriteStatus() {
@@ -239,7 +240,8 @@
                 axios.post(apiUrl, null, {
                     params: {
                         userId: userId,
-                        stockCode: stockCode
+                        stockCode: stockCode,
+                        marketType: mrtgType
                     }
                 })
                 .then(response => {

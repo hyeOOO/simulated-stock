@@ -22,13 +22,15 @@ public class Favorite {
 
     private String stockCode;
     private String userId;
+    private String marketType;
 
     private LocalDateTime createdDate;
 
-    public static Favorite createFavorite(String stockCode, String userId) {
+    public static Favorite createFavorite(String stockCode, String userId, String marketType) {
         Favorite favorite = new Favorite();
         favorite.stockCode = stockCode;
         favorite.userId = userId;
+        favorite.marketType = marketType;
         favorite.createdDate = LocalDateTime.now();
         return favorite;
     }
