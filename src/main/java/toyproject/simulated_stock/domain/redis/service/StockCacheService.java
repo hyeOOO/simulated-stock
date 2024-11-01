@@ -1,5 +1,6 @@
 package toyproject.simulated_stock.domain.redis.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -9,6 +10,8 @@ import toyproject.simulated_stock.domain.stock.detail.dto.StockQuotationsDto;
 import toyproject.simulated_stock.domain.stock.detail.service.DetailStockService;
 
 import java.util.concurrent.TimeUnit;
+import toyproject.simulated_stock.domain.stock.overall.entity.StockList;
+import toyproject.simulated_stock.domain.stock.overall.repository.StockListRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +19,7 @@ public class StockCacheService {
 
     private final RedisTemplate<String, StockPriceDto> redisTemplate;
     private final DetailStockService detailStockService;
+    private final StockListRepository stockListRepository;
 
     // 캐싱된 주식 가격을 가져오는 메소드
     public StockPriceDto getCachedStockPrice(String stockCode) {
@@ -35,7 +39,8 @@ public class StockCacheService {
             }
 
             StockQuotationsDto stockData = detailStockService.getQuotations(stockCode);
-            StockPriceDto newPrice = StockPriceDto.convertToStockPriceDto(stockCode, stockData);  // 변환
+            List<StockList> stockList = stockListRepository.findBysrtnCd(stockCode);
+            StockPriceDto newPrice = StockPriceDto.convertToStockPriceDto(stockCode, stockData, stockList.get(0));  // 변환
             updateStockPrice(stockCode, newPrice); // 캐시에 저장
             return newPrice;
         }

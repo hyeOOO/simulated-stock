@@ -52,34 +52,49 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 활성화된 버튼의 그림자 */
         }
 
+        .table-header {
+            background-color: white;
+            border-bottom: 1px #E0E0E0;
+            margin-top:
+        }
+
+        .table-header th {
+            padding: 15px;
+            text-align: left;
+            font-family: "Pretendard-SemiBold";
+            color: #315784;
+            background-color: white;
+        }
+
+        .table-wrapper {
+            max-height: 400px; /* 테이블의 최대 높이 설정 */
+            overflow-y: auto;  /* 높이를 초과할 경우 세로 스크롤 추가 */
+            margin-top: 0px;  /* 테이블 상단에 간격 추가 */
+        }
+
+        /* 모든 브라우저에서 스크롤바 숨기기 */
+        .table-wrapper::-webkit-scrollbar {
+            display: none; /* 웹킷 기반 브라우저 (크롬, 사파리 등)에서 스크롤바 숨김 */
+        }
+
+        .stocks-header-table,
         .stocks-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
 
-        .stocks-table th,
         .stocks-table td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
-        }
-
-        /* 테이블 헤더 배경 제거 */
-        .stocks-table th {
-            background-color: white; /* 배경색 제거 */
-            font-family: "Pretendard-SemiBold";
-            color: #315784;
+            font-family: "Pretendard-Medium";
+            margin: 0px;
         }
 
         /* 활성화된 항목의 스타일 (파란색 배경) */
         .stocks-table tr.active {
             background-color: #3947b2;
             color: white;
-        }
-
-        .stocks-table td {
-            font-family: "Pretendard-Medium";
         }
 
         .stocks-table td.up {

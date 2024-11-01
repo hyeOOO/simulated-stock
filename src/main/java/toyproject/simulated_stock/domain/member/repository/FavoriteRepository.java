@@ -1,5 +1,6 @@
 package toyproject.simulated_stock.domain.member.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import toyproject.simulated_stock.domain.member.entity.Favorite;
 
@@ -15,4 +16,7 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
     //특정 사용자의 즐겨찾기 내역 전체 삭제
     void deleteByUserId(String userId);
+
+    //특정 사용자의 즐겨찾기 내역 전체 가져오기
+    List<Favorite> findByUserId(String userId);
 }

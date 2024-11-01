@@ -4,10 +4,14 @@
 <head>
     <title>관심 종목</title>
     <link rel="stylesheet" href="/layout/css/custom-favoriteandrecent-style.css" />
+
+    <style>
+
+    </style>
 </head>
 
 <body class="body">
-<div th:replace="~{common/sidebar :: sidenav}"></div>
+<div th:replace="~{common/sidebar :: sidebar}"></div>
 
 <div class="main-content">
     <!-- 검색 창 -->
@@ -16,34 +20,33 @@
     <!-- 즐겨찾기 영역 -->
     <h5 class="title">즐겨찾기</h5>
     <div class="section-group">
-        <div class="table-section">
-            <div class="filter-btn-group">
-                <button class="active" data-filter="ALL">전체</button>
-                <button data-filter="KOSPI">코스피</button>
-                <button data-filter="KOSDAQ">코스닥</button>
+        <div class="table-section" id="favorites-section">
+            <div class="filter-btn-group" id="favorites-filter">
+                <button class="filter-btn active" data-filter="ALL" onclick="applyFavoriteFilter('ALL')">전체</button>
+                <button class="filter-btn" data-filter="KOSPI" onclick="applyFavoriteFilter('KOSPI')">코스피</button>
+                <button class="filter-btn" data-filter="KOSDAQ" onclick="applyFavoriteFilter('KOSDAQ')">코스닥</button>
             </div>
 
-            <table class="stocks-table">
-                <thead>
-                <tr>
-                    <th>종목명</th>
-                    <th>현재가</th>
-                    <th>등락률</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="active">
-                    <td>삼성전자</td>
-                    <td>79,600</td>
-                    <td class="up">+1.27%</td>
-                </tr>
-                <tr>
-                    <td>에코프로비엠</td>
-                    <td>200,500</td>
-                    <td class="down">-4.07%</td>
-                </tr>
-                </tbody>
-            </table>
+            <!-- 테이블 헤더를 별도로 배치 -->
+            <div class="table-header">
+                <table class="stocks-header-table">
+                    <thead>
+                    <tr>
+                        <th>종목명</th>
+                        <th>현재가</th>
+                        <th>등락률</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="stocks-table">
+                    <tbody id="favorites-tbody">
+                    <!-- 즐겨찾기 종목 데이터가 동적으로 추가됩니다 -->
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- 차트 영역 -->
@@ -65,34 +68,112 @@
     <!-- 최근 조회 영역 -->
     <h5 class="title">최근 조회</h5>
     <div class="section-group">
-        <div class="table-section">
-            <div class="filter-btn-group">
-                <button class="active" data-filter="ALL">전체</button>
-                <button data-filter="KOSPI">코스피</button>
-                <button data-filter="KOSDAQ">코스닥</button>
+        <div class="table-section" id="recent-section">
+            <div class="filter-btn-group" id="recent-filter">
+                <button class="filter-btn active" data-filter="ALL" onclick="applyFilter('ALL', 'recent-tbody')">전체</button>
+                <button class="filter-btn" data-filter="KOSPI" onclick="applyFilter('KOSPI', 'recent-tbody')">코스피</button>
+                <button class="filter-btn" data-filter="KOSDAQ" onclick="applyFilter('KOSDAQ', 'recent-tbody')">코스닥</button>
             </div>
 
-            <table class="stocks-table">
-                <thead>
-                <tr>
-                    <th>종목명</th>
-                    <th>현재가</th>
-                    <th>등락률</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="active">
-                    <td>삼성전자</td>
-                    <td>79,600</td>
-                    <td class="up">+1.27%</td>
-                </tr>
-                <tr>
-                    <td>에코프로비엠</td>
-                    <td>200,500</td>
-                    <td class="down">-4.07%</td>
-                </tr>
-                </tbody>
-            </table>
+            <!-- 테이블 헤더를 별도로 배치 -->
+            <div class="table-header">
+                <table class="stocks-header-table">
+                    <thead>
+                    <tr>
+                        <th>종목명</th>
+                        <th>현재가</th>
+                        <th>등락률</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="stocks-table">
+                    <tbody id="recent-tbody">
+                    <tr class="active">
+                        <td>삼성전자</td>
+                        <td>79,600</td>
+                        <td class="up">+1.27%</td>
+                    </tr>
+                    <tr>
+                        <td>에코프로비엠</td>
+                        <td>200,500</td>
+                        <td class="down">-4.07%</td>
+                    </tr>
+                    <tr class="active">
+                        <td>삼성전자</td>
+                        <td>79,600</td>
+                        <td class="up">+1.27%</td>
+                    </tr>
+                    <tr>
+                        <td>에코프로비엠</td>
+                        <td>200,500</td>
+                        <td class="down">-4.07%</td>
+                    </tr>
+                    <tr class="active">
+                        <td>삼성전자</td>
+                        <td>79,600</td>
+                        <td class="up">+1.27%</td>
+                    </tr>
+                    <tr>
+                        <td>에코프로비엠</td>
+                        <td>200,500</td>
+                        <td class="down">-4.07%</td>
+                    </tr>
+                    <tr class="active">
+                        <td>삼성전자</td>
+                        <td>79,600</td>
+                        <td class="up">+1.27%</td>
+                    </tr>
+                    <tr>
+                        <td>에코프로비엠</td>
+                        <td>200,500</td>
+                        <td class="down">-4.07%</td>
+                    </tr>
+                    <tr class="active">
+                        <td>삼성전자</td>
+                        <td>79,600</td>
+                        <td class="up">+1.27%</td>
+                    </tr>
+                    <tr>
+                        <td>에코프로비엠</td>
+                        <td>200,500</td>
+                        <td class="down">-4.07%</td>
+                    </tr>
+                    <tr class="active">
+                        <td>삼성전자</td>
+                        <td>79,600</td>
+                        <td class="up">+1.27%</td>
+                    </tr>
+                    <tr>
+                        <td>에코프로비엠</td>
+                        <td>200,500</td>
+                        <td class="down">-4.07%</td>
+                    </tr>
+                    <tr class="active">
+                        <td>삼성전자</td>
+                        <td>79,600</td>
+                        <td class="up">+1.27%</td>
+                    </tr>
+                    <tr>
+                        <td>에코프로비엠</td>
+                        <td>200,500</td>
+                        <td class="down">-4.07%</td>
+                    </tr>
+                    <tr class="active">
+                        <td>삼성전자</td>
+                        <td>79,600</td>
+                        <td class="up">+1.27%</td>
+                    </tr>
+                    <tr>
+                        <td>에코프로비엠</td>
+                        <td>200,500</td>
+                        <td class="down">-4.07%</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- 차트 영역 -->
@@ -112,8 +193,91 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const memberKeyElement = document.getElementById('memberKey');
+
+        if (memberKeyElement) {
+            const userId = memberKeyElement.value;
+            // 즐겨찾기 영역의 데이터를 기본으로 불러오기
+            fetchFavoriteStocks('ALL', userId);
+        } else {
+            console.error('memberKeyElement를 찾을 수 없습니다.');
+        }
+    });
+
+    function applyFavoriteFilter(filter) {
+        // 필터 버튼 그룹에서 특정 필터 버튼을 활성화합니다.
+        const filterGroup = document.querySelector('#favorites-filter');
+        filterGroup.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+
+        // 현재 클릭한 버튼에 active 클래스 추가
+        event.target.classList.add('active');
+
+        // 필터 적용 후 데이터를 새로 가져옵니다.
+        const memberKeyElement = document.getElementById('memberKey');
+        if (memberKeyElement) {
+            const userId = memberKeyElement.value;
+            fetchFavoriteStocks(filter, userId);
+        }
+    }
+
+    function fetchFavoriteStocks(marketType, userId) {
+        axios.get(`/api/favorites/member`, {
+            params: {
+                userId: userId,
+                marketType: marketType
+            }
+        })
+        .then(response => {
+            const favoriteStocks = response.data; // 백엔드에서 가져온 즐겨찾기 종목 데이터
+            updateFavoriteTable(favoriteStocks);
+        })
+        .catch(error => {
+            console.error('즐겨찾기 데이터를 가져오는 중 오류 발생:', error);
+        });
+    }
+
+    function updateFavoriteTable(stockData) {
+        const tbody = document.getElementById('favorites-tbody');
+        if (!tbody) {
+            console.error('favorites-tbody 요소를 찾을 수 없습니다.');
+            return;
+        }
+        tbody.innerHTML = ''; // 기존 내용을 지우기
+
+        stockData.forEach(stock => {
+            if (stock) {
+                const fltRtValue = parseFloat(stock.fltRt);
+                let color = 'black';
+                let icon = '-';
+
+                // 등락률에 따른 색상 및 아이콘 설정
+                if (fltRtValue > 0) {
+                    color = 'red';
+                    icon = '▲';
+                } else if (fltRtValue < 0) {
+                    color = 'blue';
+                    icon = '▼';
+                }
+
+                // 테이블 행 추가
+                const rowHTML = `
+                    <tr>
+                        <td><a href="/stock/detail/${stock.stockCode}?marketCategory=${stock.marketType}">${stock.stockName}</a></td>
+                        <td style="color: ${color}">${stock.currentPrice}</td>
+                        <td style="color: ${color}">${icon} ${stock.priceChangeRate}%</td>
+                    </tr>`;
+
+                tbody.innerHTML += rowHTML;
+            }
+        });
+    }
+</script>
+
 <!-- 스크립트는 body 끝 부분에 배치 -->
-<script th:replace="~{common/sidebar :: sidenav-script}"></script>
+<script th:replace="~{common/sidebar :: sidebar-script}"></script>
 
 <script th:replace="~{common/search :: search-script}"></script>
 </body>
