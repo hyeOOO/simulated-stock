@@ -4,9 +4,9 @@
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 >
-<head th:replace="~{common/header :: header}"></head>
+  <head th:replace="~{common/header :: header}"></head>
   <body class="body">
-  <div th:replace="~{common/sidebar :: sidebar}"></div>
+    <div th:replace="~{common/sidebar :: sidebar}"></div>
     <div class="main-content">
       <!-- 검색 창 -->
       <div th:replace="~{common/search :: searchForm}"></div>
@@ -65,7 +65,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
+      document.addEventListener("DOMContentLoaded", function () {
         initializePageData();
       });
 
@@ -73,67 +73,67 @@
         fetchMarketStats();
         fetchStockList();
 
-        const memberKeyElement = document.getElementById('memberKey');
+        const memberKeyElement = document.getElementById("memberKey");
         if (memberKeyElement && memberKeyElement.value) {
           const userId = memberKeyElement.value;
           fetchOwnedStocks(userId);
           fetchUserAssets(userId);
         } else {
-          console.log('User not logged in or memberKey not available');
+          console.log("User not logged in or memberKey not available");
           updateUIForLoggedOutUser();
         }
       }
 
       function updateUIForLoggedOutUser() {
         // 로그인하지 않은 사용자를 위한 UI 업데이트
-        document.getElementById('totalAsset').textContent = '로그인 필요';
-        document.getElementById('availableAsset').textContent = '로그인 필요';
-        document.getElementById('ownedStockBody').innerHTML =
+        document.getElementById("totalAsset").textContent = "로그인 필요";
+        document.getElementById("availableAsset").textContent = "로그인 필요";
+        document.getElementById("ownedStockBody").innerHTML =
           '<tr><td colspan="3">로그인이 필요합니다</td></tr>';
       }
 
       async function getUserInfo(accessToken) {
         try {
-          const response = await axios.get('/members/info', {
+          const response = await axios.get("/members/info", {
             headers: { Authorization: `Bearer ${accessToken}` },
           });
-          document.getElementById('userName').textContent = response.data.name;
+          document.getElementById("userName").textContent = response.data.name;
           return response.data;
         } catch (error) {
-          console.error('Failed to fetch member info:', error);
+          console.error("Failed to fetch member info:", error);
         }
       }
 
       function logout() {
         axios
-          .get('/auth/logout')
-          .then(() => (window.location.href = '/login'))
-          .catch((error) => alert('로그아웃 중 오류가 발생했습니다.'));
+          .get("/auth/logout")
+          .then(() => (window.location.href = "/login"))
+          .catch((error) => alert("로그아웃 중 오류가 발생했습니다."));
       }
 
       function getCookie(cookieName) {
-        let name = cookieName + '=';
+        let name = cookieName + "=";
         let decodedCookie = decodeURIComponent(document.cookie);
-        let cookieArray = decodedCookie.split(';');
+        let cookieArray = decodedCookie.split(";");
         for (let i = 0; i < cookieArray.length; i++) {
           let cookie = cookieArray[i].trim();
           if (cookie.indexOf(name) === 0) return cookie.substring(name.length);
         }
-        return '';
+        return "";
       }
 
       // 국내 지수 정보 가져오기
       async function fetchMarketStats() {
-        let accessToken = getCookie('Authorization');
-        console.log('국내지수 부르기');
+        let accessToken = getCookie("Authorization");
+        console.log("국내지수 부르기");
         const indices = [
-          { idxCsf: 'KOSPI시리즈', idxNm: '코스피' },
-          { idxCsf: 'KOSDAQ시리즈', idxNm: '코스닥' },
-          { idxCsf: 'KOSPI시리즈', idxNm: '코스피 200' },
+          { idxCsf: "KOSPI시리즈", idxNm: "코스피" },
+          { idxCsf: "KOSDAQ시리즈", idxNm: "코스닥" },
+          { idxCsf: "KOSPI시리즈", idxNm: "코스피 200" },
         ];
 
-        const marketStats = document.getElementById('marketStats');
-        marketStats.innerHTML = ''; // 기존 내용을 지워 초기화
+        const marketStats = document.getElementById("marketStats");
+        marketStats.innerHTML = ""; // 기존 내용을 지워 초기화
 
         // 순차적으로 요청하여 순서 보장
         for (const index of indices) {
@@ -141,15 +141,13 @@
 
           try {
             // 각 인덱스에 대해 순차적으로 API 요청
-            const response = await axios.get(
-              `/api/stock/index/${idxCsf}/${idxNm}`
-            );
+            const response = await axios.get(`/api/stock/index/${idxCsf}/${idxNm}`);
             const statData = response.data;
 
             // 상승/하락에 따른 스타일 및 아이콘 설정
             const isUp = parseFloat(statData.fltRt) > 0;
-            const color = isUp ? 'red' : 'blue';
-            const icon = isUp ? '▲' : '▼';
+            const color = isUp ? "red" : "blue";
+            const icon = isUp ? "▲" : "▼";
 
             // HTML 카드 생성
             const cardHTML = `
@@ -173,30 +171,30 @@
 
       // 주식 리스트 정보 가져오기(현재는 그냥 단순 리스트)
       async function fetchStockList() {
-        let accessToken = getCookie('Authorization');
-        console.log('관심 종목 리스트 가져오기');
+        let accessToken = getCookie("Authorization");
+        console.log("관심 종목 리스트 가져오기");
 
         axios
-          .get('/api/stock/list')
+          .get("/api/stock/list")
           .then((response) => {
-            console.log('응답 데이터 타입:', typeof response.data); // 데이터 타입 확인
-            console.log('응답 데이터 구조:', response.data); // 데이터가 예상과 일치하는지 확인
-            const tbody = document.getElementById('stockBody');
-            tbody.innerHTML = ''; // 기존 내용을 지우기
+            console.log("응답 데이터 타입:", typeof response.data); // 데이터 타입 확인
+            console.log("응답 데이터 구조:", response.data); // 데이터가 예상과 일치하는지 확인
+            const tbody = document.getElementById("stockBody");
+            tbody.innerHTML = ""; // 기존 내용을 지우기
 
             if (Array.isArray(response.data) && response.data.length > 0) {
               response.data.forEach((stock) => {
                 const fltRtValue = parseFloat(stock.fltRt); // 등락률을 숫자로 변환
-                let color = 'black'; // 기본 색상
-                let icon = '-'; // 기본 아이콘
+                let color = "black"; // 기본 색상
+                let icon = "-"; // 기본 아이콘
 
                 // 등락률에 따른 색상 및 아이콘 설정
                 if (fltRtValue > 0) {
-                  color = 'red'; // 상승일 때 빨간색
-                  icon = '▲'; // 상승 아이콘
+                  color = "red"; // 상승일 때 빨간색
+                  icon = "▲"; // 상승 아이콘
                 } else if (fltRtValue < 0) {
-                  color = 'blue'; // 하락일 때 파란색
-                  icon = '▼'; // 하락 아이콘
+                  color = "blue"; // 하락일 때 파란색
+                  icon = "▼"; // 하락 아이콘
                 }
 
                 // 거래량 및 거래대금을 정리
@@ -204,8 +202,7 @@
                 const formattedTrPrc = Number(stock.trPrc).toLocaleString(); // 거래대금
 
                 // 시가 총액 포맷
-                const formattedMrktTotAmt =
-                  Number(stock.mrktTotAmt).toLocaleString() + ' 원';
+                const formattedMrktTotAmt = Number(stock.mrktTotAmt).toLocaleString() + " 원";
 
                 // HTML 행 생성
                 const rowHTML = `
@@ -221,14 +218,14 @@
                 tbody.innerHTML += rowHTML;
               });
             } else {
-              console.warn('관심 종목 데이터가 없습니다.');
+              console.warn("관심 종목 데이터가 없습니다.");
               tbody.innerHTML = `<tr><td colspan="5">관심 종목 데이터가 없습니다.</td></tr>`;
             }
           })
           .catch((error) => {
-            console.error('Error fetching stock list:', error);
-            console.error('에러 상태 코드:', error.response?.status); // 에러 상태 코드 확인
-            console.error('에러 메시지:', error.response?.data); // 에러 응답 내용 확인
+            console.error("Error fetching stock list:", error);
+            console.error("에러 상태 코드:", error.response?.status); // 에러 상태 코드 확인
+            console.error("에러 메시지:", error.response?.data); // 에러 응답 내용 확인
             alert(
               `관심 종목을 가져오는 중 오류가 발생했습니다. (상태 코드: ${error.response?.status})`
             );
@@ -237,7 +234,7 @@
 
       // 시가총액 형식 변환 함수 (예: 18조 4,500억원)
       function formatMarketCap(value) {
-        const units = ['억원', '조', '천억', '백억'];
+        const units = ["억원", "조", "천억", "백억"];
         let formattedValue = value;
 
         // 억 단위로 변환
@@ -249,7 +246,7 @@
 
       // 거래량 형식 변환 함수 (예: 22,801,339)
       function formatVolume(volume) {
-        return volume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return volume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
 
       // 거래대금 형식 변환 함수 (예: 1조 8,023억원)
