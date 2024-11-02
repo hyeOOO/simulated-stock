@@ -1,7 +1,7 @@
 <div class="sidenav" th:fragment="sidebar">
     <img src="/layout/srcs/logo.svg" alt="logo" class="logo" />
     <a href="/" class="menu">HOME</a>
-    <a href="#" class="menu">TOP 10</a>
+    <a href="/members/rank" class="menu">유저 랭킹</a>
     <a href="#" class="menu">관심 종목</a>
     <a href="/members/asset" class="menu">자산 관리</a>
     <div class="flex-container">
@@ -12,6 +12,7 @@
            href="javascript:void(0);"
            th:text="${#authentication.principal.nickname}"
            onclick="myPage()"
+
            th:if="${#authorization.expression('isAuthenticated()')}"></a>
 
         <!-- 비로그인 시 로그인 버튼 표시 -->
@@ -25,8 +26,8 @@
 
 <script th:inline="javascript" th:fragment="sidebar-script">
     function myPage() {
-        window.location.href='/mypage';
-      }
+        window.location.href='/members/mypage';
+    }
 
     document.addEventListener('DOMContentLoaded', function () {
         // myPage 링크에 이벤트 리스너 추가

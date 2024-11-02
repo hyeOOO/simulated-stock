@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head th:fragment="header">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../static/layout/css/custom-style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/cb31ad365a.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="sidenav" th:fragment="sidenav">
+      <img src="../../static/layout/srcs/logo.svg" alt="logo" class="logo" />
+      <a href="/" class="menu">HOME</a>
+      <a href="#" class="menu">TOP 10</a>
+      <a href="#" class="menu">관심 종목</a>
+      <a href="#" class="menu">자산 관리</a>
+      <div class="flex-container">
+        <img src="../../static/layout/srcs/icons/user-logo.svg" alt="icon" class="flex-component" />
+        <!-- 사용자 이름을 표시하고, 클릭 시 로그아웃 -->
+        <a
+          id="userName"
+          class="flex-component"
+          href="javascript:void(0);"
+          th:text="${#authentication.principal.nickname}"
+          onclick="myPage()"
+          th:if="${#authorization.expression('isAuthenticated()')}"
+        ></a>
+
+        <!-- 비로그인 시 로그인 버튼 표시 -->
+        <a
+          class="flex-component"
+          href="/login"
+          th:unless="${#authorization.expression('isAuthenticated()')}"
+        >
+          Login
+        </a>
+        <input
+          type="hidden"
+          id="memberKey"
+          th:value="${#authentication.principal.memberKey}"
+          th:if="${#authorization.expression('isAuthenticated()')}"
+        />
+      </div>
+    </div>
+
+    <div class="main-content">
+      <header class="profile-header">
+        <div class="profile-picture">
+          <img
+            src="../../static/layout/srcs/icons/user-logo.svg"
+            alt="icon"
+            class="flex-component profile-img"
+          />
+        </div>
+        <div class="profile-info">
+          <h2>박 유경</h2>
+          <p>8만 전자를 향하여</p>
+        </div>
+        <button class="logout-button">로그아웃</button>
+      </header>
+      <hr />
+      <h5 class="title mypage-have-stock">보유중인 종목</h5>
+      <div class="section-group">
+        <div class="mypage-left-section">
+          <div class="section">
+            <table class="stocks-table">
+              <thead>
+                <tr>
+                  <th>종목명</th>
+                  <th>보유량</th>
+                  <th>현재가</th>
+                  <th>수익률</th>
+                  <th>평균매수가</th>
+                  <th>최소매수가</th>
+                  <th>최대매수가</th>
+                  <th>총 매수가</th>
+                </tr>
+              </thead>
+              <tbody id="stockBody">
+                <tr>
+                  <td>
+                    <a href="/stock/detail/${stock.stockCode}?marketCategory=${stock.mrtgType}"
+                      >test</a
+                    >
+                  </td>
+                  <td>보유량</td>
+                  <td>현재가</td>
+                  <td>수익률</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/stock/detail/${stock.stockCode}?marketCategory=${stock.mrtgType}"
+                      >test</a
+                    >
+                  </td>
+                  <td>보유량</td>
+                  <td>현재가</td>
+                  <td>수익률</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/stock/detail/${stock.stockCode}?marketCategory=${stock.mrtgType}"
+                      >test</a
+                    >
+                  </td>
+                  <td>보유량</td>
+                  <td>현재가</td>
+                  <td>수익률</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/stock/detail/${stock.stockCode}?marketCategory=${stock.mrtgType}"
+                      >test</a
+                    >
+                  </td>
+                  <td>보유량</td>
+                  <td>현재가</td>
+                  <td>수익률</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/stock/detail/${stock.stockCode}?marketCategory=${stock.mrtgType}"
+                      >test</a
+                    >
+                  </td>
+                  <td>보유량</td>
+                  <td>현재가</td>
+                  <td>수익률</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/stock/detail/${stock.stockCode}?marketCategory=${stock.mrtgType}"
+                      >test</a
+                    >
+                  </td>
+                  <td>보유량</td>
+                  <td>현재가</td>
+                  <td>수익률</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/stock/detail/${stock.stockCode}?marketCategory=${stock.mrtgType}"
+                      >test</a
+                    >
+                  </td>
+                  <td>보유량</td>
+                  <td>현재가</td>
+                  <td>수익률</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="/stock/detail/${stock.stockCode}?marketCategory=${stock.mrtgType}"
+                      >test</a
+                    >
+                  </td>
+                  <td>보유량</td>
+                  <td>현재가</td>
+                  <td>수익률</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                  <td>123,123,123</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="mypage-section">
+          <h6>자산 정보</h6>
+          <form>
+            <div class="asset-group" id="stock-holding-info">
+              <label>총 자산</label>
+              <p id="totalAsset" class="total-asset">0 원</p>
+            </div>
+            <hr />
+
+            <div class="asset-group">
+              <label>가용 자산</label>
+              <p id="availableAsset" class="available-asset">0 원</p>
+            </div>
+            <hr />
+
+            <div class="asset-group">
+              <label>보유 주식 총액</label>
+              <p id="totalStock" class="available-asset">0 원</p>
+            </div>
+            <hr />
+
+            <div class="asset-group">
+              <label>보유 종목 수</label>
+              <p id="countStock" class="available-asset">0 종목</p>
+            </div>
+
+            <div class="submit-group">
+              <button type="submit" class="reset-button">자산 초기화</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.simulated_stock.api.auth.exception.AuthException;
 import toyproject.simulated_stock.api.exception.BusinessLogicException;
+import toyproject.simulated_stock.domain.member.dto.RankDto;
 import toyproject.simulated_stock.domain.member.dto.TotalAssetDto;
 import toyproject.simulated_stock.domain.member.dto.UserStockListDto;
 import toyproject.simulated_stock.domain.member.entity.Member;
@@ -21,6 +22,8 @@ import toyproject.simulated_stock.domain.stock.order.repository.UserStockReposit
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -86,6 +89,67 @@ public class AssetService {
 
         // 7. 계산된 값들을 DTO에 담아 반환
         return new TotalAssetDto(totalAssets, userAccount.getBalance(), stockTotal, totalProfit, profitRate);
+    }
+
+    //유저 전체 자산 계산 로직
+    @Transactional(readOnly = true)
+    public List<RankDto> getAllUserRank() {
+
+        // 유저 정보 불러오기
+        List<Member> members = memberRepository.findAll();
+        List<RankDto> ranks = new ArrayList<>();
+
+
+        // 가용 자산 불러오기
+        for(Member member : members){
+            UserAccount userAccount = userAccountRepository.findByMemberId(member.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("바르지 않은 멤버 입니다. ")); //발생할 오류 고치기
+
+            // 보유 주식 목록 가져오기
+            List<UserStock> userStockList = userStockRepository.findByMemberId(Long.toString(member.getId()));
+
+            BigDecimal stockTotal = BigDecimal.ZERO;
+            BigDecimal totalProfit = BigDecimal.ZERO;
+
+            for (UserStock userStock : userStockList) {
+                String stockCode = userStock.getStockCode();
+                StockPriceDto stockPriceDto = stockCacheService.getCachedStockPrice(stockCode);
+
+                BigDecimal currentPrice = stockPriceDto != null
+                        ? stockPriceDto.getCurrentPrice() //캐시된 현재가가 있을 때
+                        : BigDecimal.ZERO;
+
+                // 보유주식 총액 계산 (보유량 * 현재가)
+                BigDecimal holdingTotal = currentPrice.multiply(BigDecimal.valueOf(userStock.getQuantity()));
+                stockTotal = stockTotal.add(holdingTotal);
+            }
+
+            // 총 자산 = 가용 자산 + 보유 주식 총액
+            BigDecimal totalAssets = userAccount.getBalance().add(stockTotal);
+
+
+            // 계산된 값들을 DTO에 담아 반환
+            RankDto rankDto = new RankDto(member.getMemberKey(), member.getName(), totalAssets, userAccount.getBalance(), stockTotal);
+            ranks.add(rankDto);
+        }
+
+        ranks.sort((o1, o2) -> o2.getTotalAssets().subtract(o1.getTotalAssets()).intValue());
+
+        return ranks;
+    }
+
+    // 특정 유저의 랭킹 가져오기
+    @Transactional(readOnly = true)
+    public RankDto getUserRank(String memberKey){
+        List<RankDto> rankDtoList = getAllUserRank();
+
+        for(RankDto rankDto : rankDtoList){
+            if(rankDto.getId().equals(memberKey)){
+                return rankDto;
+            }
+        }
+
+        return null;
     }
 
     @Transactional(readOnly = true)

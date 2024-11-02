@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="~{common/header :: header}"></head>
+</head>
+<body style="background-color: #f2f6fb">
+<div th:replace="~{common/sidebar :: sidebar}"></div>
+<div class="main-content">
+    <div th:replace="~{common/search :: searchForm}"></div>
+    <h5 class="title">나의 순위</h5>
+    <div class="div-white-box">
+        <div>
+            <img
+                    src="/layout/srcs/icons/user-logo.svg"
+                    alt="icon"
+                    class="flex-component ranking-profile"
+            />
+        </div>
+        <div class="ranking-profile-info">
+            <h5 id="userNickname">닉네임</h5>
+            <p id="userAsset">1,000원</p>
+        </div>
+        <div class="user-rank">
+            <i class="fa-solid fa-ranking-star fa-2xl user-rank-icon"></i>
+            <p class="user-rank-number">1004위</p>
+        </div>
+    </div>
+
+    <h5 class="title">TOP 3</h5>
+    <div class="stats">
+        <div class="mini3-box">
+            <div>
+                <i class="fa-solid fa-ranking-star fa-xl top1-icon"></i>
+            </div>
+            <div>
+                <img
+                        src="/layout/srcs/icons/user-logo.svg"
+                        alt="icon"
+                        class="flex-component middle-ranking-profile"
+                />
+            </div>
+            <div class="ranking-profile-info">
+                <h6 class="userNickname">닉네임</h6>
+                <p class="userAsset">1,000원</p>
+            </div>
+        </div>
+        <div class="mini3-box">
+            <div>
+                <i class="fa-solid fa-ranking-star fa-xl top2-icon"></i>
+            </div>
+            <div>
+                <img
+                        src="/layout/srcs/icons/user-logo.svg"
+                        alt="icon"
+                        class="flex-component middle-ranking-profile"
+                />
+            </div>
+            <div class="ranking-profile-info">
+                <h6 class="userNickname">닉네임</h6>
+                <p class="userAsset">1,000원</p>
+            </div>
+        </div>
+        <div class="mini3-box">
+            <div>
+                <i class="fa-solid fa-ranking-star fa-xl top3-icon"></i>
+            </div>
+            <div>
+                <img
+                        src="/layout/srcs/icons/user-logo.svg"
+                        alt="icon"
+                        class="flex-component middle-ranking-profile"
+                />
+            </div>
+            <div class="ranking-profile-info">
+                <h6 class="userNickname">닉네임</h6>
+                <p class="userAsset">1,000원</p>
+            </div>
+        </div>
+        <!-- 반복되는 TOP 3 사용자 카드 추가 -->
+    </div>
+
+    <!-- 순위 리스트 -->
+    <div class="section">
+        <table class="other-rank-table">
+            <tbody>
+            <tr>
+                <td class="rank-number">4</td>
+                <td class="other-rank-profile">
+                    <img
+                            src="/layout/srcs/icons/user-logo.svg"
+                            alt="icon"
+                            class="flex-component other-ranking-profile"
+                    />
+                </td>
+                <td class="other-rank-nickname">텔레토비</td>
+                <td class="other-rank-asset">으악</td>
+            </tr>
+            <tr>
+                <td class="rank-number">5</td>
+                <td class="other-rank-profile">
+                    <img
+                            src="/layout/srcs/icons/user-logo.svg"
+                            alt="icon"
+                            class="flex-component other-ranking-profile"
+                    />
+                </td>
+                <td class="other-rank-nickname">뚜비</td>
+                <td class="other-rank-asset">으악</td>
+            </tr>
+            <tr>
+                <td class="rank-number">6</td>
+                <td class="other-rank-profile">
+                    <img
+                            src="/layout/srcs/icons/user-logo.svg"
+                            alt="icon"
+                            class="flex-component other-ranking-profile"
+                    />
+                </td>
+                <td class="other-rank-nickname">나나</td>
+                <td class="other-rank-asset">으악</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+
+</script>
+<script th:replace="~{common/sidebar :: sidebar-script}"></script>
+<script th:replace="~{common/search :: search-script}"></script>
+</body>
+</html>

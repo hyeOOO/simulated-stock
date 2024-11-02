@@ -48,12 +48,6 @@ public class AuthController {
         return "login";
     }
 
-    @GetMapping("/mypage")
-    @PreAuthorize("isAuthenticated()")
-    public String mypage(){
-        return "mypage/mypage";
-    }
-
     @GetMapping("/auth/success")
     public String loginSuccess(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
         MemberDto memberInfo = memberService.memberInfo(principalDetails.getMemberKey());

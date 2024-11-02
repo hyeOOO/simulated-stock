@@ -110,9 +110,9 @@
 }
 
 .search-group button {
-    background: none;
-    border: none;
-    cursor: pointer;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .search-control {
@@ -159,6 +159,26 @@ input::placeholder {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.div-white-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 30px 40px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mini3-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 20px 30px;
+  width: 31%;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 .stat-name {
   font-family: "Pretendard-Bold";
 }
@@ -364,6 +384,11 @@ td.down {
   width: 65%;
 }
 
+.ranking-profile-info {
+  width: 70%;
+  margin-top: 10px;
+}
+
 .profile-info > h2 {
   font-family: "Pretendard-Bold";
   color: #315784;
@@ -376,23 +401,23 @@ td.down {
 }
 
 .modify-button {
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: none;
-    width: 100%;
-    font-family: "Pretendard-Bold";
-    margin-bottom: 5px;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  width: 100%;
+  font-family: "Pretendard-Bold";
+  margin-bottom: 5px;
 }
 
 .logout-button {
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: none;
-    width: 100%;
-    font-family: "Pretendard-Bold";
-    margin-top: 5px;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  width: 100%;
+  font-family: "Pretendard-Bold";
+  margin-top: 5px;
 }
 
 .reset-button {
@@ -459,79 +484,128 @@ td.down {
   margin-bottom: 1rem;
 }
 
-.logout-button-group{
-    width: 15%;
+.logout-button-group {
+  width: 15%;
 }
 
 .modal-background {
-    display: none; /* 기본적으로 숨김 */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
-    z-index: 1000; /* 다른 요소들 위에 표시되도록 */
-  }
+  display: none; /* 기본적으로 숨김 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  z-index: 1000; /* 다른 요소들 위에 표시되도록 */
+}
 
-  /* 모달 컨테이너 */
-  .modal-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* 화면 가운데 정렬 */
-    width: 400px; /* 모달의 적당한 너비 */
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+/* 모달 컨테이너 */
+.modal-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 화면 가운데 정렬 */
+  width: 400px; /* 모달의 적당한 너비 */
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-  /* 닫기 버튼 */
-  .modal-close-button {
-    float: right;
-    background-color: #ff5c5c;
-    color: white;
-    border: none;
-    padding: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+/* 닫기 버튼 */
+.modal-close-button {
+  float: right;
+  background-color: #ff5c5c;
+  color: white;
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-  .modal-close-button:hover {
-    background-color: #ff3030;
-  }
+.modal-close-button:hover {
+  background-color: #ff3030;
+}
 
-  /* 입력 필드 */
-  .modal-input-group {
-    margin-bottom: 10px;
-  }
+/* 입력 필드 */
+.modal-input-group {
+  margin-bottom: 10px;
+}
 
-  .modal-input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
+.modal-input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
 
-  .modal-input-group input,
-  .modal-input-group textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
+.modal-input-group input,
+.modal-input-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
 
-  /* 저장 버튼 */
-  .modal-save-button {
-    width: 100%;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+/* 저장 버튼 */
+.modal-save-button {
+  width: 100%;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-  .modal-save-button:hover {
-    background-color: #45a049;
-  }
+.modal-save-button:hover {
+  background-color: #45a049;
+}
+
+.ranking-profile {
+  width: 100px;
+}
+
+.middle-ranking-profile {
+  width: 70px;
+  margin: 0px 15px;
+}
+
+.other-rank-table td {
+  padding: 20px 30px;
+}
+
+.rank-number {
+  width: 5%;
+}
+
+.other-rank-profile {
+  width: 10%;
+}
+
+.other-rank-asset {
+  width: 70%;
+}
+
+.user-rank {
+  padding-top: 10px;
+}
+
+.user-rank-number {
+  padding-top: 10px;
+}
+
+.user-rank-icon {
+  padding-left: 5px;
+}
+
+.top1-icon {
+  color: #fbbc05;
+}
+
+.top2-icon {
+  color: #979797;
+}
+
+.top3-icon {
+  color: #9f5a5a;
+}
