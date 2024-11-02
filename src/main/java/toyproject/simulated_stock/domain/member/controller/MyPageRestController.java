@@ -19,11 +19,11 @@ public class MyPageRestController {
     private final AssetService assetService;
 
     // 특정 회원의 보유 주식을 DTO로 변환하여 가져오기
-//    @Operation(summary = "보유 종목 리스트 조회", description = "특정 사용자의 보유중인 종목 리스트를 조회합니다. ")
-//    @GetMapping("/{memberKey}/userStock")
-//    public List<UserStockListDto> getUserStocks(@PathVariable String memberKey){
-//        return assetService.getUserStockList(memberKey);
-//    }
+    @Operation(summary = "보유 종목 리스트 조회", description = "특정 사용자의 보유중인 종목 리스트를 조회합니다. ")
+    @GetMapping("/{memberKey}/userStock")
+    public List<UserStockListDto> getUserStocks(@PathVariable String memberKey){
+        return assetService.getUserStockList(memberKey);
+    }
 
     // 자산 초기화
     @Operation(summary = "자산 초기화", description = "특정 사용자의 자산을 초기화합니다. ")

@@ -48,12 +48,21 @@ public class RankRestController {
     }
 
     // 게스트가 랭킹 접근 시 top 10 랭킹 리스트 불러오기
-//    @Operation(summary = "유저 랭킹 정보", description = "유저의 자산 정보 랭킹을 불러옵니다. ")
-//    @GetMapping("/")
-//    public ResponseEntity<> getGuestRank(){
-//        // 유저 랭킹 정보
-//        List<RankDto> rankDto = assetService.getAllUserRank();
-//
-//        return ResponseEntity.ok()
-//    }
+    @Operation(summary = "유저 랭킹 정보", description = "유저의 자산 정보 랭킹을 불러옵니다. ")
+    @GetMapping("/")
+    public ResponseEntity<RankResponse> getGuestRank(){
+        List<RankDto> allRanks = assetService.getAllUserRank();
+
+        // 전체 순위 매기기
+        for (int i = 0; i < allRanks.size(); i++) {
+            allRanks.get(i).setRank(i + 1);
+        }
+
+        // Top 10 추출
+        List<RankDto> top10 = allRanks.stream()
+                .limit(10)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new RankResponse(top10));
+    }
 }
