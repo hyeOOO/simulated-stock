@@ -592,6 +592,7 @@ td.down {
 
 .user-rank-number {
   padding-top: 10px;
+  padding-left: 10px;
 }
 
 .user-rank-icon {
@@ -608,4 +609,36 @@ td.down {
 
 .top3-icon {
   color: #9f5a5a;
+}
+
+.filter-btn-group {
+    display: inline-flex;
+    background-color: #F7F7F7; /* 버튼 그룹의 배경색 */
+    border-radius: 12px; /* 버튼 그룹의 둥근 모서리 */
+    overflow: hidden;
+    padding: 2px; /* 버튼과 그룹의 경계를 나누기 위한 패딩 */
+}
+
+.filter-btn-group button {
+    border: none;
+    padding: 5px 7px; /* 버튼 패딩 */
+    font-family: "Pretendard-Regular";
+    cursor: pointer;
+    font-size: 15px;
+    background-color: transparent; /* 기본적으로 투명한 배경 */
+    color: black;
+    margin: 0; /* 버튼 사이의 간격 제거 */
+}
+
+.filter-btn-group button.active {
+    background-color: #3947b2;
+    border-radius: 5px;
+    color: white;
+}
+
+/* hover 시 활성화된 버튼과 같은 스타일 */
+.filter-btn-group button:hover {
+    background-color: #3947b2;
+    color: white;
+    border-radius: 5px;
 }

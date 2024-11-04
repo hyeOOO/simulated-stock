@@ -2,6 +2,7 @@ package toyproject.simulated_stock.domain.stock.order.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import toyproject.simulated_stock.domain.stock.order.entitiy.MarketType;
 import toyproject.simulated_stock.domain.stock.order.entitiy.UserStock;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public interface UserStockRepository extends JpaRepository<UserStock, Long> {
 
     // 사용자의 모든 보유 주식 조회
     List<UserStock> findByMemberId(String memberId);
+
+    List<UserStock> findByMemberIdAndMrtgType(String memberId, MarketType mrtgType);
 
     // 사용자의 모든 보유 주식 삭제
     void deleteByMemberId(String memberId);

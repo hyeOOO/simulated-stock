@@ -17,12 +17,12 @@
             />
         </div>
         <div class="ranking-profile-info">
-            <h5 id="userNickname">닉네임</h5>
-            <p id="userAsset">1,000원</p>
+            <h5 id="userNickname">로그인 후 이용해주세요.</h5>
+            <p id="userAsset"></p>
         </div>
         <div class="user-rank">
             <i class="fa-solid fa-ranking-star fa-2xl user-rank-icon"></i>
-            <p class="user-rank-number">1004위</p>
+            <p class="user-rank-number"></p>
         </div>
     </div>
 
@@ -40,8 +40,8 @@
                 />
             </div>
             <div class="ranking-profile-info">
-                <h6 class="userNickname">닉네임</h6>
-                <p class="userAsset">1,000원</p>
+                <h6 class="userNickname">-님</h6>
+                <p class="userAsset">-원</p>
             </div>
         </div>
         <div class="mini3-box">
@@ -56,8 +56,8 @@
                 />
             </div>
             <div class="ranking-profile-info">
-                <h6 class="userNickname">닉네임</h6>
-                <p class="userAsset">1,000원</p>
+                <h6 class="userNickname">-님</h6>
+                <p class="userAsset">-원</p>
             </div>
         </div>
         <div class="mini3-box">
@@ -72,14 +72,12 @@
                 />
             </div>
             <div class="ranking-profile-info">
-                <h6 class="userNickname">닉네임</h6>
-                <p class="userAsset">1,000원</p>
+                <h6 class="userNickname">-님</h6>
+                <p class="userAsset">-원</p>
             </div>
         </div>
-        <!-- 반복되는 TOP 3 사용자 카드 추가 -->
     </div>
 
-    <!-- 순위 리스트 -->
     <div class="section">
         <table class="other-rank-table">
             <tbody>
@@ -92,8 +90,8 @@
                             class="flex-component other-ranking-profile"
                     />
                 </td>
-                <td class="other-rank-nickname">텔레토비</td>
-                <td class="other-rank-asset">으악</td>
+                <td class="other-rank-nickname">-님</td>
+                <td class="other-rank-asset">-원</td>
             </tr>
             <tr>
                 <td class="rank-number">5</td>
@@ -104,8 +102,8 @@
                             class="flex-component other-ranking-profile"
                     />
                 </td>
-                <td class="other-rank-nickname">뚜비</td>
-                <td class="other-rank-asset">으악</td>
+                <td class="other-rank-nickname">-님</td>
+                <td class="other-rank-asset">-원</td>
             </tr>
             <tr>
                 <td class="rank-number">6</td>
@@ -116,15 +114,87 @@
                             class="flex-component other-ranking-profile"
                     />
                 </td>
-                <td class="other-rank-nickname">나나</td>
-                <td class="other-rank-asset">으악</td>
+                <td class="other-rank-nickname">-님</td>
+                <td class="other-rank-asset">-원</td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const getMemberKey = () => {
+            const memberKeyElement = document.getElementById('memberKey');
+            if (memberKeyElement && memberKeyElement.value) {
+                return memberKeyElement.value;
+            } else {
+                return null;
+            }
+        };
 
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('ko-KR').format(amount) + '원';
+        };
+
+        const fetchRankingData = async () => {
+            const memberKey = getMemberKey();
+            try {
+                const response = await fetch(
+                    memberKey ? `/api/rank/${memberKey}` : '/api/rank/'
+                );
+
+                const data = await response.json();
+                updateRankingUI(data, !!memberKey);
+            } catch (error) {
+                console.error('랭킹 데이터 로딩 실패:', error);
+            }
+        };
+
+        const updateRankingUI = (data, isLoggedIn) => {
+            // 사용자 랭킹 섹션 업데이트
+            if (isLoggedIn && data.userRank) {
+                document.getElementById('userNickname').textContent = data.userRank.userName;
+                document.getElementById('userAsset').textContent = formatCurrency(data.userRank.totalAssets);
+                document.querySelector('.user-rank-number').textContent = data.userRank.rank + '위';
+            }
+
+            // TOP 3 업데이트
+            const top3 = data.topRanks.slice(0, 3);
+            const top3Elements = document.querySelectorAll('.mini3-box');
+            top3.forEach((rank, index) => {
+                if (top3Elements[index]) {
+                    const nicknameElement = top3Elements[index].querySelector('.userNickname');
+                    const assetElement = top3Elements[index].querySelector('.userAsset');
+
+                    nicknameElement.textContent = rank.userName;
+                    assetElement.textContent = formatCurrency(rank.totalAssets);
+                }
+            });
+
+            // 4-6위 테이블 업데이트
+            const tbody = document.querySelector('.other-rank-table tbody');
+            tbody.innerHTML = ''; // 기존 데이터 초기화
+
+            const remainingRanks = data.topRanks.slice(3);
+
+            // 4부터 6까지의 순위를 항상 표시
+            for (let rank = 4; rank <= 10; rank++) {
+                const rankData = remainingRanks.find(r => r.rank === rank);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="rank-number">${rank}</td>
+                    <td class="other-rank-profile">
+                        <img src="/layout/srcs/icons/user-logo.svg" alt="icon" class="flex-component other-ranking-profile"/>
+                    </td>
+                    <td class="other-rank-nickname">${rankData ? rankData.nickname : '-님'}</td>
+                    <td class="other-rank-asset">${rankData ? formatCurrency(rankData.totalAssets) : '-원'}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+        };
+
+        fetchRankingData();
+    });
 </script>
 <script th:replace="~{common/sidebar :: sidebar-script}"></script>
 <script th:replace="~{common/search :: search-script}"></script>
