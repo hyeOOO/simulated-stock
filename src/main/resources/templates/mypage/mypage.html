@@ -27,6 +27,12 @@
         <div class="mypage-left-section">
             <div class="section">
 <!--                보유 종목 리스트 -->
+                <!-- 필터 버튼 그룹 -->
+                <div class="filter-btn-group">
+                    <button class="filter-btn active" onclick="marketFilter('ALL')">전체</button>
+                    <button class="filter-btn" onclick="marketFilter('KOSPI')">코스피</button>
+                    <button class="filter-btn" onclick="marketFilter('KOSDAQ')">코스닥</button>
+                </div>
                 <table class="stocks-table">
                     <thead>
                     <tr>
@@ -67,22 +73,22 @@
             <form>
                 <div class="asset-group" id="stock-holding-info">
                     <label>총 자산</label>
-                    <p id="totalAsset" class="total-asset">0 원</p>
+                    <p id="total-assets" class="total-asset">- 원</p>
                 </div>
                 <hr/>
                 <div class="asset-group">
                     <label>가용 자산</label>
-                    <p id="availableAsset" class="available-asset">0 원</p>
+                    <p id="available-assets" class="available-asset">- 원</p>
                 </div>
                 <hr/>
                 <div class="asset-group">
                     <label>보유 주식 총액</label>
-                    <p id="totalStock" class="available-asset">0 원</p>
+                    <p id="stock-total" class="available-asset">- 원</p>
                 </div>
                 <hr/>
                 <div class="asset-group">
-                    <label>보유 종목 수</label>
-                    <p id="countStock" class="available-asset">0 종목</p>
+                    <label>손익</label>
+                    <p id="profit" class="available-asset">- 원</p>
                 </div>
 
                 <div class="submit-group">
@@ -121,8 +127,8 @@
         const userId = memberKeyElement.value;
         getUserInfo(userId);
         fetchHaveStockList(userId);
-        fetchFavoriteStockList(userId);
         fetchUserAssets(userId);
+        fetchFavoriteStockList(userId);
       } else {
         console.log("세션이 만료되었습니다. 재로그인해주세요.");
         logout();
@@ -166,9 +172,20 @@
       console.log("유저 자산 정보 가져오기");
 
       axios.get(`/api/asset/${userId}`).then((response) => {
-        console.log("응답 데이터 타입:", typeof response.data); // 데이터 타입 확인
-        console.log("응답 데이터 구조:", response.data); // 데이터가 예상과 일치하는지 확인
+        const assetData = response.data;
+        updateAssetInfo(assetData);  // 자산 정보를 업데이트
+      })
+      .catch(error => {
+                console.error('Error fetching user assets:', error);
       });
+    }
+
+    // 자산 정보를 UI에 업데이트하는 함수
+    function updateAssetInfo(assetData) {
+        document.getElementById('total-assets').textContent = `${assetData.totalAssets.toLocaleString()} 원`;
+        document.getElementById('available-assets').textContent = `${assetData.availableAsset.toLocaleString()} 원`; // 수정
+        document.getElementById('stock-total').textContent = `${assetData.stockTotal.toLocaleString()} 원`;
+        document.getElementById('profit').textContent = `${assetData.profit.toLocaleString()} 원`;
     }
 
     // 보유중인 종목 리스트 가져오기
@@ -376,6 +393,66 @@
                     window.location.href = "/mypage";
                 })
                 .catch((error) => alert("초기화 중 오류가 발생했습니다."));
+    }
+
+    function marketFilter(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        const memberKeyElement = document.getElementById("memberKey");
+        if (memberKeyElement && memberKeyElement.value) {
+            const userId = memberKeyElement.value;
+            getUserHaveMarketStock(userId, filter);
+        } else {
+            console.log("세션이 만료되었습니다. 재로그인해주세요.");
+            logout();
+        }
+    }
+
+    function getUserHaveMarketStock(userId, market) {
+        axios.get(`/api/myPage/${userId}/${market}/userStock`)
+        .then((response) => {
+          const tbody = document.getElementById("haveStockBody");
+          tbody.innerHTML = ""; // 기존 내용을 지우기
+
+          if (Array.isArray(response.data) && response.data.length > 0) {
+            response.data.forEach((stock) => {
+              //매수 평균가
+              const formattedAvgPrice = Number(stock.avgPrice).toLocaleString() + " 원";
+              //최소 매수가
+              const formattedMinPrice = Number(stock.minPrice).toLocaleString() + " 원";
+              //최대 매수가
+              const formattedMaxPrice = Number(stock.maxPrice).toLocaleString() + " 원";
+              //누적합
+              const formattedTotalPrice = Number(stock.totalPrice).toLocaleString() + " 원";
+
+              // HTML 행 생성
+              const rowHTML = `
+                          <tr>
+                              <td><a href="/stock/detail/${stock.stockCode}?marketCategory=${stock.mrtgType}">${stock.stockName}</a></td>
+                              <td>보유량</td>
+                              <td>현재가</td>
+                              <td>수익률</td>
+                              <td>${formattedAvgPrice}</td>
+                              <td>${formattedMinPrice}</td>
+                              <td>${formattedMaxPrice}</td>
+                              <td>${formattedTotalPrice}</td>
+                          </tr>`;
+
+              // 테이블에 행 추가
+              tbody.innerHTML += rowHTML;
+            });
+          } else {
+            console.warn("보유중인 종목 데이터가 없습니다.");
+            tbody.innerHTML = `<tr><td colspan="5">보유중인 종목 데이터가 없습니다.</td></tr>`;
+          }
+        })
+        .catch((error) => {
+          alert(
+            `보유중인 종목을 가져오는 중 오류가 발생했습니다. (상태 코드: ${error.response?.status})`
+          );
+        });
     }
 </script>
 <!-- 스크립트는 body 끝 부분에 배치 -->

@@ -14,6 +14,7 @@ import toyproject.simulated_stock.domain.member.repository.FavoriteRepository;
 import toyproject.simulated_stock.domain.member.repository.MemberRepository;
 import toyproject.simulated_stock.domain.redis.dto.StockPriceDto;
 import toyproject.simulated_stock.domain.redis.service.StockCacheService;
+import toyproject.simulated_stock.domain.stock.order.entitiy.MarketType;
 import toyproject.simulated_stock.domain.stock.order.entitiy.UserAccount;
 import toyproject.simulated_stock.domain.stock.order.entitiy.UserStock;
 import toyproject.simulated_stock.domain.stock.order.repository.StockOrderRepository;
@@ -161,6 +162,31 @@ public class AssetService {
 
         //보유 주식 목록 가져오기
         List<UserStock> userStockList = userStockRepository.findByMemberId(Long.toString(member.getId()));
+
+        //entity -> dto
+        return userStockList.stream()
+                .map(UserStockListDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserStockListDto> getUserStockList(String memberKey, String market){
+        //유저 정보 불러오기
+        Member member = memberRepository.findByMemberKey(memberKey)
+                .orElseThrow(() -> new AuthException(MEMBER_NOT_FOUND));
+
+        List<UserStock> userStockList = new ArrayList<>();
+
+        if(market.equals("KOSPI")){
+            //보유 주식 목록 가져오기
+            userStockList = userStockRepository.findByMemberIdAndMrtgType(Long.toString(member.getId()), MarketType.KOSPI);
+        }else if(market.equals("KOSDAQ")){
+            //보유 주식 목록 가져오기
+            userStockList = userStockRepository.findByMemberIdAndMrtgType(Long.toString(member.getId()), MarketType.KOSDAQ);
+        }else{
+            //보유 주식 목록 가져오기
+            userStockList = userStockRepository.findByMemberId(Long.toString(member.getId()));
+        }
 
         //entity -> dto
         return userStockList.stream()
