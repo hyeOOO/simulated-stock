@@ -61,4 +61,9 @@ public class MemberController {
     public String ranking(){
         return "member/ranking";
     }
+
+    @GetMapping("/favorite")
+    public String favorite(){
+        return "mypage/favoriteandrecent";
+    }
 }
