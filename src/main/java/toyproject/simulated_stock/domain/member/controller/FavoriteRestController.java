@@ -18,21 +18,21 @@ public class FavoriteRestController {
 
     @Operation(summary = "즐겨찾기 체크", description = "특정 사용자가 특정 종목을 즐겨찾기하였는지 체크합니다. ")
     @GetMapping("/check")
-    public boolean isFavorite(@RequestParam String memberKey, @RequestParam String stockCode) {
-        return favoriteService.isFavorite(memberKey, stockCode);
+    public boolean isFavorite(@RequestParam String userId, @RequestParam String stockCode) {
+        return favoriteService.isFavorite(userId, stockCode);
     }
 
     @Operation(summary = "즐겨찾기 추가", description = "특정 사용자가 특정 종목을 즐겨찾기에 추가합니다. ")
     @PostMapping("/add")
-    public String addFavorite(@RequestParam String memberKey, @RequestParam String stockCode, @RequestParam String marketType) {
-        favoriteService.addFavorite(memberKey, stockCode, marketType);
+    public String addFavorite(@RequestParam String userId, @RequestParam String stockCode, @RequestParam String marketType) {
+        favoriteService.addFavorite(userId, stockCode, marketType);
         return "즐겨찾기에 추가되었습니다.";
     }
 
     @Operation(summary = "즐겨찾기 제거", description = "특정 사용자가 특정 종목의 즐겨찾기를 제거합니다. ")
     @PostMapping("/remove")
-    public String removeFavorite(@RequestParam String memberKey, @RequestParam String stockCode) {
-        favoriteService.removeFavorite(memberKey, stockCode);
+    public String removeFavorite(@RequestParam String userId, @RequestParam String stockCode) {
+        favoriteService.removeFavorite(userId, stockCode);
         return "즐겨찾기에서 삭제되었습니다.";
     }
 
