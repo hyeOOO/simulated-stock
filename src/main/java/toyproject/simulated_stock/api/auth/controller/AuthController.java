@@ -34,10 +34,6 @@ public class AuthController {
     public String mainPage(){
         return "main";
     }
-    @GetMapping("/favorite")
-    public String mainHard(){
-        return "mypage/favoriteandrecent";
-    }
 
     @GetMapping("/login")
     public String loginPage(@AuthenticationPrincipal UserDetails userDetails) {
