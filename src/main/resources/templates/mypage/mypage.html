@@ -26,12 +26,12 @@
     <div class="section-group">
         <div class="mypage-left-section">
             <div class="section">
-<!--                보유 종목 리스트 -->
+                <!--                보유 종목 리스트 -->
                 <!-- 필터 버튼 그룹 -->
                 <div class="filter-btn-group">
-                    <button class="filter-btn active" onclick="marketFilter('ALL')">전체</button>
-                    <button class="filter-btn" onclick="marketFilter('KOSPI')">코스피</button>
-                    <button class="filter-btn" onclick="marketFilter('KOSDAQ')">코스닥</button>
+                    <button name = "have-stock-filter-btn" class="filter-btn active" onclick="haveStockMarketFilter('ALL')">전체</button>
+                    <button name = "have-stock-filter-btn" class="filter-btn" onclick="haveStockMarketFilter('KOSPI')">코스피</button>
+                    <button name = "have-stock-filter-btn" class="filter-btn" onclick="haveStockMarketFilter('KOSDAQ')">코스닥</button>
                 </div>
                 <table class="stocks-table">
                     <thead>
@@ -53,14 +53,17 @@
             </div>
             <h5 class="title">관심 종목</h5>
             <div class="section">
-                <table class="stocks-table">
+                <div class="filter-btn-group">
+                    <button name = "like-filter-btn" class="filter-btn active" onclick="likeMarketFilter('ALL')">전체</button>
+                    <button name = "like-filter-btn" class="filter-btn" onclick="likeMarketFilter('KOSPI')">코스피</button>
+                    <button name = "like-filter-btn" class="filter-btn" onclick="likeMarketFilter('KOSDAQ')">코스닥</button>
+                </div>
+                <table class="stocks-table" id="favorites-table">
                     <thead>
                     <tr>
                         <th>종목명</th>
                         <th>현재가</th>
                         <th>등락률</th>
-                        <th>시가총액</th>
-                        <th>거래량/거래대금</th>
                     </tr>
                     </thead>
                     <tbody id="favoriteStockBody">
@@ -101,19 +104,19 @@
 
 <!-- 모달창 -->
 <div class="modal-background" id="editModal">
-  <div class="modal-container">
-    <button class="modal-close-button" onclick="closeModal()">X</button>
-    <h2>정보 수정</h2>
-    <div class="modal-input-group">
-      <label for="nickname">닉네임</label>
-      <input type="text" id="nickname" value="닉네임을 입력해주세요." />
+    <div class="modal-container">
+        <button class="modal-close-button" onclick="closeModal()">X</button>
+        <h2>정보 수정</h2>
+        <div class="modal-input-group">
+            <label for="nickname">닉네임</label>
+            <input type="text" id="nickname" value="닉네임을 입력해주세요."/>
+        </div>
+        <div class="modal-input-group">
+            <label for="intro">한 줄 소개</label>
+            <textarea id="intro"></textarea>
+        </div>
+        <button class="modal-save-button" onclick="saveChanges()">저장</button>
     </div>
-    <div class="modal-input-group">
-      <label for="intro">한 줄 소개</label>
-      <textarea id="intro"></textarea>
-    </div>
-    <button class="modal-save-button" onclick="saveChanges()">저장</button>
-  </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
@@ -235,55 +238,53 @@
         });
     }
 
-    async function fetchFavoriteStockList() {
+    async function fetchFavoriteStockList(userId) {
+
          axios
-          .get('/api/stock/list')
+          .get(`/api/favorites/member`, {
+             params: {
+                userId: userId,
+                marketType: 'ALL'
+            }
+          })
           .then((response) => {
-            console.log('응답 데이터 타입:', typeof response.data); // 데이터 타입 확인
-            console.log('응답 데이터 구조:', response.data); // 데이터가 예상과 일치하는지 확인
-            const tbody = document.getElementById('stockBody');
+            const tbody = document.getElementById('favoriteStockBody');
             tbody.innerHTML = ''; // 기존 내용을 지우기
 
-            if (Array.isArray(response.data) && response.data.length > 0) {
-              response.data.forEach((stock) => {
-                const fltRtValue = parseFloat(stock.fltRt); // 등락률을 숫자로 변환
-                let color = 'black'; // 기본 색상
-                let icon = '-'; // 기본 아이콘
+            const stockData = response.data;
+            console.log(stockData);
+
+            stockData.forEach((stock, index) => {
+            if (stock) {
+                const fltRtValue = parseFloat(stock.priceChangeRate);
+                let color = 'black';
+                let icon = '-';
 
                 // 등락률에 따른 색상 및 아이콘 설정
                 if (fltRtValue > 0) {
-                  color = 'red'; // 상승일 때 빨간색
-                  icon = '▲'; // 상승 아이콘
+                    color = 'red';
+                    icon = '▲';
                 } else if (fltRtValue < 0) {
-                  color = 'blue'; // 하락일 때 파란색
-                  icon = '▼'; // 하락 아이콘
+                    color = 'blue';
+                    icon = '▼';
                 }
 
-                // 거래량 및 거래대금을 정리
-                const formattedTrqu = Number(stock.trqu).toLocaleString(); // 거래량
-                const formattedTrPrc = Number(stock.trPrc).toLocaleString(); // 거래대금
+                // 테이블 행 추가
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${stock.stockName}</td>
+                    <td style="color: ${color}">${stock.currentPrice} 원</td>
+                    <td style="color: ${color}">${icon} ${stock.priceChangeRate}%</td>
+                `;
 
-                // 시가 총액 포맷
-                const formattedMrktTotAmt =
-                  Number(stock.mrktTotAmt).toLocaleString() + ' 원';
+                // 첫 번째 항목 선택 처리
+                if (index === 0) {
+                    row.classList.add('selected');
+                }
 
-                // HTML 행 생성
-                const rowHTML = `
-                            <tr>
-                                <td><a href="/stock/detail/${stock.srtnCd}?marketCategory=${stock.mrktCtg}">${stock.itmsNm}</a></td>
-                                <td style="color: ${color}">${stock.clpr}</td>
-                                <td style="color: ${color}">${icon} ${stock.fltRt}%</td>
-                                <td>${formattedMrktTotAmt}</td>
-                                <td>${formattedTrqu}<br/><p class="additional-value">${formattedTrPrc} 원</p></td>
-                            </tr>`;
-
-                // 테이블에 행 추가
-                tbody.innerHTML += rowHTML;
-              });
-            } else {
-              console.warn('관심 종목 데이터가 없습니다.');
-              tbody.innerHTML = `<tr><td colspan="5">관심 종목 데이터가 없습니다.</td></tr>`;
+                tbody.appendChild(row);
             }
+        });
           })
           .catch((error) => {
             console.error('Error fetching stock list:', error);
@@ -395,9 +396,9 @@
                 .catch((error) => alert("초기화 중 오류가 발생했습니다."));
     }
 
-    function marketFilter(filter) {
+    function haveStockMarketFilter(filter) {
         currentFilter = filter;
-        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementsByName('have-stock-filter-btn').forEach(btn => btn.classList.remove('active'));
         event.target.classList.add('active');
 
         const memberKeyElement = document.getElementById("memberKey");
@@ -408,6 +409,77 @@
             console.log("세션이 만료되었습니다. 재로그인해주세요.");
             logout();
         }
+    }
+
+    function likeMarketFilter(filter){
+        currentFilter = filter;
+        document.getElementsByName('like-filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        const memberKeyElement = document.getElementById("memberKey");
+        if (memberKeyElement && memberKeyElement.value) {
+            const userId = memberKeyElement.value;
+            getUserLikeMarketStock(userId, filter);
+        } else {
+            console.log("세션이 만료되었습니다. 재로그인해주세요.");
+            logout();
+        }
+    }
+
+    function getUserLikeMarketStock(userId, marketType) {
+       axios
+          .get(`/api/favorites/member`, {
+             params: {
+                userId: userId,
+                marketType: marketType
+            }
+          })
+          .then((response) => {
+            const tbody = document.getElementById('favoriteStockBody');
+            tbody.innerHTML = ''; // 기존 내용을 지우기
+
+            const stockData = response.data;
+
+            stockData.forEach((stock, index) => {
+            if (stock) {
+                const fltRtValue = parseFloat(stock.priceChangeRate);
+                let color = 'black';
+                let icon = '-';
+
+                // 등락률에 따른 색상 및 아이콘 설정
+                if (fltRtValue > 0) {
+                    color = 'red';
+                    icon = '▲';
+                } else if (fltRtValue < 0) {
+                    color = 'blue';
+                    icon = '▼';
+                }
+
+                // 테이블 행 추가 (각 행을 클릭하면 차트 헤더 내용이 바뀜)
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${stock.stockName}</td>
+                    <td style="color: ${color}">${stock.currentPrice} 원</td>
+                    <td style="color: ${color}">${icon} ${stock.priceChangeRate}%</td>
+                `;
+
+                // 첫 번째 항목 선택 처리
+                if (index === 0) {
+                    row.classList.add('selected');
+                }
+
+                tbody.appendChild(row);
+            }
+        });
+          })
+          .catch((error) => {
+            console.error('Error fetching stock list:', error);
+            console.error('에러 상태 코드:', error.response?.status); // 에러 상태 코드 확인
+            console.error('에러 메시지:', error.response?.data); // 에러 응답 내용 확인
+            alert(
+              `관심 종목을 가져오는 중 오류가 발생했습니다. (상태 코드: ${error.response?.status})`
+            );
+          });
     }
 
     function getUserHaveMarketStock(userId, market) {

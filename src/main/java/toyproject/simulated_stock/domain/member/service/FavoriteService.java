@@ -41,7 +41,7 @@ public class FavoriteService {
     public List<StockPriceDto> getMemberFavoriteListByMarketType(String userId, String marketType) {
         List<Favorite> favoriteList = favoriteRepository.findByUserId(userId);
 
-        if (marketType != null && !marketType.equals("ALL")) {
+         if (marketType != null && !marketType.equals("ALL")) {
             favoriteList = favoriteList.stream()
                     .filter(favorite -> favorite.getMarketType().contains(marketType))
                     .collect(Collectors.toList());
@@ -52,6 +52,6 @@ public class FavoriteService {
                 .map(favorite -> stockCacheService.getCachedStockPrice(favorite.getStockCode()))
                 .collect(Collectors.toList());
 
-        return favoriteStocks;
+            return favoriteStocks;
     }
 }

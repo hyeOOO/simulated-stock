@@ -454,6 +454,7 @@ td.down {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: 420px;
 }
 
 .mypage-section > h6 {
