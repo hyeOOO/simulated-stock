@@ -62,9 +62,30 @@ public class OrderRestController {
     }
 
     // 특정 회원의 매도 기록을 DTO로 변환하여 가져오기
-    @Operation(summary = "특정 사용자 매도 주문 기록", description = "특정 사용자의 주문 기록 중 매도 기록를 반환합니다. ")
+    @Operation(summary = "특정 사용자 매도 주문 기록", description = "특정 사용자의 주문 기록 중 매수/매도 기록를 반환합니다. ")
     @GetMapping("/{memberKey}/sell")
     public List<StockOrderListDto> getSellOrders(@PathVariable String memberKey) {
         return stockOrderService.getSellOrdersByMemberKey(memberKey);
+    }
+
+    // 특정 주식의 모든 주문 기록을 DTO로 변환하여 가져오기
+    @Operation(summary = "특정 종목 주문 기록", description = "특정 종목의 주문 기록 모두를 반환합니다. ")
+    @GetMapping("/{stockCode}/stock/all")
+    public List<StockOrderListDto> getAllStockOrders(@PathVariable String stockCode) {
+        return stockOrderService.getAllOrdersByStockCode(stockCode);
+    }
+
+    // 특정 종목의 매수 기록을 DTO로 변환하여 가져오기
+    @Operation(summary = "특정 종목 매수/매도 주문 기록", description = "특정 종목의 주문 기록 중 매수/매도 기록를 반환합니다. ")
+    @GetMapping("/{stockCode}/stock/buy")
+    public List<StockOrderListDto> getBuyStockOrders(@PathVariable String stockCode) {
+        return stockOrderService.getBuyOrdersByStockCode(stockCode);
+    }
+
+    // 특정 종목의 매도 기록을 DTO로 변환하여 가져오기
+    @Operation(summary = "특정 종목 매수/매도 주문 기록", description = "특정 종목의 주문 기록 중 매수/매도 기록를 반환합니다. ")
+    @GetMapping("/{stockCode}/stock/sell")
+    public List<StockOrderListDto> getSellStockOrders(@PathVariable String stockCode) {
+        return stockOrderService.getSellOrdersByStockCode(stockCode);
     }
 }

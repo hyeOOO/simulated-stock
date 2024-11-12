@@ -109,7 +109,7 @@
                     </tr>
 
                     <!-- 새로운 투자자 정보 추가 -->
-                    <tr>
+                    <!--<tr>
                         <th>개인 순매수량</th>
                         <td id="prsn-ntby-qty">-</td>
                         <th>개인 순매수 거래대금</th>
@@ -126,11 +126,40 @@
                         <td id="orgn-ntby-qty">-</td>
                         <th>기관 순매수 거래대금</th>
                         <td id="orgn-ntby-tr-pbmn">-</td>
+                    </tr>-->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 거래 기록 -->
+            <h5 class="title">거래 기록</h5>
+            <div class="section">
+                <!-- 상단 필터 버튼 그룹 -->
+                <div class="filter-btn-group">
+                    <button class="active" data-filter="ALL">전체</button>
+                    <button data-filter="BUY">매수</button>
+                    <button data-filter="SELL">매도</button>
+                </div>
+
+                <!-- 거래 기록 테이블 -->
+                <table class="order-info-table">
+                    <thead>
+                    <tr>
+                        <th>종목명</th>
+                        <th>거래타입</th>
+                        <th>가격</th>
+                        <th>수량</th>
+                        <th>총 가격</th>
                     </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 주문 기록이 여기에 동적으로 추가됩니다 -->
                     </tbody>
                 </table>
             </div>
         </div>
+
+
 
         <div class="right-section right-section-sticky">
             <div class="section user-asset">
@@ -296,7 +325,7 @@
         }
 
         // 투자자 정보를 불러오는 함수
-        async function fetchStockInvestors(stockCode) {
+        /*async function fetchStockInvestors(stockCode) {
             if (isFetchingInvestorData) return;
             isFetchingInvestorData = true;
 
@@ -317,7 +346,7 @@
                 .finally(() => {
                     isFetchingInvestorData = false;
                 });
-        }
+        }*/
 
         // 종목 상세 정보 업데이트 함수
         function updateStockDetail(stockData) {
@@ -342,14 +371,14 @@
         }
 
         // 투자자 정보 업데이트 함수
-        function updateInvestorDetail(investorData) {
+        /*function updateInvestorDetail(investorData) {
             document.getElementById('prsn-ntby-qty').textContent = formatNumber(investorData.prsn_ntby_qty || 0);
             document.getElementById('prsn-ntby-tr-pbmn').textContent = `${formatNumber(investorData.prsn_ntby_tr_pbmn || 0)} 백만`;
             document.getElementById('frgn-ntby-qty').textContent = formatNumber(investorData.frgn_ntby_qty || 0);
             document.getElementById('frgn-ntby-tr-pbmn').textContent = `${formatNumber(investorData.frgn_ntby_tr_pbmn || 0)} 백만`;
             document.getElementById('orgn-ntby-qty').textContent = formatNumber(investorData.orgn_ntby_qty || 0);
             document.getElementById('orgn-ntby-tr-pbmn').textContent = `${formatNumber(investorData.orgn_ntby_tr_pbmn || 0)} 백만`;
-        }
+        }*/
 
         function formatNumber(number) {
             return parseInt(number).toLocaleString();
@@ -747,6 +776,75 @@
         });
     });
 });*/
+
+    document.addEventListener('DOMContentLoaded', async function () {
+    const stockCode = document.getElementById("stock-code").textContent.trim();
+    console.log(`Loaded Stock Code: ${stockCode}`);
+
+    // 거래 기록 테이블을 업데이트하는 함수
+    async function fetchOrderRecords(filterType) {
+        let url = `/stock/order/${stockCode}/stock/all`; // 기본 URL은 전체 주문 조회
+        if (filterType === 'BUY') {
+            url = `/stock/order/${stockCode}/stock/buy`;
+        } else if (filterType === 'SELL') {
+            url = `/stock/order/${stockCode}/stock/sell`;
+        }
+
+        try {
+            const response = await axios.get(url);
+            updateOrderTable(response.data); // 응답 데이터를 기반으로 테이블 업데이트
+        } catch (error) {
+            console.error('거래 기록을 가져오는 중 오류 발생:', error.response ? error.response.data : error.message);
+            alert('거래 기록을 가져오는데 실패했습니다.');
+        }
+    }
+
+    // 주문 기록 테이블 업데이트 함수
+    function updateOrderTable(orderRecords) {
+        const orderTableBody = document.querySelector('.order-info-table tbody');
+        orderTableBody.innerHTML = ''; // 테이블 비우기
+
+        if (orderRecords.length === 0) {
+            const emptyRow = `<tr><td colspan="5" style="text-align:center;">주문 기록이 없습니다.</td></tr>`;
+            orderTableBody.innerHTML = emptyRow;
+            return;
+        }
+
+        orderRecords.forEach(order => {
+            const row = `
+                <tr>
+                    <td>${order.stockName}</td>
+                    <td>${order.orderType}</td>
+                    <td>${formatNumber(order.price)} 원</td>
+                    <td>${formatNumber(order.quantity)} 주</td>
+                    <td>${formatNumber(order.price * order.quantity)} 원</td>
+                </tr>
+            `;
+            orderTableBody.insertAdjacentHTML('beforeend', row);
+        });
+    }
+
+    // 숫자를 천 단위마다 콤마를 추가하는 함수
+    function formatNumber(number) {
+        if (isNaN(number)) return "-"; // 유효하지 않은 숫자는 '-'로 표시
+        return number.toLocaleString();
+    }
+
+    // 필터 버튼 클릭 시 호출될 이벤트 리스너
+    document.querySelectorAll('.filter-btn-group button').forEach((button) => {
+        button.addEventListener('click', function () {
+            document.querySelectorAll('.filter-btn-group button').forEach((btn) => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const filterType = button.dataset.filter; // 필터 타입 (ALL, BUY, SELL)
+            fetchOrderRecords(filterType); // 필터에 맞는 주문 기록 가져오기
+        });
+    });
+
+    // 초기 데이터 로드 (전체 거래 기록)
+    await fetchOrderRecords('ALL');
+});
+
 </script>
 <!-- 스크립트는 body 끝 부분에 배치 -->
 <script th:replace="~{common/sidebar :: sidebar-script}"></script>
