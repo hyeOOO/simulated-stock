@@ -169,4 +169,28 @@ public class StockOrderService {
                 .orElseThrow(() -> new AuthException(MEMBER_NOT_FOUND));
         return member;
     }
+
+    // 특정 종목의 주문 기록을 DTO로 변환하여 가져오기
+    public List<StockOrderListDto> getAllOrdersByStockCode(String stockCode) {
+        List<StockOrder> buyOrders = stockOrderRepository.findByStockCode(stockCode);
+        return buyOrders.stream()
+                .map(StockOrderListDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    // 특정 종목의 매수 기록을 DTO로 변환하여 가져오기
+    public List<StockOrderListDto> getBuyOrdersByStockCode(String stockCode) {
+        List<StockOrder> buyOrders = stockOrderRepository.findByStockCodeAndOrderType(stockCode, OrderType.BUY);
+        return buyOrders.stream()
+                .map(StockOrderListDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    // 특정 종목의 매도 기록을 DTO로 변환하여 가져오기
+    public List<StockOrderListDto> getSellOrdersByStockCode(String stockCode) {
+        List<StockOrder> sellOrders = stockOrderRepository.findByStockCodeAndOrderType(stockCode, OrderType.SELL);
+        return sellOrders.stream()
+                .map(StockOrderListDto::fromEntity)
+                .collect(Collectors.toList());
+    }
 }
