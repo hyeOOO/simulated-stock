@@ -64,6 +64,6 @@ public class MemberController {
 
     @GetMapping("/favorite")
     public String favorite(){
-        return "mypage/favoriteandrecent";
+        return "interest/favoriteandrecent";
     }
 }
