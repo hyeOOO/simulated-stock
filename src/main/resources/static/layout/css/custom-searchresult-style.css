@@ -64,7 +64,7 @@
         .results-table td {
             font-family: "Pretendard-Regular";
             color: black;
-            padding: 15px 10px;
+            padding: 6px;
         }
 
         .results-table td.up {
@@ -73,4 +73,11 @@
 
         .results-table td.down {
             color: #4285f4; /* 하락률 */
+        }
+
+        .timestamp {
+            font-family: "Pretendard-Regular";
+            font-size: 13px;
+            color: #828282;
+            margin-left: 10px;
         }

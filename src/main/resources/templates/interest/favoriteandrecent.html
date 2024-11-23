@@ -234,13 +234,13 @@
                 <div class="stock-info">
                     <i class="fa-solid fa-star stock-icon"></i>
                     <div class="stock-details">
-                        <div id="favorite-stock-name" class="stock-name">삼성전자</div>
-                        <div id="favorite-stock-code" class="stock-code">005930</div>
+                        <div id="favorite-stock-name" class="stock-name">-</div>
+                        <div id="favorite-stock-code" class="stock-code">-</div>
                     </div>
                 </div>
                 <div>
-                    <span id="favorite-stock-price" class="stock-price">79,600</span><br>
-                    <span id="favorite-stock-change" class="stock-change">▲ 1,000 | +1.27%</span>
+                    <span id="favorite-stock-price" class="stock-price">-</span><br>
+                    <span id="favorite-stock-change" class="stock-change">▲ - | -%</span>
                 </div>
                 <a id="favorite-detail-link" href="#" class="details-link"><i class="fas fa-chevron-right"></i></a>
             </div>
@@ -388,6 +388,12 @@
         } else {
             console.error('memberKeyElement를 찾을 수 없습니다.');
         }
+
+        // 즐겨찾기 차트에서 별 아이콘 클릭 이벤트 리스너 추가
+        const starIcon = document.querySelector('.stock-icon');
+        starIcon.addEventListener('click', function () {
+            removeFromFavorites();
+        });
     });
 
     function applyFavoriteFilter(filter) {
@@ -495,6 +501,33 @@
         // 상세 페이지 링크 업데이트
         const detailLink = document.getElementById('favorite-detail-link');
         detailLink.href = `/stock/detail/${stock.stockCode}?marketCategory=${stock.marketType}`;
+    }
+
+    function removeFromFavorites() {
+        // 차트 영역에서 현재 선택된 종목의 정보를 가져옴
+        const stockCode = document.getElementById('favorite-stock-code').textContent.trim();
+        const memberKeyElement = document.getElementById('memberKey');
+
+        if (memberKeyElement && stockCode) {
+            const userId = memberKeyElement.value;
+
+            axios.post('/api/favorites/remove', null, { // null은 POST 요청의 request body에 아무것도 보내지 않는다는 의미
+                params: {
+                    userId: userId,
+                    stockCode: stockCode
+                }
+            })
+            .then(response => {
+                alert(response.data.message || '즐겨찾기에서 제거되었습니다.');
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('즐겨찾기 제거 중 오류 발생:', error);
+                alert('즐겨찾기 제거에 실패했습니다. 다시 시도해 주세요.');
+            });
+        } else {
+            alert('주식 정보를 찾을 수 없습니다.');
+        }
     }
 </script>
 
