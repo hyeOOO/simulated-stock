@@ -60,6 +60,10 @@
         .then(response => {
             const results = response.data;
             displayResults(results);
+            if (results.length > 0) {
+                // 첫 번째 결과의 bas_dt를 가져와서 displayTimestamp 호출
+                displayTimestamp(results[0].basDt);
+            }
         })
         .catch(error => {
             console.error("검색 중 오류 발생:", error);
@@ -109,5 +113,15 @@
 
             tbody.innerHTML += rowHTML;
         });
+    }
+
+    // 검색 결과 날짜를 화면에 표시
+    function displayTimestamp(basDt) {
+        const timestampElement = document.getElementById("search-timestamp");
+        if (timestampElement) {
+            // 20241115 형태의 bas_dt를 2024-11-15 형태로 변경
+            const formattedDate = `${basDt.substring(0, 4)}-${basDt.substring(4, 6)}-${basDt.substring(6, 8)}`;
+            timestampElement.textContent = ` ${formattedDate} 기준`; // 예: '2024-11-15 기준'
+        }
     }
 </script>
