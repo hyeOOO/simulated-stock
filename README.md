@@ -22,7 +22,7 @@
 
 
 ## ⚙️ 기술 스택
-
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1735487602704?alt=media&token=af9ed98d-2b26-40ac-b78e-c78aa2317d7b)](https://github.com/msdio/stackticon)
 
 
 ## 📱 API 문서
