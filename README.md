@@ -6,12 +6,17 @@
 ## 🎯 핵심 기능
 
 ### 1. 소셜 로그인
+![로그인](https://github.com/user-attachments/assets/6ac21318-8a73-487b-ab91-06abf2da2870)
 
 ### 2. 현재 주식 시세 조회
+![메인](https://github.com/user-attachments/assets/015f0db9-f3e9-4853-bebb-7c527e9082fe)
+![종목 현재 시세 조회](https://github.com/user-attachments/assets/89c0a29e-1b50-4b1c-9bcb-32373c8a033c)
 
 ### 3. 보유 자산 및 종목 조회
+![자산관리](https://github.com/user-attachments/assets/891b04cf-ba8b-4533-9f5d-348fc79279f3)
 
 ### 4. 자산 랭킹 조회
+![유저랭킹](https://github.com/user-attachments/assets/8a586cc9-eff6-497c-8481-c3db21e8d131)
 
 
 ## 👥 팀 소개
